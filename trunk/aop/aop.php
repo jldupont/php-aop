@@ -127,6 +127,8 @@ class aop {
 		
 		$callback = array( __CLASS__, 'autoload' );
 		spl_autoload_register( $callback );
+		
+		aop_finder::singleton()->setPaths( self::paths );
 	}
 	/**
 	 * Framework's autoload function

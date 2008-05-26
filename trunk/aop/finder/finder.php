@@ -14,11 +14,22 @@
 class aop_finder 
 	implements aop_singleton {
 
-	static $instance = null;
+	/**
+	 * Singleton instance variable
+	 * @access private
+	 */
+	private static $instance = null;
 	
-	protected function __construct() {
+	/**
+	 * Class paths array
+	 * @access public
+	 */
+	var $paths = null;
 	
-	}
+	/**
+	 * Singleton pattern
+	 */
+	protected function __construct(){}
 	
 	public static function singleton() {
 	
@@ -28,5 +39,14 @@ class aop_finder
 		$classe = __CLASS__;
 		return (self::$instance = new $classe);
 	}
-
+	/**
+	 * @param $paths path list array
+	 * @return $this
+	 */
+	public function setPaths( &$paths ) {
+	
+		$this->paths = $paths;
+		return $this;
+	}
+	
 }//end definition
