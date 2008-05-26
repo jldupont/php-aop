@@ -5,4 +5,10 @@
 This page explains how to use the API provided by this package.
 
 
-= Details =
+= Per Class =
+/*
+ *
+ * @before
+ * @after
+ * @around
+ */
