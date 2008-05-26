@@ -4,10 +4,22 @@
 
 This page explains how to use the API provided by this package.
 
-
-= Per Class =
+= Hook =
+In order to insert _joinpoints_ in any class, the following must be added to the beginning of the file:
 {{{
-/*
+}}}
+
+
+== Per Method ==
+Joinpoints can be added on a per-method basis as illustrated below:
+
+{{{
+/**
+ * Method Name
+ *  Description
+ *
+ * @param $inputParameter Some-description
+ * @return $result Some-description
  *
  * @before
  * @after
