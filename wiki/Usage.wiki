@@ -12,12 +12,12 @@ In order to use *php-aop*, there are two simple steps to follow:
 == Project Entry Point ==
 The *php-aop* script must be included once (actually, one can include the script multiple times without any problems albeit performance degradation) at the entry point of the project:
 {{{
- require_once "php-aop/php-aop.php";
+ require_once "aop/aop.php";
 }}}
 == Per Class ==
 In order to insert _joinpoints_ in any class, the following must be added to the beginning of the file:
 {{{
- php-aop::register('put-classname-here');
+ aop::register('put-classname-here');
 }}}
 
 == Per Method ==
@@ -31,7 +31,7 @@ Joinpoints can be added on a per-method basis as illustrated below:
  * @param $inputParameter Some-description
  * @return $result Some-description
  *
- * @before
+ * @before  class-name::method-name
  * @after
  * @around
  */
