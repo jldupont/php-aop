@@ -54,6 +54,8 @@ class aop {
 	public static function register_class_path( $path ) {
 	
 		self::$paths[] = $path;
+		
+		return true;
 	}
 	/**
 	 * factory
@@ -63,6 +65,15 @@ class aop {
 	 */
 	public static function factory( $className ) {
 	
+		if ( !class_exists( $className, true ))
+			throw new aop_exception( "unable to load class $className" );
+			
+		// check if the target class implements a singleton interface
+		$singletonMethod = array( $className, 'singleton' );
+		if ( is_callable( $singletonMethod ))
+			return call_user_func( $singletonMethod );
+			
+		return new $className;
 	}
 	
 	/**
@@ -109,7 +120,10 @@ class aop {
 			return;
 			
 		self::$activated = true;
+		
 		require_once "aop_exception.php";
+		require_once "aop_singleton.php";
+		require_once dirname(__FILE__) . "/finder/finder.php";
 		
 		$callback = array( __CLASS__, 'autoload' );
 		spl_autoload_register( $callback );
@@ -117,7 +131,8 @@ class aop {
 	/**
 	 * Framework's autoload function
 	 * 
-	 * @param $className the name of the class to load and process 
+	 * @param $className the name of the class to load and process
+	 * @return void
 	 */
 	public static function autoload( $className ) {
 	
