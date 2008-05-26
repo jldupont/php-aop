@@ -55,6 +55,15 @@ class aop {
 	
 		self::$paths[] = $path;
 	}
+	/**
+	 * factory
+	 * 
+	 * @param $className name of class to instantiate/get (singleton)
+	 * @return $object
+	 */
+	public static function factory( $className ) {
+	
+	}
 	
 	/**
 	 * Parameter SETTER
