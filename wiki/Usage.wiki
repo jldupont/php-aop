@@ -5,10 +5,20 @@
 This page explains how to use the API provided by this package.
 
 = Hook =
+In order to use *php-aop*, there are two simple steps to follow:
+* include the *php-aop* script once in the entry point file of the project
+* register any class that *php-aop* needs to care about
+
+== Project Entry Point ==
+The *php-aop* script must be included once (actually, one can include the script multiple times without any problems albeit performance degradation) at the entry point of the project:
+{{{
+ require_once "php-aop/php-aop.php";
+}}}
+== Per Class ==
 In order to insert _joinpoints_ in any class, the following must be added to the beginning of the file:
 {{{
+ php-aop::register('put-classname-here');
 }}}
-
 
 == Per Method ==
 Joinpoints can be added on a per-method basis as illustrated below:
