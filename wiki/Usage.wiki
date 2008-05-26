@@ -36,8 +36,8 @@ The above line should be put in the entry point script just below the *require_o
 For *php-aop* to work, all classes must be loaded through the *php-aop* framework; thus, no *include* or *require* statements must be used, doing so would bypass *php-aop*.
 
 Furthermore, the class hierarchy must either:
- #be laid out ... in the filesystem
- #be defined in ... 
+ # be laid out ... in the filesystem
+ # be defined in ... 
 
 == Per Method ==
 Joinpoints can be added on a per-method basis as illustrated below:
