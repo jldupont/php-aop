@@ -17,9 +17,21 @@ The *php-aop* script must be included once (actually, one can include the script
 == Class Path ==
 *php-aop* relies on PHP's SPL autoloading functionality. In order to weave the _advices_ in the class code, each class in the project must be registered with *php-aop*:
 {{{
- aop::register('put-classname-here');
+ aop::register('put-classpath-information-here');
 }}}
 The above line should be put in the entry point script just below the *require_once "aop/aop.php";* statement.
+
+===Examples===
+ 1- The project's class path is located relative to the entry point script in _classes_ :
+ {{{
+  aop::register( dirname(__FILE__) . '/classes' );
+ }}}
+
+ 2- The project's class path is located in the PEAR path in 'project_X/classes' :
+ {{{
+  aop::register( 'project_X/classes' );
+ }}}
+
 
 == Per Method ==
 Joinpoints can be added on a per-method basis as illustrated below:
