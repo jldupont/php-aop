@@ -14,16 +14,14 @@ $aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARA
 
 set_include_path( $aopPath . PATH_SEPARATOR . $includePath );
 
-require_once "aop/aop.php";
-
 class UnitTest extends PHPUnit_Framework_TestCase
 {
 
 	public function setup() {
 	
+		require_once "aop/aop.php";
+			
     	aop::register_class_path( dirname(__FILE__) );
-    	
-    	var_dump( get_include_path() );
     }
 
     public function testSingleton() {

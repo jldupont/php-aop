@@ -24,7 +24,7 @@ class aop_finder
 	 * Class paths array
 	 * @access public
 	 */
-	var $paths = null;
+	var $paths = array();
 	
 	/**
 	 * Singleton pattern
@@ -46,6 +46,15 @@ class aop_finder
 	public function setPaths( &$paths ) {
 	
 		$this->paths = $paths;
+		return $this;
+	}
+	public function addClassPath( &$path ) {
+	
+		if ( in_array( $path, $this->paths ))
+			return $this;
+			
+		$this->paths[] = $path;
+		
 		return $this;
 	}
 	/**
@@ -71,13 +80,15 @@ class aop_finder
 				
 			// case 2
 			$p = $path . DIRECTORY_SEPARATOR . $className . DIRECTORY_SEPARATOR . $className . '.php';
+		
 			if ( file_exists( $p ) )
 				return $p;
 				
 			// case 3
 			$bits = explode( "_", $className );
 			$fragment = implode( DIRECTORY_SEPARATOR, $bits );
-			$p = $path . DIRECTORY_SEPARATOR . $fragment . '.php';
+			$last_fragment = $bits[ count( $bits ) - 1 ];
+			$p = $path . DIRECTORY_SEPARATOR . $fragment . DIRECTORY_SEPARATOR.$last_fragment.'.php';
 			if ( file_exists( $p ) )
 				return $p;
 		}
