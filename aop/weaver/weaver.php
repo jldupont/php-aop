@@ -26,6 +26,8 @@ class aop_weaver
 	 * Constructor 
 	 */
 	public function __construct() {
+	
+		parent::__construct();
 	}
 	
 	/**

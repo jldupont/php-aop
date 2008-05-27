@@ -21,4 +21,8 @@ class aop_pointcut
 	const STYLE_AFTER  = 2;
 	const STYLE_AROUND = 3;
 	
+	public function __construct() {
+		parent::__construct();
+	}
+	
 }//end definition
