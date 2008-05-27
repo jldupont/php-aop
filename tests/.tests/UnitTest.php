@@ -36,4 +36,11 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	$o = new aop_weaver();
     	$this->assertEquals( $o instanceof aop_weaver, true );
     }
+
+    public function testLoader2() {
+    
+    	$o = new aop_weaver_exception();
+    	$this->assertEquals( $o instanceof aop_weaver_exception, true );
+    }
+    
 }
