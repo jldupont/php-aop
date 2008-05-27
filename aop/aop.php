@@ -130,9 +130,31 @@ class aop {
 		require_once "aop_exception.php";
 		require_once "aop_singleton.php";
 		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."finder".DIRECTORY_SEPARATOR."finder.php";
+
+		$callback = array( __CLASS__, 'our_autoload' );
+		spl_autoload_register( $callback );
 		
 		$callback = array( __CLASS__, 'autoload' );
 		spl_autoload_register( $callback );
+	}
+	/**
+	 * 
+	 */
+	public static function our_autoload( $className ) {
+	
+		#echo __METHOD__.": class: $className \n";
+	
+		if (substr( $className, 0, 4) != 'aop_' )
+			return false;
+			
+		$finder = aop_finder::singleton();
+		$path = $finder->find( $className );
+		if ( is_null( $path ))
+			return false;
+			
+		include $path;
+
+		return ( class_exists( $className ));
 	}
 	/**
 	 * Framework's autoload function
@@ -141,17 +163,26 @@ class aop {
 	 * @return void
 	 */
 	public static function autoload( $className ) {
+
+		#echo __METHOD__.": class: $className \n";	
 	
 		$finder = aop_finder::singleton();
 	
 		//find the target class file
 		$path = $finder->find( $className );
+		if ( is_null( $path ))
+			return false;
+
 		$result = include $path;
 		if ( !$result )
 			return false;
 		
 		if ( !class_exists( $className ))
 			return false;
+			
+		$file = new aop_file( $path );
+		$file->generateBeautified();
+		
 			
 		//process it
 		
