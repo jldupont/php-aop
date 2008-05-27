@@ -7,7 +7,18 @@
  * @package AOP
  * @category AOP
  */
-
+/*
+ * Blocks:
+ *  class   ... {}
+ *  if      ... {}
+ *  else    ... {}
+ *  elseif  ... {}
+ *  for     ... {}
+ *  do      ... {} 
+ *  switch  ... {}
+ *  foreach ... {}
+ * 
+ */
 class aop_tokenmaster
 	extends aop_object {
 	
