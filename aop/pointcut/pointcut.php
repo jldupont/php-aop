@@ -7,3 +7,18 @@
  * @package AOP
  * @category AOP
  */
+
+class aop_pointcut 
+	extends aop_object {
+
+	var $className = null;
+	
+	var $methodName = null;
+	
+	var $style = null;
+	
+	const STYLE_BEFORE = 1;
+	const STYLE_AFTER  = 2;
+	const STYLE_AROUND = 3;
+	
+}//end definition
