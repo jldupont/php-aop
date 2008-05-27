@@ -27,10 +27,13 @@ class aop_finder
 	var $paths = array();
 	
 	/**
-	 * Singleton pattern
+	 * Constructor
 	 */
 	protected function __construct(){}
 	
+	/**
+	 * Singleton pattern
+	 */
 	public static function singleton() {
 	
 		if (!is_null( self::$instance ))
@@ -40,14 +43,11 @@ class aop_finder
 		return (self::$instance = new $classe);
 	}
 	/**
-	 * @param $paths path list array
+	 * Adds a path to the list
+	 * 
+	 * @param $path string path to add
 	 * @return $this
 	 */
-	public function setPaths( &$paths ) {
-	
-		$this->paths = $paths;
-		return $this;
-	}
 	public function addClassPath( &$path ) {
 	
 		if ( in_array( $path, $this->paths ))
@@ -62,6 +62,7 @@ class aop_finder
 	 * 1- as $path/$className.php
 	 * 2- as $path/$className/$className.php
 	 * 3- as $path/$className-fragment1 ... /$className-fragment-last.php
+	 * 4- as $path/$className-fragment1 ... /$className-fragment-last/$className-fragment-last.php
 	 * 
 	 * @param $className string class name
 	 * @return $path string
@@ -88,6 +89,11 @@ class aop_finder
 			$bits = explode( "_", $className );
 			$fragment = implode( DIRECTORY_SEPARATOR, $bits );
 			$last_fragment = $bits[ count( $bits ) - 1 ];
+			$p = $path . DIRECTORY_SEPARATOR . $fragment . '.php';
+			if ( file_exists( $p ) )
+				return $p;
+			
+			// case 4
 			$p = $path . DIRECTORY_SEPARATOR . $fragment . DIRECTORY_SEPARATOR.$last_fragment.'.php';
 			if ( file_exists( $p ) )
 				return $p;

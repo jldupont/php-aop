@@ -1,12 +1,7 @@
 <?php
 /**
+ * aop_weaver class
  * PHP-AOP framework
- * This class is implemented as static for ease of use: no instance
- * of this class need to be created. Furthermore, the typical usage
- * involves a straightforward and explicit implementation:
- * @example
- *   require_once "aop.php";
- *   aop::register_class_path( dirname(__FILE__) . '/classes' ); 
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -15,4 +10,28 @@
 
 class aop_weaver {
 
+	/**
+	 * Verifies if a 'weaved' representation of the specified
+	 * class already exists.
+	 *  
+	 * @param $className string
+	 * @param $classPath string
+	 * @return $result boolean
+	 * @throws aop_weaver_exception
+ 	 */
+	public function isWeaved( &$className, &$classPath ) {
+	
+	}
+	/**
+	 * Performs 'weaving' on the specified class
+	 * 
+	 * @param $className string
+	 * @param $classPath string
+	 * @return $result boolean
+	 * @throws aop_weaver_exception
+	 */
+	public function weave( &$className, &$classPath ) {
+	
+	}
+	
 }//end definition

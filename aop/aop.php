@@ -5,8 +5,16 @@
  * of this class need to be created. Furthermore, the typical usage
  * involves a straightforward and explicit implementation:
  * @example
- *   require_once "aop.php";
- *   aop::register_class_path( dirname(__FILE__) . '/classes' ); 
+ *   require_once "aop/aop.php";
+ *   aop::register_class_path( dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes' ); 
+ * 
+ * The framework searches for class files through its 'aop_finder' class.
+ * When the required class file is located, the framework then looks for
+ * a 'weaved' version of the said class file. If the 'weaved' version of the
+ * class file does not exist, the framework proceeds to 'weaving' the 
+ * class file following the instructions contained inside the original (i.e.
+ * non-weaved) class file.
+ * 
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -150,4 +158,5 @@ class aop {
 
 //activate the framework
 aop::activate();
-aop::register_class_path( realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
+aop::register_class_path( 
+	realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
