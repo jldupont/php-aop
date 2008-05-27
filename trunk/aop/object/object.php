@@ -10,5 +10,7 @@
 
 class aop_object {
 
-
+	protected function __construct() {
+	}
+	
 }//end definition

@@ -166,14 +166,18 @@ class aop_file
 			$oBeaut = new PHP_Beautifier();
 			$oBatch = new PHP_Beautifier_Batch($oBeaut);
 			
+			$oBatch->addFilter('NewLines');			
+			$oBatch->addFilter('IndentStyles');			
 			$oBatch->addFilter('ArrayNested');
 			$oBatch->addFilter('ListClassFunction');
 		
-			$oBatch->setOutputFile( $this->getBeautifiedFilePath() );
+			$oBatch->setOutputFile( $this->getBeautifiedPath() );
 			$oBatch->setInputFile( $this->path );
 			$oBatch->process();
+			$oBatch->save();
 			
 		} catch( Exception $e ) {
+			echo __METHOD__." exception!";
 			throw new aop_file_exception( "beautified process failed" );	
 		}
 	
