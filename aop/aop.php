@@ -34,12 +34,6 @@ class aop {
 	 */
 	private static $params = array();
 	
-	/**
-	 * List of registered class paths
-	 * @access private
-	 */
-	private static $paths = array();
-
 	/*================================================================
 	 					PUBLIC INTERFACE
 	 ================================================================*/
@@ -53,7 +47,7 @@ class aop {
 	 */
 	public static function register_class_path( $path ) {
 	
-		self::$paths[] = $path;
+		$finder = aop_finder::singleton()->addClassPath( $path );
 		
 		return true;
 	}
@@ -114,7 +108,7 @@ class aop {
 	 * @return void
 	 */
 	public static function activate() {
-	
+
 		// activate just once
 		if ( self::$activated )
 			return;
@@ -123,12 +117,10 @@ class aop {
 		
 		require_once "aop_exception.php";
 		require_once "aop_singleton.php";
-		require_once dirname(__FILE__) . "/finder/finder.php";
+		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."finder".DIRECTORY_SEPARATOR."finder.php";
 		
 		$callback = array( __CLASS__, 'autoload' );
 		spl_autoload_register( $callback );
-		
-		aop_finder::singleton()->setPaths( self::$paths );
 	}
 	/**
 	 * Framework's autoload function
@@ -158,3 +150,4 @@ class aop {
 
 //activate the framework
 aop::activate();
+aop::register_class_path( realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
