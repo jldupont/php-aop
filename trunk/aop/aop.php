@@ -138,9 +138,20 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 	
+		$finder = aop_finder::singleton();
+	
 		//find the target class file
+		$path = $finder->find( $className );
+		$result = include $path;
+		if ( !$result )
+			return false;
 		
+		if ( !class_exists( $className ))
+			return false;
+			
 		//process it
+		
+		return true;
 	}
 	
 }//end definition
