@@ -48,5 +48,41 @@ class aop_finder
 		$this->paths = $paths;
 		return $this;
 	}
+	/**
+	 * find a specific class in the path hierarchy
+	 * 1- as $path/$className.php
+	 * 2- as $path/$className/$className.php
+	 * 3- as $path/$className-fragment1 ... /$className-fragment-last.php
+	 * 
+	 * @param $className string class name
+	 * @return $path string
+	 */
+	public function find( &$className ) {
+	
+		if (empty( $this->paths ))
+			throw new aop_exception( "path list is empty" );
+	
+		foreach( $this->paths as $path ) {
+		
+			// case 1
+			$p = $path . PATH_SEPARATOR . $className . '.php';
+			if ( file_exists( $p ) )
+				return $p;
+				
+			// case 2
+			$p = $path . PATH_SEPARATOR . $className . PATH_SEPARATOR . $className . '.php';
+			if ( file_exists( $p ) )
+				return $p;
+				
+			// case 3
+			$bits = explode( "_", $className );
+			$fragment = implode( PATH_SEPARATOR, $bits );
+			$p = $path . PATH_SEPARATOR . $fragment . '.php';
+			if ( file_exists( $p ) )
+				return $p;
+		}
+		
+		return null;
+	}
 	
 }//end definition
