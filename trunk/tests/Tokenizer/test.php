@@ -6,6 +6,12 @@
 
 class A {
 
+	static $testString = "Hello";
+	
+	public function testAnnoyingString() {
+		return self::$testString{ 0 } == "H";
+	}
+
 }
 
 
