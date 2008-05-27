@@ -21,6 +21,10 @@
  * @category AOP
  */
 
+require_once 'PHP/Parser.php';
+require_once 'PHP/Beautifier.php';
+require_once 'PHP/Beautifier/Batch.php';
+
 class aop {
 
 	/**

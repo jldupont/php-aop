@@ -12,16 +12,80 @@
 
 class aop_file
 	extends aop_list {
+
+	const WEAVED_PATH_PATTERN     = '.weaved.php';
+	
+	const BEAUTIFIED_PATH_PATTERN = '.beautified.php';
 	
 	var $path = null;
+	var $mtime = null;
+
+	var $beautified_path = null;
+	
+	var $weaved_path = null;
+	var $weaved_mtime = null;
+
 	var $content = null;
 	
-	public function __construct( &$path, &$content ) {
+	public function __construct( &$path, &$content = null ) {
 	
 		$this->path = $path;
 		$this->content = $content;
 	
 		parent::__construct();
+	}
+	/**
+	 * Verifies if a 'weaved' version of the file exists
+	 * Records the 'mtime' of the weaved file in the process
+	 * 
+	 * @return boolean 
+	 */
+	public function existsWeaved( ) {
+	
+		if ( !is_null( $this->weaved_mtime ) )
+			return $this->weaved_mtime !== false;
+			
+		$exists = $this->exists();
+		if ( !$exists )
+			return false;
+		
+		// simple and quick
+		$weavedFilePath = str_replace( '.php', self::WEAVED_PATH_PATTERN, $this->path );
+		
+		$this->weaved_mtime = filemtime( $weavedFilePath );
+
+		return $this->weaved_mtime !== false;
+	}
+	/**
+	 * 
+	 */
+	public function getBeautifiedPath() {
+	
+		if (empty( $this->path ))
+			throw new aop_file_exception( "invalid path" );
+	
+		if ( !is_null( $this->beautified_path ))
+			return $this->beautified_path;
+
+		// simple and quick
+		$this->beautifiedPath = str_replace( '.php', self::BEAUTIFIED_PATH_PATTERN, $this->path );
+			
+		return $this->beautifiedPath;	
+	}
+	/**
+	 * Verifies if the given path exists
+	 * Records the 'modified timestamp' in the process
+	 * 
+	 * @return boolean
+	 */
+	public function exists() {
+	
+		if ( !is_null( $this->mtime ) )
+			return $this->mtime !== false;
+			
+		$this->mtime = filemtime( $this->path );
+		
+		return $this->mtime !== false;
 	}
 	/** 
 	 * Creates an instance of this class based on an
@@ -46,13 +110,25 @@ class aop_file
 	 */
 	public function tokenize() {
 		
-		if (is_null( $this->content ))
+		if (empty( $this->content ))
+			$this->readFile();
+	
+		if (is_null( $this->content ) || ($this->content === false))
 			throw new aop_file_exception( "no content found" );
 			
 		$this->liste = token_get_all( $this->content );
 		return $this;	
 	}
+	/**
+	 * Reads the content of the base file
+	 * 
+	 * @return boolean
+	 */
+	public function readFile() {
 	
+		$this->contents = file_get_contents( $this->path );
+		return $this->contents !== false;
+	}
 	/**
 	 * Updates a specific index in the token list
 	 * with a 'aop_tokenlist' object.
@@ -76,6 +152,33 @@ class aop_file
 		$this->liste[$index] = $liste;
 		return $this;
 	}
-	
+	/**
+	 * Generates a 'beautified' version of the base file
+	 * This step helps PHP_Parser and reduces the potential for errors
+	 * 
+	 * @return $this
+	 * @throws aop_file_exception
+	 */
+	public function generateBeautified() {
 
+		try {
+		
+			$oBeaut = new PHP_Beautifier();
+			$oBatch = new PHP_Beautifier_Batch($oBeaut);
+			
+			$oBatch->addFilter('ArrayNested');
+			$oBatch->addFilter('ListClassFunction');
+		
+			$oBatch->setOutputFile( $this->getBeautifiedFilePath() );
+			$oBatch->setInputFile( $this->path );
+			$oBatch->process();
+			
+		} catch( Exception $e ) {
+			throw new aop_file_exception( "beautified process failed" );	
+		}
+	
+		return $this;
+	}
+	
+	
 }//end definition
