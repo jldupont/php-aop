@@ -142,8 +142,6 @@ class aop {
 	 */
 	public static function our_autoload( $className ) {
 	
-		#echo __METHOD__.": class: $className \n";
-	
 		if (substr( $className, 0, 4) != 'aop_' )
 			return false;
 			
@@ -193,5 +191,6 @@ class aop {
 
 //activate the framework
 aop::activate();
+aop::register_class_path( get_include_path() );
 aop::register_class_path( 
 	realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );

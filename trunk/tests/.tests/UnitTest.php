@@ -24,20 +24,20 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	aop::register_class_path( dirname(__FILE__) );
     }
 
-    public function disabled_testSingleton() {
+    public function testSingleton() {
     
     	$o1 = aop_finder::singleton();
     	$o2 = aop_finder::singleton();    	
         $this->assertEquals( $o1, $o2 );    
     }
     
-    public function disabled_testLoader1() {
+    public function testLoader1() {
     
     	$o = new aop_weaver();
     	$this->assertEquals( $o instanceof aop_weaver, true );
     }
 
-    public function disabled_testLoader2() {
+    public function testLoader2() {
     
     	$o = new aop_weaver_exception();
     	$this->assertEquals( $o instanceof aop_weaver_exception, true );
