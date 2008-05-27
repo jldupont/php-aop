@@ -10,7 +10,7 @@ require_once 'PHPUnit/Framework.php';
 
 $includePath = get_include_path();
 
-$aopPath = dirname(__FILE__)."/../../";
+$aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR;
 
 set_include_path( $aopPath . PATH_SEPARATOR . $includePath );
 
@@ -19,10 +19,11 @@ require_once "aop/aop.php";
 class UnitTest extends PHPUnit_Framework_TestCase
 {
 
-    public function test1() {
-    	$result = aop::register_class_path( dirname(__FILE__) );
+	public function setup() {
+	
+    	aop::register_class_path( dirname(__FILE__) );
     	
-        $this->assertEquals(true, $result );
+    	var_dump( get_include_path() );
     }
 
     public function testSingleton() {
@@ -32,4 +33,9 @@ class UnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( $o1, $o2 );    
     }
     
+    public function testLoader1() {
+    
+    	$o = new aop_weaver();
+    	$this->assertEquals( $o instanceof aop_weaver, true );
+    }
 }

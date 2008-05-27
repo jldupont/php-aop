@@ -65,19 +65,19 @@ class aop_finder
 		foreach( $this->paths as $path ) {
 		
 			// case 1
-			$p = $path . PATH_SEPARATOR . $className . '.php';
+			$p = $path . DIRECTORY_SEPARATOR . $className . '.php';
 			if ( file_exists( $p ) )
 				return $p;
 				
 			// case 2
-			$p = $path . PATH_SEPARATOR . $className . PATH_SEPARATOR . $className . '.php';
+			$p = $path . DIRECTORY_SEPARATOR . $className . DIRECTORY_SEPARATOR . $className . '.php';
 			if ( file_exists( $p ) )
 				return $p;
 				
 			// case 3
 			$bits = explode( "_", $className );
-			$fragment = implode( PATH_SEPARATOR, $bits );
-			$p = $path . PATH_SEPARATOR . $fragment . '.php';
+			$fragment = implode( DIRECTORY_SEPARATOR, $bits );
+			$p = $path . DIRECTORY_SEPARATOR . $fragment . '.php';
 			if ( file_exists( $p ) )
 				return $p;
 		}
