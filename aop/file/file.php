@@ -127,7 +127,7 @@ class aop_file
 	public function readFile() {
 	
 		$this->contents = file_get_contents( $this->path );
-		return $this->contents !== false;
+		return ($this->contents !== false);
 	}
 	/**
 	 * Updates a specific index in the token list
@@ -177,7 +177,7 @@ class aop_file
 			$oBatch->save();
 			
 		} catch( Exception $e ) {
-			echo __METHOD__." exception!";
+
 			throw new aop_file_exception( "beautified process failed" );	
 		}
 	
