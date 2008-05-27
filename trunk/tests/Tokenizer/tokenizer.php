@@ -24,3 +24,5 @@ foreach( $tokens as $token ) {
 
 	echo "line: $line, id: $id, name: $name content: $content \n";
 }
+
+var_dump( $tokens );
