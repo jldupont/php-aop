@@ -22,14 +22,25 @@ class B
 	extends A {
 
 	var $v1 = null;
+	var $v2 = 
+			null;
 	
-	/*
+	/**
 	 * @before CLASS::METHOD
 	 */
 	public function __construct() {
 	
 	}
 
-	var $v2 = null;
+	var $v3 = 
+				null;
+
+	public function methodToUpdate() {
 	
+		var_dump( 
+				$this 
+		);
+		
+	}
+				
 }
