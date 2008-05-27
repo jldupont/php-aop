@@ -8,7 +8,8 @@
  * @category AOP
  */
 
-class aop_weaver {
+class aop_weaver 
+	extends aop_object {
 
 	/**
 	 * Verifies if a 'weaved' representation of the specified
