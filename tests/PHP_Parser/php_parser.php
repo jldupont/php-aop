@@ -6,11 +6,7 @@ $contents = file_get_contents( dirname(__FILE__).'/test.php' );
 
 $liste = PHP_Parser::parse( $contents );
 
-echo "***liste: \n";
 var_dump( $liste );
-
-echo "***classes: \n";
-var_dump( $liste->classes );
 
 // ===========================================================
 						__halt_compiler();

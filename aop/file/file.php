@@ -3,7 +3,6 @@
  * aop_file
  * PHP-AOP framework
  * 
- * - create from class file
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -18,14 +17,16 @@ class aop_file
 	const BEAUTIFIED_PATH_PATTERN = '.beautified.php';
 	
 	var $path = null;
-	var $mtime = null;
-
 	var $beautified_path = null;
-	
 	var $weaved_path = null;
+	
+	var $mtime = null;	
 	var $weaved_mtime = null;
 
 	var $content = null;
+	var $content_beautified = null;
+	
+	var $tokens  = null;
 	
 	public function __construct( &$path, &$content = null ) {
 	
@@ -57,7 +58,10 @@ class aop_file
 		return $this->weaved_mtime !== false;
 	}
 	/**
+	 * Returns the file path for the 'beautified' version
+	 * of the current file
 	 * 
+	 * @return $path string
 	 */
 	public function getBeautifiedPath() {
 	
@@ -87,70 +91,79 @@ class aop_file
 		
 		return $this->mtime !== false;
 	}
-	/** 
-	 * Creates an instance of this class based on an
-	 * input file.
+	/**
+	 * Process the file
 	 * 
-	 * @return $object
+	 * @return $this
 	 * @throws aop_file_exception
 	 */
-	public static function newFromFile( &$path ) {
+	public function process() {
 	
-		$content = file_get_contents( $path );
-		if ( $content === false )
-			throw new aop_file_exception( "error reading file from $path" );
+		if ( empty( $this->content )) {
+	
+			// read content + aspect definition
+			if ( $this->readFile() === false )
+				throw new aop_file_exception( "can't read file" );
+		}
 		
-		return new aop_file( $path, $content );
+		// make sure we have content to work on
+		if (is_null( $this->content ) || ($this->content === false))
+			throw new aop_file_exception( "no content found" );
+
+		// beautifies the source file to help the parser
+		$this->generateBeautified();			
+
+		// tokenize
+		try {
+		
+			$this->tokenize();
+			
+		} catch( Exception $e ) {
+		
+			throw new aop_file_exception( "can't tokenize file" );
+		}
+		
+		return $this;
 	}
+	/**
+	 * Returns the classes defined in this file
+	 * 
+	 * @return $classes array from PHP_Parser_Core
+	 */
+	public function getClasses() {
+	
+		if ( isset( $this->tokens['classes'] ) )
+			return $this->tokens['classes']
+	
+		return null;
+	}
+	
+	// =======================================================================
+	//							PROTECTED METHODS
+	// =======================================================================	
+	
+	
 	/**
 	 * Tokenize the content
 	 * 
-	 * @return $this
+	 * @return $tokens
 	 * @throws aop_file_exception
 	 */
-	public function tokenize() {
+	protected function tokenize() {
 		
-		if (empty( $this->content ))
-			$this->readFile();
-	
-		if (is_null( $this->content ) || ($this->content === false))
-			throw new aop_file_exception( "no content found" );
-			
-		$this->liste = token_get_all( $this->content );
-		return $this;	
+		$this->tokens = PHP_Parser::parse( $this->content_beautified );
 	}
 	/**
-	 * Reads the content of the base file
+	 * Reads the content of the base file and
+	 * determines where the __halt_compiler boundary lies
 	 * 
 	 * @return boolean
 	 */
-	public function readFile() {
-	
-		$this->contents = file_get_contents( $this->path );
-		return ($this->contents !== false);
-	}
-	/**
-	 * Updates a specific index in the token list
-	 * with a 'aop_tokenlist' object.
-	 * Usually, the token found at $index should have been read
-	 * by the client and inserted in the client's list in order
-	 * not to loosed token.
-	 * 
-	 * @param $index integer position in the original list
-	 * @param $liste aop_tokenlist object instance
-	 * @return $this
-	 * @throws aop_file_exception
-	 */
-	public function insertTokenList( $index, &$liste ) {
-	
-		if ( !isset( $this->liste[ $index ] ))
-			throw new aop_file_exception( "invalid index position" );
+	protected function readFile() {
 		
-		if (!( $liste instanceof aop_tokenlist ))
-			throw new aop_file_exception( "expecting a 'aop_tokenlist' object" );
-			
-		$this->liste[$index] = $liste;
-		return $this;
+		$this->content = file_get_contents( $this->path );
+				
+		return ($this->content !== false);
 	}
 	/**
 	 * Generates a 'beautified' version of the base file
@@ -159,26 +172,25 @@ class aop_file
 	 * @return $this
 	 * @throws aop_file_exception
 	 */
-	public function generateBeautified() {
+	protected function generateBeautified() {
 
 		try {
 		
 			$oBeaut = new PHP_Beautifier();
-			$oBatch = new PHP_Beautifier_Batch($oBeaut);
 			
-			$oBatch->addFilter('NewLines');			
-			$oBatch->addFilter('IndentStyles');			
-			$oBatch->addFilter('ArrayNested');
-			$oBatch->addFilter('ListClassFunction');
+			$oBeaut->addFilter('NewLines');			
+			$oBeaut->addFilter('IndentStyles');			
+			$oBeaut->addFilter('ArrayNested');
+			$oBeaut->addFilter('ListClassFunction');
 		
-			$oBatch->setOutputFile( $this->getBeautifiedPath() );
-			$oBatch->setInputFile( $this->path );
-			$oBatch->process();
-			$oBatch->save();
+			$oBeaut->setInputString( $this->content );
+			$oBeaut->process();
+			
+			$this->content_beautified = $oBeaut->get();
 			
 		} catch( Exception $e ) {
 
-			throw new aop_file_exception( "beautified process failed" );	
+			throw new aop_file_exception( "beautifier process failed" );	
 		}
 	
 		return $this;
