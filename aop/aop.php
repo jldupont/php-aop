@@ -175,7 +175,8 @@ class aop {
 		
 		if ( !class_exists( $className ))
 			return false;
-			
+
+		// get the class file ready
 		$file = new aop_file( $path );
 		$file->process();
 		

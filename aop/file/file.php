@@ -3,6 +3,9 @@
  * aop_file
  * PHP-AOP framework
  * 
+ * Validation:
+ *  - if "aspect definition" file is newer than "weaved" file => UPDATE
+ *  - is "source" file is newer than "weaved" file            => UPDATE
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -16,9 +19,12 @@ class aop_file
 	
 	const BEAUTIFIED_PATH_PATTERN = '.beautified.php';
 	
+	const ASPECT_PATH_PATTERN     = '.aspect.xml';
+	
 	var $path = null;
 	var $beautified_path = null;
 	var $weaved_path = null;
+	var $aspect_path = null;
 	
 	var $mtime = null;	
 	var $weaved_mtime = null;
@@ -34,6 +40,12 @@ class aop_file
 		$this->content = $content;
 	
 		parent::__construct();
+	}
+	/**
+	 * Verifies if an aspect definition exists for this particular file
+	 */
+	public function existsAspectDefinition() {
+	
 	}
 	/**
 	 * Verifies if a 'weaved' version of the file exists
