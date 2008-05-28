@@ -179,7 +179,9 @@ class aop {
 			return false;
 			
 		$file = new aop_file( $path );
-		$file->generateBeautified();
+		$file->process();
+		
+		var_dump( $file );
 		
 			
 		//process it
