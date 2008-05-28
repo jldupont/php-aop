@@ -1,6 +1,6 @@
 <?php
 /**
- * aop_pointcut
+ * aop_joinpoint
  * PHP-AOP framework
  * 
  * @author Jean-Lou Dupont
@@ -8,12 +8,16 @@
  * @category AOP
  */
 
-class aop_pointcut 
+class aop_joinpoint 
 	extends aop_object {
 
-	var $className = null;
+	var $src_className = null;
 	
-	var $methodName = null;
+	var $src_methodName = null;
+	
+	var $tgt_className = null;
+	
+	var $tgt_methodName = null;
 	
 	var $style = null;
 	
