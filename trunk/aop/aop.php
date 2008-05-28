@@ -138,7 +138,7 @@ class aop {
 		spl_autoload_register( $callback );
 	}
 	/**
-	 * 
+	 * Autoloads classes making this framework
 	 */
 	public static function our_autoload( $className ) {
 	
@@ -155,15 +155,13 @@ class aop {
 		return ( class_exists( $className ));
 	}
 	/**
-	 * Framework's autoload function
+	 * Autoload function
 	 * 
 	 * @param $className the name of the class to load and process
 	 * @return void
 	 */
 	public static function autoload( $className ) {
 
-		#echo __METHOD__.": class: $className \n";	
-	
 		$finder = aop_finder::singleton();
 	
 		//find the target class file
