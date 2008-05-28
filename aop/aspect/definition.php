@@ -13,7 +13,7 @@
  */
 
 class aop_aspect_definition 
-	extends aop_object {
+	extends aop_liste {
 	
 	/**
 	 * Constructor
@@ -29,7 +29,12 @@ class aop_aspect_definition
 	
 		$content = file_get_contents( $path );
 		
-	
+		try {
+			$result = $this->parse( $contents );
+		} catch( Exception $e ) {
+			throw new aop_aspect_definition_exception( "can't parse the definition file" );
+		}
+		
 	}
 	
 	// =========================================================
@@ -42,9 +47,22 @@ class aop_aspect_definition
 	 * 
 	 * @param $className string
 	 * @param $methodName string
-	 * @return
+	 * @return $result array of aop_joinpoint
 	 */
 	public function match( &$className, &$methodName ) {
+	
+	}
+	
+	// =========================================================
+	//						PROTECTED
+	// =========================================================
+	
+	/**
+	 * Parses the aspect definition content
+	 * 
+	 * @param $content string
+	 */
+	protected function parse( &$content ) {
 	
 	}
 	
