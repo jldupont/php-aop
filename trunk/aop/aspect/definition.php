@@ -20,19 +20,29 @@ class aop_aspect_definition
 	 */
 	public function __construct() {
 	
+		parent::__construct();
 	}
 	
 	/**
+	 * Factory for creating 
 	 * 
+	 * @pattern Factory
 	 */
 	public static function factory( $type, &$arg ) {
 	
+		$obj = null;
+		
 		try {
 		
+			$obj = new $type( $arg );
+		
 		} catch( Exception $e ) {
-			throw new aop_aspect_definition
+		
+			$this->raise( 'aop_aspect_definition', "can not instantiate class $type" );
+
 		}
 	
+		return $obj;
 	}
 	
 	// =========================================================
