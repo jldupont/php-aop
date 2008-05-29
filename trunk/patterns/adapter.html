@@ -1,0 +1,39 @@
+<html>
+	<!--
+		@author Jean-Lou Dupont 
+	 -->
+	<head>
+		<style>
+		/**
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ */
+.code .de1, .code .de2 {font-family: 'Courier New', Courier, monospace; font-weight: normal;}
+.code  {background: #EEEEEE; border: padding: 0.2em}
+.code .imp {font-weight: bold; color: red;}
+.code li, .code li.li1 {font-family: 'Courier New', Courier, monospace; color: black; font-weight: normal; font-style: normal;}
+.code li.li2 {font-weight: bold;}
+.code .kw1 {color: #b1b100;}
+.code .kw2 {color: #000000; font-weight: bold;}
+.code .kw3 {color: #000066;}
+.code .co1 {color: #808080; font-style: italic;}
+.code .co2 {color: #808080; font-style: italic;}
+.code .coMULTI {color: #808080; font-style: italic;}
+.code .es0 {color: #000099; font-weight: bold;}
+.code .br0 {color: #66cc66;}
+.code .sy0 {color: #66cc66;}
+.code .st0 {color: #ff0000;}
+.code .nu0 {color: #cc66cc;}
+.code .me1 {color: #006600;}
+.code .me2 {color: #006600;}
+.code .re0 {color: #0000ff;}
+.code .re1 {color: #ff0000}
+
+		</style>
+	</head>
+	
+	<body>
+	<pre class="code" style="background: #EEEEEE; border: padding: 0.2em"><ol><li class="li1"><div class="de1"><span class="kw2">&lt;?php</span></div></li><li class="li1"><div class="de1"><span class="coMULTI">/**</span></div></li><li class="li1"><div class="de1"><span class="coMULTI">&nbsp;* Adapter pattern</span></div></li><li class="li1"><div class="de1"><span class="coMULTI">&nbsp;* </span></div></li><li class="li2"><div class="de2"><span class="coMULTI">&nbsp;* @author Jean-Lou Dupont</span></div></li><li class="li1"><div class="de1"><span class="coMULTI">&nbsp;*/</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1"><span class="kw2">class</span> Server <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li2"><div class="de2">	<span class="kw2">public</span> <span class="kw2">function</span> method<span class="br0">&#40;</span> <span class="re1">$p2</span><span class="sy0">,</span> <span class="re1">$p1</span> <span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">		<a href="http://www.php.net/echo"><span class="kw3">echo</span></a> <span class="st0">&quot;Parameter1: $p1 , Parameter2: $p2 <span class="es0">\n</span>&quot;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	<span class="br0">&#125;</span></div></li><li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li><li class="li2"><div class="de2">&nbsp;</div></li><li class="li1"><div class="de1"><span class="kw2">class</span> Adaptor <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">var</span> <span class="re1">$server</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li2"><div class="de2">	<span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span> <span class="sy0">&amp;</span><span class="re1">$server</span> <span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">		<span class="re1">$this</span><span class="sy0">-&gt;</span><span class="me1">server</span> <span class="sy0">=</span> <span class="re1">$server</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">	<span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li2"><div class="de2">	<span class="kw2">public</span> <span class="kw2">function</span> method<span class="br0">&#40;</span> <span class="re1">$p1</span><span class="sy0">,</span> <span class="re1">$p2</span> <span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">		<span class="co1">// the server just requires the two parameter</span></div></li><li class="li1"><div class="de1">		<span class="co1">// to be presented in reverse-order</span></div></li><li class="li1"><div class="de1">		<span class="kw1">return</span> <span class="re1">$this</span><span class="sy0">-&gt;</span><span class="me1">server</span><span class="sy0">-&gt;</span><span class="me1">method</span><span class="br0">&#40;</span> <span class="re1">$p2</span><span class="sy0">,</span> <span class="re1">$p1</span> <span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li2"><div class="de2">	<span class="br0">&#125;</span></div></li><li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1"><span class="kw2">class</span> Client <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li2"><div class="de2">	<span class="kw2">var</span> <span class="re1">$server</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span> <span class="sy0">&amp;</span><span class="re1">$server</span> <span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">		<span class="re1">$this</span><span class="sy0">-&gt;</span><span class="me1">server</span> <span class="sy0">=</span> <span class="re1">$server</span><span class="sy0">;</span></div></li><li class="li2"><div class="de2">	<span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">	<span class="kw2">public</span> <span class="kw2">function</span> execute<span class="br0">&#40;</span> <span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1">		<span class="kw1">return</span> <span class="re1">$this</span><span class="sy0">-&gt;</span><span class="me1">server</span><span class="sy0">-&gt;</span><span class="me1">method</span><span class="br0">&#40;</span> <span class="st0">'param1'</span><span class="sy0">,</span> <span class="st0">'param2'</span> <span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li2"><div class="de2">	<span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1"><span class="re1">$server</span> <span class="sy0">=</span> <span class="kw2">new</span> Server<span class="sy0">;</span></div></li><li class="li2"><div class="de2">&nbsp;</div></li><li class="li1"><div class="de1"><span class="re1">$adaptor</span> <span class="sy0">=</span> <span class="kw2">new</span> Adaptor<span class="br0">&#40;</span> <span class="re1">$server</span> <span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li1"><div class="de1"><span class="re1">$client</span> <span class="sy0">=</span> <span class="kw2">new</span> Client<span class="br0">&#40;</span> <span class="re1">$adaptor</span> <span class="br0">&#41;</span><span class="sy0">;</span></div></li><li class="li1"><div class="de1">&nbsp;</div></li><li class="li2"><div class="de2"><span class="re1">$client</span><span class="sy0">-&gt;</span><span class="me1">execute</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li></ol></pre>
+	</body>
+
+</html>
