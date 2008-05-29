@@ -9,7 +9,8 @@
  * @category AOP
  */
 
-class aop_aspect_file 
+class aop_aspect_file
+
 	extends aop_aspect_definition {
 
 	public function __construct( $path ) {
@@ -17,9 +18,12 @@ class aop_aspect_file
 		$content = file_get_contents( $path );
 		
 		try {
+		
 			$result = $this->parse( $contents );
+			
 		} catch( Exception $e ) {
-			throw new aop_aspect_definition_exception( "can't parse the definition file" );
+		
+			$this->raise( 'aop_aspect_file_exception', "can't parse the definition file" );
 		}
 
 		parent::__construct();

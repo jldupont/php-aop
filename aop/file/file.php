@@ -78,7 +78,7 @@ class aop_file
 	public function getBeautifiedPath() {
 	
 		if (empty( $this->path ))
-			throw new aop_file_exception( "invalid path" );
+			$this->raise( 'aop_file_exception', "invalid path" );
 	
 		if ( !is_null( $this->beautified_path ))
 			return $this->beautified_path;
@@ -115,12 +115,12 @@ class aop_file
 	
 			// read content + aspect definition
 			if ( $this->readFile() === false )
-				throw new aop_file_exception( "can't read file" );
+				$this->raise( 'aop_file_exception', "can't read file" );
 		}
 		
 		// make sure we have content to work on
 		if (is_null( $this->content ) || ($this->content === false))
-			throw new aop_file_exception( "no content found" );
+			$this->raise( 'aop_file_exception', "no content found" );
 
 		// beautifies the source file to help the parser
 		$this->generateBeautified();			
@@ -132,7 +132,7 @@ class aop_file
 			
 		} catch( Exception $e ) {
 		
-			throw new aop_file_exception( "can't tokenize file" );
+			$this->raise( 'aop_file_exception', "can't tokenize file. ".$e->getMessage() );
 		}
 		
 		return $this;
@@ -145,7 +145,7 @@ class aop_file
 	public function getClasses() {
 	
 		if ( isset( $this->tokens['classes'] ) )
-			return $this->tokens['classes']
+			return $this->tokens['classes'];
 	
 		return null;
 	}
@@ -162,7 +162,7 @@ class aop_file
 	 * @throws aop_file_exception
 	 */
 	protected function tokenize() {
-		
+
 		$this->tokens = PHP_Parser::parse( $this->content_beautified );
 	}
 	/**
@@ -202,7 +202,8 @@ class aop_file
 			
 		} catch( Exception $e ) {
 
-			throw new aop_file_exception( "beautifier process failed" );	
+			$this->raise( 'aop_file_exception', "beautifier process failed" );
+	
 		}
 	
 		return $this;

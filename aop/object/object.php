@@ -22,16 +22,16 @@ class aop_object {
 	 * @param $code integer code
 	 * @throws
 	 */
-	protected function raise( $type, $msg, $code = null ) {
+	public function raise( $type, $msg, $code = null ) {
 		
-		$exceptionClassDefinition = <<<DOC
+		$exceptionClassDefinition = '
 		
-			class $type extends Exception {
-				public function __construct( $msg, $code = null ) {
-					parent::__construct( $msg, $code );
+			class '.$type.' extends Exception {
+				public function __construct( $message, $error_code = null ) {
+					parent::__construct( $message, $error_code );
 				}
 			}
-DOC;
+		';
 	
 		eval( $exceptionClassDefinition );
 		
