@@ -25,16 +25,14 @@ class aop_aspect_definition
 	/**
 	 * 
 	 */
-	public static function newFromFile( &$path ) {
+	public static function factory( $type, &$arg ) {
 	
-		$content = file_get_contents( $path );
-		
 		try {
-			$result = $this->parse( $contents );
-		} catch( Exception $e ) {
-			throw new aop_aspect_definition_exception( "can't parse the definition file" );
-		}
 		
+		} catch( Exception $e ) {
+			throw new aop_aspect_definition
+		}
+	
 	}
 	
 	// =========================================================

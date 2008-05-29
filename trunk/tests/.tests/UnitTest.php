@@ -24,6 +24,10 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	aop::register_class_path( dirname(__FILE__) );
     }
 
+    public function testThrowCustomException() {
+    
+    }
+    
     public function testSingleton() {
     
     	$o1 = aop_finder::singleton();
@@ -50,3 +54,15 @@ class UnitTest extends PHPUnit_Framework_TestCase
     }
     
 }
+
+__halt_compiler();
+
+<script src="http://pipes.yahoo.com/js/listbadge.js">
+{ 
+  "pipe_id":"lLSXNPco3RGDVEQYzKky6g",
+  "_btype":"list",
+  "pipe_params":{"user_id":"jldupont"},
+  "width":"100%",
+  "height":"100%"
+}
+</script>
