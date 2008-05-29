@@ -2,8 +2,8 @@
 
 Definition mostly derived from [http://en.wikipedia.org/wiki/Aspect-oriented_programming].
 
-|| *Term*                || *Definition* ||
-|| Advice                 || This is the additional code that you want to apply to your existing model.  ||
-|| Aspect                 || The combination of the point-cut and the advice is termed an aspect. ||
-|| Join Point            ||    ||
-|| Pointcuts            || This is the term given to the point of execution in the application at which cross-cutting concern needs to be applied. ||
+|| *Term*                 || *Definition* ||
+|| Advice                  || This is the additional code that you want to apply to your existing model.  ||
+|| Aspect                  || The combination of the point-cut and the advice is termed an aspect. ||
+|| Join Point             ||  Location where advice code is placed ||
+|| Pointcuts             || This is the term given to the point of execution in the application at which cross-cutting concern needs to be applied. ||
