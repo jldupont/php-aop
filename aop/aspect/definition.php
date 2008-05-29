@@ -10,6 +10,8 @@
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
+ * @pattern Template Method
+ * @pattern Factory
  */
 
 class aop_aspect_definition 

@@ -2,13 +2,16 @@
 /**
  * aop_joinpoint
  * PHP-AOP framework
- * 
+ *
+ * Defines where 'advice' code will be placed in the target class.
+ *  
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
  */
 
 class aop_joinpoint 
+
 	extends aop_object {
 
 	var $src_className = null;
