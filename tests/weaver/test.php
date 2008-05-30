@@ -4,6 +4,10 @@
  * 
  */
 
+function XYZ() {
+
+}
+
 interface I1 {
 
 	public function doI1();
