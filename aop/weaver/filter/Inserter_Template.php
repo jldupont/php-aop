@@ -1,107 +1,90 @@
 <?php
 /**
- * aop_weaver_filter_Inserter_Machine
+ * PHP_Beautifier_Filter_Inserter_Template
  * PHP-AOP framework
- *
- * State Machine class for Inserter.filter.php 
+ * 
+ * This class extends PHP/Beautifier with "insertion" capabilities:
+ * - add arbitrary code at the START of a method
+ * - add arbitrary code at the END of a method
+ * This functionality satisfies the requirement to have:
+ * - "before" style pointcuts
+ * - "after" style pointcuts
+ * - "around" style pointcuts  => "before" + original code + "after"
  * 
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
  * @pattern Template Method
- * 
- * TODO implement a more complete state-machine in order to catch exceptions
  */
-/*
- *    CURRENT STATE         EVENT             NEXT STATE             ACTION
- *    =============         =======           ==========             ======
- *    WAIT_CLASS            t_class           WAIT_FUNCTION
- * 
- *    WAIT_FUNCTION         t_function        WAIT_OPEN_BRACE
- *                          t_end_declare     WAIT_CLASS             
- * 
- *    WAIT_OPEN_BRACE       t_open_brace      WAIT_END_DECLARE       signal CLASS_START_METHOD
- * 
- *    WAIT_END_DECLARE      t_end_declare     WAIT_FUNCTION          signal CLASS_END_METHOD
- * 
- */
-class aop_weaver_filter_Inserter_Machine 
-	extends aop_object
+
+class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 {
-	/**
-	 * State Map
-	 * @access private
-	 */
-	static $state_map = array(
+	var $oBeaut = null;
 	
-		self::WAIT_CLASS      => array( 't_class'       => array( 'ns' => self::WAIT_FUNCTION,   's' => self::NO_SIGNAL ), 
-							     ),
-		self::WAIT_FUNCTION   => array( 't_function'    => array( 'ns' => self::WAIT_OPEN_BRACE, 's' => self::NO_SIGNAL  ),
-									    't_end_declare' => array( 'ns' => self::WAIT_CLASS,      's' => self::NO_SIGNAL ),
-							     ),
-		self::WAIT_OPEN_BRACE => array( 't_open_brace'  => array( 'ns' => self::WAIT_END_DECLARE,'s' => self::SIGNAL_CLASS_METHOD_START ),
-									    't_end_declare' => array( 'ns' => self::WAIT_CLASS,      's' => self::NO_SIGNAL ),
-							     ),
-		self::WAIT_END_DECLARE=> array( 't_end_declare' => array( 'ns' => self::WAIT_FUNCTION,   's' => self::SIGNAL_CLASS_METHOD_END ),
-							     ),
-	);
-	/**
-	 * List of allowed states
-	 */
-	static $allowedState = array(
-		self::WAIT_CLASS,
-		self::WAIT_FUNCTION,
-		self::WAIT_OPEN_BRACE,
-		self::WAIT_END_DECLARE
-	);
-	/**
-	 * STATE CONSTANTS
-	 * @access public 
-	 */
-	const WAIT_CLASS       = 1;
-	const WAIT_FUNCTION    = 2;
-	const WAIT_OPEN_BRACE  = 3;
-	const WAIT_END_DECLARE = 4;
-	
-	/**
-	 * Signal constants
-	 */
-	const NO_SIGNAL                 = 0;
-	const SIGNAL_CLASS_METHOD_START = 1;
-	const SIGNAL_CLASS_METHOD_END   = 2;
-		
-	/**
-	 * 
-	 */
-    public function __construct() 
-    {        
-        $this->state = self::WAIT_CLASS;
+	var $machine = null;
+
+    protected $aFilterTokenFunctions = array(
     
-    	parent::__construct( );
+        T_CLASS => 't_class',
+        'T_OPEN_OPEN_BRACE' => 't_open_brace'
+        
+    );
+    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
+    {
+    	$this->oBeaut = $oBeaut;
+    	
+    	$this->machine = new aop_weaver_filter_Inserter_Machine;
+    	
+        parent::__construct($oBeaut, $aSettings);
+    }
+    /**
+     * Processes an 'event' through the state-machine
+     */
+    protected function processEvent( $event, &$sTag ) {
+    
     }
 	/**
-	 * Computes a 'signal' from a given event
-	 * taking into account the current state
 	 * 
-	 * @param $event constant
 	 */    
-   	public function getSignal( $event ) {
-   	
-   		// retrieve list of events we can take action upon
-   		$actionableEventList = self::$state_map[ $this->state ];
-   		
-   		if ( !in_array_keys( $event, $actionableEventList ) )
-   			return self::NO_SIGNAL;
+    function t_class($sTag) 
+    {
 
-   		// we have a designated course of action:
-   		$info   = $actionableEventList[ $event ];
-   		$signal = $info[ 's'  ];
-   		$next   = $info[ 'ns' ];
-   		
-   		// set 'next' state
-   		$this->state = $next;
-   		
-   		return $signal;
-   	}
-   	
-}//end declaration
+    }
+	/**
+	 * T_OPEN_BRACE event
+	 */
+	function t_open_brace($sTag) 
+    {
+    	return PHP_Beautifier_Filter::BYPASS;    
+	}
+
+	
+	// ======================================================================
+	//
+	// ======================================================================
+
+	
+   	/** 
+   	 * Default 'open_brace' filter method
+   	 * @see PHP_Beautifier/Filter/Default.filter.php
+   	 */ 
+    function default_t_open_brace( &$sTag ){
+    
+        if ($this->oBeaut->isPreviousTokenConstant(T_VARIABLE) or $this->oBeaut->isPreviousTokenConstant(T_OBJECT_OPERATOR) or ($this->oBeaut->isPreviousTokenConstant(T_STRING) and $this->oBeaut->getPreviousTokenConstant(2) == T_OBJECT_OPERATOR) or $this->oBeaut->getMode('double_quote')) {
+            $this->add($sTag);
+        } else {
+            if ($this->oBeaut->removeWhiteSpace()) {
+                $this->oBeaut->add(' ' . $sTag);
+            } else {
+                $this->oBeaut->add($sTag);
+            }
+            $this->oBeaut->incIndent();
+            if ($this->oBeaut->getControlSeq() == T_SWITCH) {
+                $this->oBeaut->incIndent();
+            }
+            $this->oBeaut->addNewLineIndent();
+        }
+    
+    }
+    
+}
