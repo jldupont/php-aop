@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP_Beautifier_Filter_Inserter
+ * PHP_Beautifier_Filter_Inserter_Template
  * PHP-AOP framework
  * 
  * This class extends PHP/Beautifier with "insertion" capabilities:
@@ -14,9 +14,10 @@
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
+ * @pattern Template Method
  */
 
-class PHP_Beautifier_Filter_Inserter extends PHP_Beautifier_Filter
+class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 {
 	const STATE_WAIT_T_CLASS      = 0;
 	const STATE_WAIT_T_OPEN_BRACE = 1;
