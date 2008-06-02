@@ -1,6 +1,5 @@
 <?php
 require_once ('PHP/Beautifier.php');
-require_once ('PHP/Beautifier/Batch.php');
 
 $content = file_get_contents( dirname( __FILE__ ).'/test.php' );
 

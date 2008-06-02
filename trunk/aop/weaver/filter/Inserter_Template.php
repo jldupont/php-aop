@@ -25,8 +25,10 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 
     protected $aFilterTokenFunctions = array(
     
-        T_CLASS => 't_class',
-        'T_OPEN_OPEN_BRACE' => 't_open_brace'
+        T_CLASS 			=> 't_class',
+        T_FUNCTION 			=> 't_function',
+        'T_OPEN_OPEN_BRACE' => 't_open_brace',
+        T_ENDDECLARE		=> 't_end_declare'
         
     );
     public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
@@ -52,16 +54,52 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 	 * Processes a T_CLASS event
 	 */    
 	function t_class($sTag) {
-
+	
+		return $this->dispatch( 't_class', $sTag );
+		
     }
 	/**
 	 * T_OPEN_BRACE event
 	 */
 	function t_open_brace($sTag) {
 	
-    	return PHP_Beautifier_Filter::BYPASS;    
+		return $this->dispatch( 't_open_brace', $sTag );
+		    
 	}
+	/**
+	 * T_FUNCTION event
+	 */
+	function t_class($sTag) {
+	
+		return $this->dispatch( 't_function', $sTag );
+		
+    }
+	/**
+	 * T_END_DECLARE event
+	 */
+	function t_class($sTag) {
+	
+		return $this->dispatch( 't_end_declare', $sTag );
+		
+    }
+    
+	// ======================================================================
+	// HELPERS
+	// ======================================================================
+	protected function dispatch( $event, $sTag ) {
 
+		$signal = $this->machine->getSignal( $event );
+		if ( $signal === false )
+			return PHP_Beautifier_Filter::BYPASS;
+	
+		$name = $this->machine->getCanonicalName( $signal );
+		$handler = array( __CLASS__, 'signal_'.$name );
+		
+		is (!is_callable( $handler ))
+			throw Exception( "handler related to event($event) can not dispatch signal($signal)" );
+			
+		return call_user_fnc( $handler, $sTag );
+	}
 	
 	// ======================================================================
 	// DEFAULTS
