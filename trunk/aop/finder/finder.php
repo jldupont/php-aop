@@ -9,6 +9,8 @@
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
+ * 
+ * TODO swap for a Borg pattern
  */
 
 class aop_finder 

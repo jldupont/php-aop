@@ -26,9 +26,8 @@
  * 
  */
 
-class aop_weaver_filter_Inserter_Machine 
-	extends aop_object
-{
+class aop_weaver_filter_Inserter_Machine {
+
 	/**
 	 * State Map
 	 * @access private
@@ -74,11 +73,8 @@ class aop_weaver_filter_Inserter_Machine
 	/**
 	 * Constructor
 	 */
-    public function __construct() 
-    {        
+    public function __construct() {        
         $this->state = self::WAIT_CLASS;
-    
-    	parent::__construct( );
     }
 	/**
 	 * Computes a 'signal' from a given event
