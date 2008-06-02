@@ -66,10 +66,20 @@ class aop_weaver_filter_Inserter_Machine {
 	/**
 	 * Signal constants
 	 */
-	const NO_SIGNAL                 = 0;
+	const NO_SIGNAL                 = false;
 	const SIGNAL_CLASS_METHOD_START = 1;
 	const SIGNAL_CLASS_METHOD_END   = 2;
-		
+
+	/** 
+	 * Signal Mapping table
+	 * from integer to string canonical
+	 */
+	static $map = array(
+		NO_SIGNAL 					=> 'no_signal',
+		SIGNAL_CLASS_METHOD_START	=> 'class_method_start',
+		SIGNAL_CLASS_METHOD_END		=> 'class_method_end',		
+	);
+	
 	/**
 	 * Constructor
 	 */
@@ -83,6 +93,8 @@ class aop_weaver_filter_Inserter_Machine {
 	 * @param $event constant
 	 */    
    	public function getSignal( $event ) {
+   	
+   		$event = strtolower( $event );
    	
    		// retrieve list of events we can take action upon
    		$actionableEventList = self::$state_map[ $this->state ];
@@ -99,6 +111,21 @@ class aop_weaver_filter_Inserter_Machine {
    		$this->state = $next;
    		
    		return $signal;
+   	}
+   	/**
+   	 * Translates a canonical signal integer
+   	 * to a canonical signal name
+   	 * 
+   	 * @param $signal constant
+   	 * @return $signal string
+   	 * @throws
+   	 */
+   	public function getCanonicalName( &$signal ) {
+   	
+   		if ( !array_key_exists( $signal, self::$map ))\
+   			throw ErrorException( "no such signal index ($signal)" );
+   			
+   		return self::$map[ $signal ];
    	}
    	
 }//end declaration

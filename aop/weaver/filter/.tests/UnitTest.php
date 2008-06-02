@@ -9,17 +9,27 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHP/Beautifier.php';
 
-$includePath = get_include_path();
+$path = realpath( dirname( __FILE__ ).'/../' );
+require_once $path.'/Inserter_Machine.php';
+require_once $path.'/Inserter_Template.php';
 
-$aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR;
-
-set_include_path( $aopPath . PATH_SEPARATOR . $includePath );
+UnitTest::$content = file_get_contents( dirname( __FILE__ ).'/test.php' );
 
 class UnitTest extends PHPUnit_Framework_TestCase
 {
+	static $content;
 
 	public function setup() {
-	
+
+		$oBeaut = new PHP_Beautifier();
+		$oBeaut->addFilterDirectory( realpath( dirname(__FILE__).'/../' ) );
+		
+		$oBeaut->addFilter('ArrayNested');
+		$oBeaut->addFilter('Inserter');		
+		
+		$oBeaut->setInputString( self::$content );
+		$oBeaut->process();
+		$oBeaut->show();
     }
 
     public function test1() {
