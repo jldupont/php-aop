@@ -43,24 +43,28 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
     protected function processEvent( $event, &$sTag ) {
     
     }
+
+	// ======================================================================
+	// EVENTS
+	// ======================================================================
+    
 	/**
-	 * 
+	 * Processes a T_CLASS event
 	 */    
-    function t_class($sTag) 
-    {
+	function t_class($sTag) {
 
     }
 	/**
 	 * T_OPEN_BRACE event
 	 */
-	function t_open_brace($sTag) 
-    {
+	function t_open_brace($sTag) {
+	
     	return PHP_Beautifier_Filter::BYPASS;    
 	}
 
 	
 	// ======================================================================
-	//
+	// DEFAULTS
 	// ======================================================================
 
 	
