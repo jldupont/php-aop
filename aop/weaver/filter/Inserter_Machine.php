@@ -12,19 +12,6 @@
  * 
  * TODO implement a more complete state-machine in order to catch exceptions
  */
-/*
- *    CURRENT STATE         EVENT             NEXT STATE             ACTION
- *    =============         =======           ==========             ======
- *    WAIT_CLASS            t_class           WAIT_FUNCTION
- * 
- *    WAIT_FUNCTION         t_function        WAIT_OPEN_BRACE
- *                          t_end_declare     WAIT_CLASS             
- * 
- *    WAIT_OPEN_BRACE       t_open_brace      WAIT_END_DECLARE       signal CLASS_START_METHOD
- * 
- *    WAIT_END_DECLARE      t_end_declare     WAIT_FUNCTION          signal CLASS_END_METHOD
- * 
- */
 
 class aop_weaver_filter_Inserter_Machine {
 

@@ -17,8 +17,8 @@
  * @pattern Template Method
  */
 
-class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
-{
+class PHP_Beautifier_Filter_Inserter_Template 
+	extends PHP_Beautifier_Filter {
 	/**
 	 * PHP_Beautifier context
 	 */
