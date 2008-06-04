@@ -15,14 +15,33 @@ abstract class aop_pointcut
 
 	/**
 	 * REGEX that defines the cut definition method signature
+	 * @access private
 	 */
 	const CUT_PATTERN = '/cut_(.*)/siU';
 	
 	/**
 	 * List of pointcuts found
+	 * @access private
 	 */
 	var $cuts = null;
 
+	/**
+	 * List of fields which must be present
+	 * for providing a pointcut definition
+	 * @access private
+	 */
+	static $requiredFields = array(
+		'cp' , 'mp' 
+	);
+	/**
+	 * List of optional fields which can be
+	 * present for providing a pointcut definition.
+	 * At least one of these fields must be present though.
+	 * @access private
+	 */
+	static $optionalFields = array(
+		'before', 'after'
+	);
 	
 	/*************************************************************************
 	 *  PUBLIC INTERFACE
@@ -81,7 +100,7 @@ abstract class aop_pointcut
 				
 			$def = $this->$method();
 			
-			$this->validateCutDefinition( $def );
+			$this->validateCutDefinition( $method, $def );
 			
 			$defs[] = $def;
 		}
@@ -90,16 +109,36 @@ abstract class aop_pointcut
 	}
 	/**
 	 * Validates a cut definition
+	 * 
+	 * @param $method 
+	 * @param $def
+	 * @throws
+	 * 
+	 * TODO accumulate error list before throwing exception
 	 */
-	private function validateCutDefinition( &$def ) {
+	private function validateCutDefinition( &$method, &$def ) {
 
 		// for starters, $def must be an array
 		if ( !is_array( $def ))
-			throw new Exception( __METHOD__.": cut definition method must return an array" );
-				
-		// now, there are 2ways of specifying the definition
+			throw new Exception( __METHOD__.": cut definition method must return an array [method: $method]" );
+
+		// check the required fields
+		foreach( self::$requiredFields $field ) {
+			if (!isset( $def[ $field ] ))
+				throw new Exception( __METHOD__.": required field ($field) missing from pointcut definition [method: $method]");
+		}
 		
-	}
+		// check that at least one of the optional fields is present
+		$found = false;
+		foreach( self::$optionalFields as $field ) {
+			if ( isset( $def[ $field ] )) {
+				$found = true;
+				break;
+			}
+		}
+		if ( !$found )
+			throw new Exception( __METHOD__.": at least one optional field must be present in pointcut definition [method: $method]");
+	} 
 	/**
 	 * Extracts the cut definitions
 	 * @param $ml method list
@@ -129,17 +168,20 @@ __halt_compiler();
 class TestPointcut 
 	extends aop_pointcut {
 	
-	
+
 	public function cut_id1() {
 	
-		return array( 'classname-pattern_*', 'methodname-pattern_*', 'before_method', 'after_method' );
-		
+		return array(	'cp' 		=> 'classname-pattern1', 
+						'mp' 		=> 'methodname-pattern1', 
+						'before'	=> 'before_method', 
+						'after'		=> 'after_method' );
 	}
-
+	
+	
 	public function cut_id2() {
 	
-		return array(	'cp' 		=> 'classname-pattern_*', 
-						'mp' 		=> 'methodname-pattern_*', 
+		return array(	'cp' 		=> 'classname-pattern2', 
+						'mp' 		=> 'methodname-pattern2', 
 						'before'	=> 'before_method', 
 						'after'		=> 'after_method' );
 	}
