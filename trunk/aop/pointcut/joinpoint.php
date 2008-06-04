@@ -1,6 +1,6 @@
 <?php
 /**
- * aop_joinpoint
+ * aop_pointcut
  * PHP-AOP framework
  *
  * Defines where 'advice' code will be placed in the target class.
@@ -10,7 +10,7 @@
  * @category AOP
  */
 
-class aop_joinpoint 
+class aop_pointcut
 
 	extends aop_object {
 
