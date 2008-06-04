@@ -26,13 +26,23 @@ class PHP_Beautifier_Filter_Inserter extends PHP_Beautifier_Filter_Inserter_Temp
 	/**
 	 * SIGNAL HANDLER
 	 */
-    public function signal_class_method_start() {
-    
+    public function signal_class_method_start( &$sTag ) {
+
+    	$this->default_t_open_brace( $sTag );    
+		
+    	$this->oBeaut->add( ' //INSERTED: CLASS_METHOD_START ' );  
+        $this->oBeaut->addNewLineIndent();
+
     }
    	/**
 	 * SIGNAL HANDLER
 	 */
-    public function signal_class_method_end() {
+    public function signal_class_method_end( &$sTag ) {
+
+        $this->oBeaut->addNewLineIndent();    
+       	$this->oBeaut->add( ' //INSERTED: CLASS_METHOD_END ' );  
+    
+    	$this->default_t_close_brace( $sTag );
     
     }
     

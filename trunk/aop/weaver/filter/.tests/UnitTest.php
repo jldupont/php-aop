@@ -12,6 +12,7 @@ require_once 'PHP/Beautifier.php';
 $path = realpath( dirname( __FILE__ ).'/../' );
 require_once $path.'/Inserter_Machine.php';
 require_once $path.'/Inserter_Template.php';
+require_once $path.'/../bweaver.php';
 
 UnitTest::$content = file_get_contents( dirname( __FILE__ ).'/test.php' );
 
@@ -21,7 +22,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
 
 	public function setup() {
 
-		$oBeaut = new PHP_Beautifier();
+		$oBeaut = new bweaver();
 		$oBeaut->addFilterDirectory( realpath( dirname(__FILE__).'/../' ) );
 		
 		$oBeaut->addFilter('ArrayNested');

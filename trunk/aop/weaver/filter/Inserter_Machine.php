@@ -75,9 +75,9 @@ class aop_weaver_filter_Inserter_Machine {
 	 * from integer to string canonical
 	 */
 	static $map = array(
-		NO_SIGNAL 					=> 'no_signal',
-		SIGNAL_CLASS_METHOD_START	=> 'class_method_start',
-		SIGNAL_CLASS_METHOD_END		=> 'class_method_end',		
+		self::NO_SIGNAL 				=> 'no_signal',
+		self::SIGNAL_CLASS_METHOD_START	=> 'class_method_start',
+		self::SIGNAL_CLASS_METHOD_END	=> 'class_method_end',		
 	);
 	
 	/**
@@ -99,7 +99,7 @@ class aop_weaver_filter_Inserter_Machine {
    		// retrieve list of events we can take action upon
    		$actionableEventList = self::$state_map[ $this->state ];
    		
-   		if ( !in_array_keys( $event, $actionableEventList ) )
+   		if ( !array_key_exists( $event, $actionableEventList ) )
    			return self::NO_SIGNAL;
 
    		// we have a designated course of action:
@@ -122,7 +122,7 @@ class aop_weaver_filter_Inserter_Machine {
    	 */
    	public function getCanonicalName( &$signal ) {
    	
-   		if ( !array_key_exists( $signal, self::$map ))\
+   		if ( !array_key_exists( $signal, self::$map ))
    			throw ErrorException( "no such signal index ($signal)" );
    			
    		return self::$map[ $signal ];
