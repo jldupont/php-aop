@@ -39,12 +39,6 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
     	
         parent::__construct($oBeaut, $aSettings);
     }
-    /**
-     * Processes an 'event' through the state-machine
-     */
-    protected function processEvent( $event, &$sTag ) {
-    
-    }
 
 	// ======================================================================
 	// EVENTS
@@ -69,7 +63,7 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 	/**
 	 * T_FUNCTION event
 	 */
-	function t_class($sTag) {
+	function t_function($sTag) {
 	
 		return $this->dispatch( 't_function', $sTag );
 		
@@ -77,7 +71,7 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 	/**
 	 * T_END_DECLARE event
 	 */
-	function t_class($sTag) {
+	function t_end_declare($sTag) {
 	
 		return $this->dispatch( 't_end_declare', $sTag );
 		
@@ -86,6 +80,10 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 	// ======================================================================
 	// HELPERS
 	// ======================================================================
+	
+	/**
+	 * Processes 'events' through the state-machine
+	 */
 	protected function dispatch( $event, $sTag ) {
 
 		$signal = $this->machine->getSignal( $event );
@@ -95,16 +93,16 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
 		$name = $this->machine->getCanonicalName( $signal );
 		$handler = array( __CLASS__, 'signal_'.$name );
 		
-		is (!is_callable( $handler ))
-			throw Exception( "handler related to event($event) can not dispatch signal($signal)" );
+		if (!is_callable( $handler ))
+			throw new Exception( "handler related to event($event) can not dispatch signal($signal)" );
 			
 		return call_user_fnc( $handler, $sTag );
 	}
 	
-	// ======================================================================
-	// DEFAULTS
-	// ======================================================================
-
+	/**
+	 * DEFAULTS
+	 * @see Default.filter.php
+	 *********************************************************************************/
 	
    	/** 
    	 * Default 'open_brace' filter method
@@ -128,5 +126,21 @@ class PHP_Beautifier_Filter_Inserter_Template extends PHP_Beautifier_Filter
         }
     
     }
+
+    function default_t_close_brace($sTag) 
+    {
+        if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
+            $this->oBeaut->add($sTag);
+        } else {
+            $this->oBeaut->removeWhitespace();
+            $this->oBeaut->decIndent();
+            if ($this->oBeaut->getControlSeq() == T_SWITCH) {
+                $this->oBeaut->decIndent();
+            }
+            $this->oBeaut->addNewLineIndent();
+            $this->oBeaut->add($sTag);
+            $this->oBeaut->addNewLineIndent();
+        }
+    }
     
-}
+}//end
