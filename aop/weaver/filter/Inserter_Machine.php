@@ -34,15 +34,20 @@ class aop_weaver_filter_Inserter_Machine {
 	 */
 	static $state_map = array(
 	
+		// CLASS start
 		self::WAIT_CLASS      => array( 't_class'       => array( 'ns' => self::WAIT_FUNCTION,   's' => self::NO_SIGNAL ), 
 							     ),
+
+		// CLASS METHOD start							     
 		self::WAIT_FUNCTION   => array( 't_function'    => array( 'ns' => self::WAIT_OPEN_BRACE, 's' => self::NO_SIGNAL  ),
-									    't_end_declare' => array( 'ns' => self::WAIT_CLASS,      's' => self::NO_SIGNAL ),
+										't_end_class'	=> array( 'ns' => self::WAIT_CLASS,      's' => self::NO_SIGNAL  ),
 							     ),
-		self::WAIT_OPEN_BRACE => array( 't_open_brace'  => array( 'ns' => self::WAIT_END_DECLARE,'s' => self::SIGNAL_CLASS_METHOD_START ),
-									    't_end_declare' => array( 'ns' => self::WAIT_CLASS,      's' => self::NO_SIGNAL ),
+							     
+		// CLASS METHOD definition start	     
+		self::WAIT_OPEN_BRACE => array( 't_open_brace'  => array( 'ns' => self::WAIT_END_METHOD, 's' => self::SIGNAL_CLASS_METHOD_START ),
 							     ),
-		self::WAIT_END_DECLARE=> array( 't_end_declare' => array( 'ns' => self::WAIT_FUNCTION,   's' => self::SIGNAL_CLASS_METHOD_END ),
+							     
+		self::WAIT_END_METHOD => array( 't_end_method'  => array( 'ns' => self::WAIT_FUNCTION,   's' => self::SIGNAL_CLASS_METHOD_END ),
 							     ),
 	);
 	/**
@@ -52,7 +57,7 @@ class aop_weaver_filter_Inserter_Machine {
 		self::WAIT_CLASS,
 		self::WAIT_FUNCTION,
 		self::WAIT_OPEN_BRACE,
-		self::WAIT_END_DECLARE
+		self::WAIT_END_METHOD
 	);
 	/**
 	 * STATE CONSTANTS
@@ -61,7 +66,7 @@ class aop_weaver_filter_Inserter_Machine {
 	const WAIT_CLASS       = 1;
 	const WAIT_FUNCTION    = 2;
 	const WAIT_OPEN_BRACE  = 3;
-	const WAIT_END_DECLARE = 4;
+	const WAIT_END_METHOD  = 4;
 	
 	/**
 	 * Signal constants

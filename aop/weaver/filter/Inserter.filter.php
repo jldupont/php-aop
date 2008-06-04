@@ -30,7 +30,7 @@ class PHP_Beautifier_Filter_Inserter extends PHP_Beautifier_Filter_Inserter_Temp
 
     	$this->default_t_open_brace( $sTag );    
 		
-    	$this->oBeaut->add( ' //INSERTED: CLASS_METHOD_START ' );  
+    	$this->oBeaut->add( ' //INSERTED: CLASS_METHOD_START class='.$this->currentClass.' method='.$this->currentMethod );  
         $this->oBeaut->addNewLineIndent();
 
     }
