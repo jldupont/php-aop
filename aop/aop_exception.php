@@ -1,5 +1,6 @@
 <?php
 /**
+ * aop_exception
  * PHP-AOP framework
  * 
  * @author Jean-Lou Dupont

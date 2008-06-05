@@ -99,24 +99,30 @@ class aop {
 	 * factory
 	 * 
 	 * @param $className name of class to instantiate/get (singleton)
+	 * @param mixed optional parameters
 	 * @return $object
 	 */
-	public static function factory( $className ) {
+	public static function factory( $className /*optional params*/ ) {
+	
+		$args = func_get_args();
+		array_shift( $args );	#$classname
 	
 		// check our replacement map
 		if ( isset( self::$classMap[$className] )) {
-			if ( !class_exists( self::$classMap[$className] ))
-				throw new aop_exception( "unable to load class ($className) remapped to (${self::$classMap[$className]})" );
+		
+			$classe = self::$classMap[$className];
+			if ( !class_exists( $classe ))
+				throw new aop_exception( "unable to load class ($className) remapped to ($classe)" );
 			
 			$className = self::$classMap[$className]; 
-			return new $className;
+			return self::buildObject( $className, $args );
 		}
 	
 		// default i.e. no remapping
 		if ( !class_exists( $className, true ))
 			throw new aop_exception( "unable to load class $className" );
 			
-		return new $className;
+		return self::buildObject( $className, $args );
 	}
 	
 	/**
@@ -152,6 +158,35 @@ class aop {
 	/*================================================================
 	 					PRIVATE INTERFACE
 	 ================================================================*/
+	/**
+	 * Builds an object instance of the specified class
+	 * and passes properly a variable argument list
+	 * 
+	 * @param $classe
+	 * @param $args mixed
+	 * @return $object
+	 * @throws aop_exception when too many arguments are passed in array $args
+	 */
+	private static function buildObject( &$classe, Array &$args ) {
+	
+		$count = count( $args );
+		
+		switch( $count ) {
+		case 0:
+			return new $classe;
+		case 1:
+			return new $classe( $args[0] );
+		case 2:
+			return new $classe( $args[0], $args[1] );
+		case 3:
+			return new $classe( $args[0], $args[1], $args[2] );
+		case 4:
+			return new $classe( $args[0], $args[1], $args[2], $args[3] );
+		default:
+			throw new aop_exception( "unsupported number of arguments whilst creating object in factory" );
+		}
+	}
+	
 	/**
 	 * Framework activation function
 	 * 
@@ -218,10 +253,10 @@ class aop {
 			return false;
 
 		// get the class file ready
-		$file = new aop_file( $path );
-		$file->process();
+		#$file = new aop_file( $path );
+		#$file->process();
 		
-		var_dump( $file );
+		#var_dump( $file );
 		
 			
 		//process it

@@ -10,6 +10,9 @@
 
 class aop_object {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 	}
 	/**

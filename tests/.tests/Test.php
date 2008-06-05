@@ -34,7 +34,7 @@ class Test2
 
 	var $param2;
 	
-	public function __construct() {
+	public function __construct( $param1, $param2 ) {
 	
 	}
 }
