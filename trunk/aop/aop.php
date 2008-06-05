@@ -20,6 +20,7 @@
  * @package AOP
  * @category AOP
  * @pattern borg
+ * @pattern factory
  */
 
 class aop {
@@ -42,6 +43,12 @@ class aop {
 	 * @access private
 	 */
 	private static $params = array();
+	
+	/**
+	 * Class map for the factory
+	 * @access private
+	 */
+	private static $classMap = array();
 	
 	/*================================================================
 	 					PUBLIC INTERFACE
@@ -77,6 +84,18 @@ class aop {
 		return true;
 	}
 	/**
+	 * Maps a class to another one
+	 * Used along with the factory interface.
+	 * 
+	 * @param $oClasse string original class
+	 * @param $rClasse string replacement class
+	 * @return void
+	 */
+	public static function mapClass( $oClasse, $rClasse ) {
+	
+		self::$classMap[ $oClasse ] = $rClasse;
+	}
+	/**
 	 * factory
 	 * 
 	 * @param $className name of class to instantiate/get (singleton)
@@ -84,6 +103,16 @@ class aop {
 	 */
 	public static function factory( $className ) {
 	
+		// check our replacement map
+		if ( isset( self::$classMap[$className] )) {
+			if ( !class_exists( self::$classMap[$className] ))
+				throw new aop_exception( "unable to load class ($className) remapped to (${self::$classMap[$className]})" );
+			
+			$className = self::$classMap[$className]; 
+			return new $className;
+		}
+	
+		// default i.e. no remapping
 		if ( !class_exists( $className, true ))
 			throw new aop_exception( "unable to load class $className" );
 			
