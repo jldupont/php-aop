@@ -72,8 +72,8 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	$b = new aop_beautifier_extracter();
     	$e = new aop_filter_extracter( $b );
     	
-    	$e->addExtractEntry( 'Test', 'before' );
-    	$e->addExtractEntry( 'Test', 'after' );    	
+    	$b->addExtractEntry( 'Test', 'before' );
+    	$b->addExtractEntry( 'Test', 'after' );    	
     	
 		$b->addFilter( $e );		
 		

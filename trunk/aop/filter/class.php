@@ -183,7 +183,6 @@ class aop_filter_class
         $this->default_t_open_brace( $sTag );
 		return $this->t_start_method( $sTag, $className, $methodName );    
     }
-
     public function i_end_class( &$sTag, &$className ) {
     
 		$this->t_end_class( $sTag, $className );    
