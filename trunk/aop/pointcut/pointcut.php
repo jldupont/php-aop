@@ -61,12 +61,8 @@ abstract class aop_pointcut
 				break;
 			}
 		}//foreach
-		
-		if ( is_null( $found ) )
-			return false;
-			
-		//we found a matching pointcut
-		
+
+		return $found;
 	}
 	
 	/*************************************************************************
