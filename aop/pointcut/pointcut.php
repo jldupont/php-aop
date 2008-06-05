@@ -15,22 +15,24 @@ abstract class aop_pointcut
 
 	/**
 	 * Computed REGEX pattern for class field
+	 * @access private
 	 */
 	var $classPattern = null;
 
 	/**
 	 * Computed REGEX pattern for method field
+	 * @access private
 	 */
 	var $methodPattern = null;
 	
 	/**
-	 * 
+	 * ClassName pattern
 	 * @access private
 	 */
 	var $classNamePattern = null;
 	
 	/**
-	 * 
+	 * MethodName pattern
 	 * @access private
 	 */
 	var $methodNamePattern = null;
