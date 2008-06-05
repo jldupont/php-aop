@@ -19,11 +19,8 @@
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
+ * @pattern borg
  */
-
-require_once 'PHP/Parser.php';
-require_once 'PHP/Beautifier.php';
-require_once 'PHP/Beautifier/Batch.php';
 
 class aop {
 
@@ -49,6 +46,21 @@ class aop {
 	/*================================================================
 	 					PUBLIC INTERFACE
 	 ================================================================*/
+	/**
+	 * Constructor (borg pattern)
+	 */
+	public function __construct() {
+	
+		self::activate();
+	}
+	
+	/**
+	 * @see aop::_register_class_path 
+	 */
+	public function register_class_path( $path ) {
+	
+		return self::_register_class_path( $path );
+	}
 	
 	/**
 	 * register_class_path
@@ -57,9 +69,10 @@ class aop {
 	 * @param $path filesystem path (either absolute or relative)
 	 * @return $result boolean
 	 */
-	public static function register_class_path( $path ) {
+	public static function _register_class_path( $path ) {
 	
-		$finder = aop_finder::singleton()->addClassPath( $path );
+		$finder = new aop_finder;
+		$finder->addClassPath( $path );
 		
 		return true;
 	}
@@ -74,11 +87,6 @@ class aop {
 		if ( !class_exists( $className, true ))
 			throw new aop_exception( "unable to load class $className" );
 			
-		// check if the target class implements a singleton interface
-		$singletonMethod = array( $className, 'singleton' );
-		if ( is_callable( $singletonMethod ))
-			return call_user_func( $singletonMethod );
-			
 		return new $className;
 	}
 	
@@ -91,6 +99,7 @@ class aop {
 	 * @throws aop_exception 
 	 */
 	public static function setParam( $key, $value ) {
+	
 		if ( !in_array( $key, self::$refParams ))
 			throw new aop_exception( "invalid parameter key $key" );
 			
@@ -127,8 +136,11 @@ class aop {
 			
 		self::$activated = true;
 		
+		require_once 'PHP/Parser.php';
+		require_once 'PHP/Beautifier.php';
+		require_once 'PHP/Beautifier/Batch.php';
+		
 		require_once "aop_exception.php";
-		require_once "aop_singleton.php";
 		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."finder".DIRECTORY_SEPARATOR."finder.php";
 
 		$callback = array( __CLASS__, 'our_autoload' );
@@ -145,7 +157,7 @@ class aop {
 		if (substr( $className, 0, 4) != 'aop_' )
 			return false;
 			
-		$finder = aop_finder::singleton();
+		$finder = new aop_finder;
 		$path = $finder->find( $className );
 		if ( is_null( $path ))
 			return false;
@@ -162,7 +174,7 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 
-		$finder = aop_finder::singleton();
+		$finder = new aop_finder;
 	
 		//find the target class file
 		$path = $finder->find( $className );

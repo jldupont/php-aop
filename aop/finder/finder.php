@@ -10,11 +10,9 @@
  * @package AOP
  * @category AOP
  * 
- * TODO swap for a Borg pattern
  */
 
-class aop_finder 
-	implements aop_singleton {
+class aop_finder {
 
 	/**
 	 * Singleton instance variable
@@ -26,24 +24,13 @@ class aop_finder
 	 * Class paths array
 	 * @access public
 	 */
-	var $paths = array();
+	static $paths = array();
 	
 	/**
 	 * Constructor
 	 */
-	protected function __construct(){}
+	public function __construct(){}
 	
-	/**
-	 * Singleton pattern
-	 */
-	public static function singleton() {
-	
-		if (!is_null( self::$instance ))
-			return self::$instance;
-	
-		$classe = __CLASS__;
-		return (self::$instance = new $classe);
-	}
 	/**
 	 * Adds a path to the list
 	 * 
@@ -52,10 +39,10 @@ class aop_finder
 	 */
 	public function addClassPath( &$path ) {
 	
-		if ( in_array( $path, $this->paths ))
+		if ( in_array( $path, self::$paths ))
 			return $this;
 			
-		$this->paths[] = $path;
+		self::$paths[] = $path;
 		
 		return $this;
 	}
@@ -71,10 +58,10 @@ class aop_finder
 	 */
 	public function find( &$className ) {
 	
-		if (empty( $this->paths ))
+		if (empty( self::$paths ))
 			throw new aop_exception( "path list is empty" );
 	
-		foreach( $this->paths as $path ) {
+		foreach( self::$paths as $path ) {
 		
 			// case 1
 			$p = $path . DIRECTORY_SEPARATOR . $className . '.php';

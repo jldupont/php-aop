@@ -43,10 +43,10 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	#$this->assertEquals( true, $result );
     }
     
-    public function testSingleton() {
+    public function testBorg() {
     
-    	$o1 = aop_finder::singleton();
-    	$o2 = aop_finder::singleton();    	
+    	$o1 = new aop_finder;
+    	$o2 = new aop_finder;    	
         $this->assertEquals( $o1, $o2 );    
     }
     
