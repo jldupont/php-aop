@@ -17,12 +17,14 @@ class Test {
 		/**
 		 * Test::before method
 		 */
+		var_dump( $this );
 	}
 
 	public function after() {
 		/**
 		 * Test::after method
 		 */
+		var_dump( $this );	
 	}
 	
 }
