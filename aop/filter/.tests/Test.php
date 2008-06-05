@@ -11,6 +11,10 @@ class TestClass {
 
 	function method2() {
 	
+		$complex_variable = "complex_variable_data";
+		
+		$simple = "${complex_variable}";
+	
 	}
 	
 }

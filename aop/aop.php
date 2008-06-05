@@ -111,11 +111,10 @@ class aop {
 		if ( isset( self::$classMap[$className] )) {
 		
 			$classe = self::$classMap[$className];
-			if ( !class_exists( $classe ))
+			if ( !class_exists( $classe, true ))
 				throw new aop_exception( "unable to load class ($className) remapped to ($classe)" );
 			
-			$className = self::$classMap[$className]; 
-			return self::buildObject( $className, $args );
+			return self::buildObject( $classe, $args );
 		}
 	
 		// default i.e. no remapping
@@ -135,7 +134,7 @@ class aop {
 	 */
 	public static function setParam( $key, $value ) {
 	
-		if ( !in_array( $key, self::$refParams ))
+		if ( !isset( self::$refParams[ $key ] ))
 			throw new aop_exception( "invalid parameter key $key" );
 			
 		self::$params[$key] = $value;	
@@ -221,7 +220,7 @@ class aop {
 		if (substr( $className, 0, 4) != 'aop_' )
 			return false;
 			
-		$finder = new aop_finder;
+		$finder = aop::factory( 'aop_finder' );
 		$path = $finder->find( $className );
 		if ( is_null( $path ))
 			return false;
@@ -238,7 +237,7 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 
-		$finder = new aop_finder;
+		$finder = aop::factory( 'aop_finder' );
 	
 		//find the target class file
 		$path = $finder->find( $className );
@@ -262,6 +261,28 @@ class aop {
 		//process it
 		
 		return true;
+	}
+	/**
+	 * Processes a given file which, supposedly, contains
+	 * the definition for class $className
+	 * 
+	 * @param $className string
+	 * @param $classPath string absolute filesystem path
+	 * @return void
+	 * @throws
+	 */
+	private static function process( &$className, &$classPath ) {
+	
+		// verifies if a companion pointcut definition file is present
+		
+		// load definition file
+		
+		// process it - this includes the pointcut list in the framework
+		
+		// from this point on, we have our pointcuts: let's process
+		// the target class file
+		
+	
 	}
 	
 }//end definition
