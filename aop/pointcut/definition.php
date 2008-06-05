@@ -64,7 +64,13 @@ abstract class aop_pointcut_definition
 
 		return $found;
 	}
-	
+	/**
+	 * Returns a reference to the pointcut list
+	 * @return array of aop_pointcut
+	 */
+	public function getCuts() {
+		return $this->cuts;
+	}
 	/*************************************************************************
 	 *  PROTECTED / PRIVATE
 	 *************************************************************************/
@@ -86,6 +92,8 @@ abstract class aop_pointcut_definition
 		
 		// now extract the definitions per-se
 		$this->cuts = $this->extractCutDefinitions( $cutDefinitionMethods );
+		
+		return $this;
 	}
 	/**
 	 * Iterates through the methods to extract the cut definitions 
@@ -207,4 +215,7 @@ class TestPointcut
 	}
 	
 	
-}//
+}
+// instructs the pointcut_processor of which
+// class defines the pointcuts in this file
+return 'TestPointcut';
