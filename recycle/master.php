@@ -201,7 +201,7 @@ T_DOC_COMMENT				/** */	PHPDoc style comments (available since PHP 5.0.0)
 *T_ELSEIF					elseif	elseif
 *T_EMPTY						empty	empty()
 
-T_ENCAPSED_AND_WHITESPACE
+T_ENCAPSED_AND_WHITESPACE	used inside heredoc
 
 *T_ENDDECLARE				enddeclare	declare, alternative syntax
 *T_ENDFOR					endfor	for, alternative syntax
