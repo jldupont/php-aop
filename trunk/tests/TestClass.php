@@ -1,11 +1,6 @@
 <?php
-/**
- * Test class
- * 
- * @author Jean-Lou Dupont
- */
 
-class Test {
+class TestClass {
 
 	var $param;
 
@@ -27,15 +22,5 @@ class Test {
 		var_dump( $this );	
 	}
 	
-}
-
-class Test2 
-	extends Test {
-
-	var $param2;
-	
-	public function __construct( $param1, $param2 ) {
-	
-	}
 }
 

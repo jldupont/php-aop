@@ -31,7 +31,7 @@ abstract class aop_pointcut_definition
 	 * @access private
 	 */
 	static $requiredFields = array(
-		'cp' , 'mp' 
+		'cp' , 'mp', 'am' 
 	);
 	/**
 	 * List of optional fields which can be
@@ -40,7 +40,6 @@ abstract class aop_pointcut_definition
 	 * @access private
 	 */
 	static $optionalFields = array(
-		'before', 'after'
 	);
 	
 	/*************************************************************************
@@ -79,7 +78,7 @@ abstract class aop_pointcut_definition
 	 * Goes through the method list and extracts
 	 * the pointcut definitions
 	 */
-	private function process() {
+	public function process() {
 	
 		// only perform this process once
 		if ( !is_null( $this->cuts ) )
@@ -135,12 +134,13 @@ abstract class aop_pointcut_definition
 			throw new Exception( __METHOD__.": cut definition method must return an array [method: $method]" );
 
 		// check the required fields
-		foreach( self::$requiredFields $field ) {
+		foreach( self::$requiredFields as $field ) {
 			if (!isset( $def[ $field ] ))
 				throw new Exception( __METHOD__.": required field ($field) missing from pointcut definition [method: $method]");
 		}
 		
 		// check that at least one of the optional fields is present
+		/*
 		$found = false;
 		foreach( self::$optionalFields as $field ) {
 			if ( isset( $def[ $field ] )) {
@@ -150,6 +150,8 @@ abstract class aop_pointcut_definition
 		}
 		if ( !$found )
 			throw new Exception( __METHOD__.": at least one optional field must be present in pointcut definition [method: $method]");
+		*/
+		
 	} 
 	/**
 	 * Extracts the cut definitions
@@ -187,19 +189,21 @@ class TestPointcut
 
 	public function cut_id1() {
 	
-		return array(	'cp' 		=> 'classname-pattern1', 
-						'mp' 		=> 'methodname-pattern1', 
-						'before'	=> 'before_method', 
-						'after'		=> 'after_method' );
+		return array(	'cp'	=> 'classname-pattern1', 
+						'mp'	=> 'methodname-pattern1', 
+						'am'	=> array(	'before'	=> 'before_method', 
+											'after'	=> 'after_method' ) );
+		
+		
 	}
 	
 	
 	public function cut_id2() {
-	
-		return array(	'cp' 		=> 'classname-pattern2', 
-						'mp' 		=> 'methodname-pattern2', 
-						'before'	=> 'before_method', 
-						'after'		=> 'after_method' );
+
+		return array(	'cp' 	=> 'classname-pattern1', 
+						'mp'	=> 'methodname-pattern1', 
+						'am'	=> array(	'before'	=> 'before_method', 
+											'after'	=> 'after_method' ) );
 	}
 	/**
 	 * Advice definition 'before'

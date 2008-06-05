@@ -10,7 +10,7 @@
  * @category AOP
  */
 
-abstract class aop_pointcut
+class aop_pointcut
 	extends aop_object {
 
 	/**
@@ -41,20 +41,26 @@ abstract class aop_pointcut
 	 * Advice code stored as list
 	 * @access private
 	 */
-	var $advices = array();
+	var $advicesCode = array();
+	
+	/**
+	 * Advice:Method mapping
+	 */
+	var $adviceMethods = array();
 	
 	/*************************************************************************
 	 *  PUBLIC INTERFACE
 	 *************************************************************************/
+	public function __construct( &$definition ) {
 	
-	public function __construct( &$classNamePattern, &$methodNamePattern ) {
-
-		$this->classNamePattern = $classNamePattern;
-		$this->methodNamePattern = $methodNamePattern;
-
+		$this->classNamePattern = $definition['cp'];
+		$this->methodNamePattern = $definition['mp'];
+		$this->adviceMethods = $definition['am'];
+		
 		$this->classPattern = $this->computePattern( $classNamePattern );
 		$this->methodPattern = $this->computePattern( $methodNamePattern );		
 	}
+	
 	/**
 	 * Sets the advice code related to an advice type
 	 * 
@@ -62,21 +68,21 @@ abstract class aop_pointcut
 	 * @param $codeTokenList array of tokens
 	 * @return void
 	 */
-	public function setAdvice( $type, &$codeTokenList ) {
+	public function setAdviceCode( $type, &$codeTokenList ) {
 	
-		$this->advices[ $type ] = $codeTokenList;		
+		$this->advicesCode[ $type ] = $codeTokenList;		
 	}
 	/**
 	 * Gets the advice code related to an advice type
 	 * 
 	 * @param $type string advice-type
 	 */
-	public function getAdvice( $type ) {
+	public function getAdviceCode( $type ) {
 		
-		if ( !isset( $this->advices[ $type ] ) )
+		if ( !isset( $this->advicesCode[ $type ] ) )
 			throw new aop_exception( __METHOD__.": advice code not set for type ($type)" );
 			
-		return $this->advices[ $type ];
+		return $this->advicesCode[ $type ];
 	}
 	/**
 	 * Looks up the derived class to find a matching pointcut definition
