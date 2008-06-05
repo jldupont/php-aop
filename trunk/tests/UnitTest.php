@@ -10,7 +10,7 @@ require_once 'PHPUnit/Framework.php';
 
 $includePath = get_include_path();
 
-$aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR;
+$aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR;
 
 set_include_path( $aopPath . PATH_SEPARATOR . $includePath );
 
@@ -124,7 +124,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testPointcutProcessor() {
     	
-    	$p = aop::factory( 'aop_pointcut_processor', self::$content );
+    	$p = aop::factory( 'aop_pointcut_processor', '', self::$content );
     	
     	$r = $p->process();
     	

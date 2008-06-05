@@ -35,12 +35,19 @@ class aop_pointcut_processor
 	var $collector = null;
 	
 	/**
+	 * Pointcut definitions 
+	 * @access private
+	 */
+	var $definition = null;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @param $source string class text file
 	 */
-	public function __construct( &$source ) {
+	public function __construct( &$path, &$source = null ) {
 	
+		$this->path   = $path;
 	 	$this->source = $source;
 	}
 	
@@ -52,6 +59,64 @@ class aop_pointcut_processor
 		if ( !is_null( $this->collector ) )
 			return $this->collector;
 
+		if ( is_null( $this->source ))
+			$this->source = @file_get_contents( $this->path );
+			
+		// collect the class methods
+		$this->collector = $this->extractClassMethods();
+		
+		// collect the pointcut definitions
+		$this->definition = $this->extractDefinitions();
+		
+		// now we have the 2pieces to our puzzle:
+		// 1- the pointcut definitions
+		// 2- the advice method definitions
+		// We need to join to 2 together in the aop_pointcut object
+		$this->joinPieces();
+	}
+	/**
+	 * Joins the advice methods with the corresponding
+	 * pointcut definition 
+	 */
+	private function joinPieces() {
+	
+		$cuts = $this->definition->getCuts();
+		
+		foreach( $cuts as $index => &$cut ) {
+		
+		}
+	}
+	/**
+	 * Extracts the definition from the source file
+	 * 
+	 * @return aop_pointcut_definition object instance 
+	 */
+	private function extractDefinitions() {
+	
+		// by 'including' this file ...
+		$classThatDefinesThePointcut = include_once $this->path;
+		
+		// and processing this file, the definitions
+		// will get populated automatically.
+		if ( empty( $classThatDefinesThePointcut ) )
+			throw new aop_exception( ": pointcut definition file invalid: is there a 'return' statement indicating the classname?" );
+		
+		// Use 'duckTyping' as interface
+		if (!( $classThatDefinesThePointcut implements findMatch ))
+			throw new aop_exception( ": the pointcut definition file provided does not appear valid" );
+		
+		// instantiate one of these
+		$def = new $classThatDefinesThePointcut;
+		
+		return $def->process();
+	}
+	/**
+	 * Extracts all the class methods from the specified source
+	 * 
+	 * @return aop_token_collector
+	 */
+	private function extractClassMethods( ){
+	
 		$this->bExtracter = aop::factory( 'aop_beautifier_extracter' );
 		
 		// extracts all methods
@@ -65,7 +130,8 @@ class aop_pointcut_processor
 		$this->bExtracter->process();
 
 		// the extracted methods are stored in the Beautifier_Extracter instance
-		return $this->collector = $this->bExtracter->getExtractedList();
+		return $this->bExtracter->getExtractedList();
+	
 	}
 	
 }//end class

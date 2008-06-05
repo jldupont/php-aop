@@ -31,7 +31,7 @@ class aop_token_tostring {
 				$symbol = $token[1];
 		
 			if ( is_null( $symbol ) )
-				throw new Exception( __METHOD__.": invalid symbol found" );
+				throw new aop_exception( __METHOD__.": invalid symbol found" );
 				
 			$string .= $symbol;
 		}

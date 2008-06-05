@@ -27,11 +27,14 @@ abstract class aop_pointcuts
 		$found = null;
 		
 		foreach( self::$liste as $pointcut ) {
-			if ( $pointcut implements findMatch )
+			if ( $pointcut implements findMatch ) {
 				if ( $pointcut->findMatch( $className, $methodName ) ) {
 					$found = $pointcut;
 					break;
 				}
+			} else {
+				throw new aop_exception( __METHOD__.": expecting findMatch interface" );
+			}
 		}
 		
 		return $found;
