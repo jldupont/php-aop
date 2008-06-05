@@ -56,7 +56,7 @@ abstract class aop_pointcut_definition
 		
 		$found = null;
 		foreach( $cuts as $cut ) {
-			if ($this->evaluateMatch( $className, $classMethodName, $cut )) {
+			if ($cut->isMatch( $className, $classMethodName )) {
 				$found = $cut;
 				break;
 			}
@@ -68,22 +68,6 @@ abstract class aop_pointcut_definition
 	/*************************************************************************
 	 *  PROTECTED / PRIVATE
 	 *************************************************************************/
-	
-	/**
-	 * Verifies if there is a match
-	 * 
-	 * @param $className
-	 * @param $methodName
-	 * @param $cut
-	 * @return boolean
-	 */
-	private function evaluateMatch( &$className, &$classMethodName, &$cut ) {
-		
-		$classNameMatch  = preg_match( $cut['cp'], $className ) === 1;
-		$methodNameMatch = preg_match( $cut['mp'], $methodName ) === 1;
-
-		return ( $classNameMatch && $methodNameMatch );
-	}
 	
 	/**
 	 * Goes through the method list and extracts
@@ -102,35 +86,13 @@ abstract class aop_pointcut_definition
 		
 		// now extract the definitions per-se
 		$this->cuts = $this->extractCutDefinitions( $cutDefinitionMethods );
-		
-		$this->preparePatterns();
-	}
-	/**
-	 * Iterates through the pointcut list and
-	 * prepares each className / methodName in regex patterns
-	 * 
-	 * TODO provide more error checking for REGEX patterns 
-	 */
-	private function preparePatterns() {
-	
-		foreach( $this->cuts as $index => &$cut ) {
-		
-			$cp = $cut['cp'];
-			$mp = $cut['mp'];
-
-			$cp = str_replace( '*', '(.*)', $cp );
-			$mp = str_replace( '*', '(.*)', $mp );
-
-			$cut['cp'] = '/'.$cp.'/siU';
-			$cut['mp'] = '/'.$mp.'/siU';			
-		}
 	}
 	/**
 	 * Iterates through the methods to extract the cut definitions 
 	 */	
 	private function extractCutDefinitions( &$cutDefinitionMethods ) {
 	
-		$defs = array();
+		$cuts = array();
 	
 		foreach( $cutDefinitionMethods as $method ) {
 		
@@ -140,12 +102,14 @@ abstract class aop_pointcut_definition
 				
 			$def = $this->$method();
 			
-			$this->validateCutDefinition( $method, $def );
+			$this->validateCutDefinition( $def, $method /*exception*/ );
 			
-			$defs[] = $def;
+			$cut = aop::factory( 'aop_pointcut', $def['cp'], $def['mp'] );
+			
+			$cuts[] = $cut;
 		}
 		
-		return $defs;
+		return $cuts;
 	}
 	/**
 	 * Validates a cut definition
@@ -156,7 +120,7 @@ abstract class aop_pointcut_definition
 	 * 
 	 * TODO accumulate error list before throwing exception
 	 */
-	private function validateCutDefinition( &$method, &$def ) {
+	private function validateCutDefinition( &$def, &$method ) {
 
 		// for starters, $def must be an array
 		if ( !is_array( $def ))
@@ -198,7 +162,11 @@ abstract class aop_pointcut_definition
 	
 }//end definition
 
+
+
 __halt_compiler();
+
+
 
 /**
  * Example definition of a Pointcut
