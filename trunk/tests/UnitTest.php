@@ -108,8 +108,6 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testExtracter() {
     
-
-    
     	$b = new aop_beautifier_extracter();
     	$e = new aop_filter_extracter( $b );
     	
