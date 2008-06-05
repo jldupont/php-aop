@@ -44,6 +44,9 @@ class aop_beautifier_extracter
 	 */
 	public function commit( &$obj ) {
 	
+		if ( is_null( $obj ))
+			return;
+			
 		$this->extractedList[] = $obj;
 	}
 	
@@ -66,8 +69,9 @@ class aop_beautifier_extracter
 				}
 		}
 		// we found a match, supply a collector
-		if ( !is_null( $found ) )
+		if ( !is_null( $found ) ) {
 			return new aop_token_collector( $classe, $method );
+		}
 		
 		return null;
 	}
