@@ -25,28 +25,24 @@ class aop_filter_inserter
         parent::__construct($oBeaut, $aSettings);
     }
     
-	public function t_start_class( &$sTag, &$name ) {
-	
-		$this->oBeaut->add('//INSERTED @ start_class');
-		$this->oBeaut->addNewLineIndent();
+	public function t_start_method( &$sTag, &$classe, &$name ) {
+
+		$tokensToInsert = $this->oBeaut->getMatching( $classe, $name, 'before' );
+		if ( !empty( $tokensToInsert ) ) {
+
+			$this->oBeaut->add( $tokensToInsert );
+			$this->oBeaut->addNewLineIndent();
+		}
 	}
 
-	public function t_start_method( &$sTag, &$name ) {
+	public function t_end_method( &$sTag, &$classe, &$name ) {
 
-		$this->oBeaut->add('//INSERTED @ start_method');
-		$this->oBeaut->addNewLineIndent();
+		$tokensToInsert = $this->oBeaut->getMatching( $classe, $name, 'after' );
+		if ( !empty( $tokensToInsert ) ) {
+
+			$this->oBeaut->add( $tokensToInsert );
+			$this->oBeaut->addNewLineIndent();
+		}
 	}
-
-	public function t_end_class( &$sTag, &$name ) {
-	
-		$this->oBeaut->add('//INSERTED @ end_class');
-		$this->oBeaut->addNewLineIndent();
-	}
-
-	public function t_end_method( &$sTag, &$name ) {
-
-		$this->oBeaut->add('//INSERTED @ end_method');
-		$this->oBeaut->addNewLineIndent();
-	}
-        
+            
 }//end class

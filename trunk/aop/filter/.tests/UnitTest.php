@@ -24,9 +24,9 @@ class TestClassFilter extends aop_filter_class {
 	}
 
 
-	public function t_start_method( &$sTag, &$name ) {
+	public function t_start_method( &$sTag, &$classe, &$name ) {
 
-		$this->oBeaut->add('//INSERTED @ start_method');
+		$this->oBeaut->add( "//INSERTED @ start_method of class: $classe" );
 		$this->oBeaut->addNewLineIndent();
 	}
 
