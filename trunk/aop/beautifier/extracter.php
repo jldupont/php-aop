@@ -23,6 +23,19 @@ class aop_beautifier_extracter
 	 */
 	var $extractedList = array();
 	
+	/**
+	 * Adds an entry to the list of methods to extract
+	 * 
+	 * @param $classe
+	 * @param $method
+	 * @return $this 
+	 */
+	public function addExtractEntry( $classe, $method ) {
+	
+		$entry = array( 'c' => $classe, 'm' => $method );
+		$this->extractList[] = $entry;
+		return $this;
+	}
 	
 	/**
 	 * Adds a token collector object
@@ -33,6 +46,11 @@ class aop_beautifier_extracter
 	
 		$this->extractedList[] = $obj;
 	}
+	
+	public function getExtractedList() {
+		return $this->extractedList;
+	}
+	
 	/**
 	 * Returns an aop_token_collector object when there
 	 * are tokens to collect

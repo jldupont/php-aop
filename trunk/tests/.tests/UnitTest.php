@@ -56,12 +56,6 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	$this->assertEquals( $o instanceof aop_weaver, true );
     }
 
-    public function testLoader2() {
-    
-    	$o = new aop_weaver_exception();
-    	$this->assertEquals( $o instanceof aop_weaver_exception, true );
-    }
-
     /*
      * disabled for now... bug#13092 in PHP_Parser package alpha v0.2.1
      */
@@ -69,6 +63,24 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     	$o = new Test();
     	$this->assertEquals( $o instanceof Test, true );
+    }
+    
+    public function testExtracter() {
+    
+    	$content = file_get_contents( dirname(__FILE__).'/Test.php' );
+    
+    	$b = new aop_beautifier_extracter();
+    	$e = new aop_filter_extracter( $b );
+    	
+    	$e->addExtractEntry( 'Test', 'before' );
+    	$e->addExtractEntry( 'Test', 'after' );    	
+    	
+		$b->addFilter( $e );		
+		
+		$b->setInputString( $content );
+		$b->process();
+		
+    	var_dump( $b->getExtractedList() );
     }
     
 }
