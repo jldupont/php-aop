@@ -47,7 +47,6 @@ abstract class aop_pointcut
 	 *  PUBLIC INTERFACE
 	 *************************************************************************/
 	
-	
 	/**
 	 * Looks up the derived class to find a matching pointcut definition
 	 */
@@ -230,11 +229,15 @@ class TestPointcut
 						'before'	=> 'before_method', 
 						'after'		=> 'after_method' );
 	}
-	
+	/**
+	 * Advice definition 'before'
+	 */
 	public function before_method() {
 		
 	}
-
+	/**
+	 * Advice definition 'after'
+	 */
 	public function after_method() {
 		
 	}

@@ -9,7 +9,7 @@
  * @pattern Template Method
  */
 
-class PHP_Beautifier_Filter_Class_Template 
+class aop_filter_class 
 	extends PHP_Beautifier_Filter {
 	/**
 	 * PHP_Beautifier context
