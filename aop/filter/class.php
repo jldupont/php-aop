@@ -145,7 +145,7 @@ class aop_filter_class
 		}
 		
 		if ( $leavingMethod )
-			return $this->i_end_method( $sTag, $this->currentMethod );
+			return $this->i_end_method( $sTag, $this->currentClass, $this->currentMethod );
 
 		if ( $leavingClass )
 			return $this->i_end_class( $sTag, $this->currentClass );
@@ -189,9 +189,9 @@ class aop_filter_class
 		$this->t_end_class( $sTag, $className );    
         return $this->default_t_close_brace( $sTag );	    
     }
-    public function i_end_method( &$sTag, &$methodName ) {
+    public function i_end_method( &$sTag, &$classe, &$methodName ) {
     
-		$this->t_end_method( $sTag, $methodName );
+		$this->t_end_method( $sTag, $classe, $methodName );
 		return $this->default_t_close_brace( $sTag );
     }
     
@@ -226,7 +226,7 @@ class aop_filter_class
 	/**
 	 * End-of-Method event 
 	 */
-    public function t_end_method( &$sTag, &$methodName ) {
+    public function t_end_method( &$sTag, &$className, &$methodName ) {
     
 		return false;
     }
