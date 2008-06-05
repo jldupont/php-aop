@@ -70,7 +70,7 @@ class aop_pointcut_processor
 		// 1- the pointcut definitions
 		// 2- the advice method definitions
 		// We need to join to 2 together in the aop_pointcut object
-		$this->joinPieces();
+		return $this->joinPieces();
 	}
 	/**
 	 * Joins the advice methods with the corresponding
@@ -83,6 +83,8 @@ class aop_pointcut_processor
 		foreach( $cuts as $index => &$cut ) {
 		
 		}
+		
+		return $cuts;
 	}
 	/**
 	 * Extracts the definition from the source file

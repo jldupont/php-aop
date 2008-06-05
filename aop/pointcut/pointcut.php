@@ -57,8 +57,8 @@ class aop_pointcut
 		$this->methodNamePattern = $definition['mp'];
 		$this->adviceMethods = $definition['am'];
 		
-		$this->classPattern = $this->computePattern( $classNamePattern );
-		$this->methodPattern = $this->computePattern( $methodNamePattern );		
+		$this->classPattern = $this->computePattern( $this->classNamePattern );
+		$this->methodPattern = $this->computePattern( $this->methodNamePattern );		
 	}
 	
 	/**
@@ -107,7 +107,8 @@ class aop_pointcut
 	 */
 	protected function computePattern( &$pattern ) {
 	
-		return '/' . str_replace('*', '(.*)', $pattern ) . '/siU';
+		$p = preg_quote( $pattern );
+		return '/' . str_replace( '*', '(.*)', $p ) . '/siU';
 	}
 	
 }//end definition
