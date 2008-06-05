@@ -1,6 +1,6 @@
 <?php
 /**
- * Test class
+ * TestPointcut test class
  * 
  * @author Jean-Lou Dupont
  */
@@ -13,7 +13,7 @@ class TestPointcut
 	
 		return array(	'cp'	=> 'classname-pattern1', 
 						'mp'	=> 'methodname-pattern1', 
-						'am'	=> array(	'before'	=> 'before_method', 
+						'am'	=> array(	'before'=> 'before_method', 
 											'after'	=> 'after_method' ) );
 		
 		
@@ -24,7 +24,7 @@ class TestPointcut
 
 		return array(	'cp' 	=> 'classname-pattern1', 
 						'mp'	=> 'methodname-pattern1', 
-						'am'	=> array(	'before'	=> 'before_method', 
+						'am'	=> array(	'before'=> 'before_method', 
 											'after'	=> 'after_method' ) );
 	}
 	/**
@@ -42,6 +42,3 @@ class TestPointcut
 	
 	
 }
-// instructs the pointcut_processor of which
-// class defines the pointcuts in this file
-return 'TestPointcut';
