@@ -15,7 +15,7 @@ require_once $path.'/class.php';
 UnitTest::$content = file_get_contents( dirname( __FILE__ ).'/test.php' );
 
 
-class TestClassFilter extends PHP_Beautifier_Filter_Class_Template {
+class TestClassFilter extends aop_filter_class {
 
 	public function t_start_class( &$sTag, &$name ) {
 	
