@@ -39,7 +39,19 @@ class aop_beautifier_extracter
 	 */
 	public function getMatching( &$classe, &$method ) {
 	
+		$found = null;
+		foreach( $this->extractList as $entry ) {
+			if ( $entry['c'] == $classe )
+				if ( $entry['m'] == $method ) {
+					$found = $entry;
+					break;
+				}
+		}
+		// we found a match, supply a collector
+		if ( !is_null( $found ) )
+			return new aop_token_collector( $classe, $method );
 		
+		return null;
 	}
 	
 }//end class
