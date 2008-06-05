@@ -82,6 +82,8 @@ class aop_pointcut_processor
 		
 		foreach( $cuts as $index => &$cut ) {
 		
+			//collector
+		
 		}
 		
 		return $cuts;
@@ -117,7 +119,8 @@ class aop_pointcut_processor
 		return $def->process();
 	}
 	/**
-	 * Extracts all the class methods from the specified source
+	 * Extracts the token list associated with each of 
+	 * the class methods from the specified source
 	 * 
 	 * @return aop_token_collector
 	 */
