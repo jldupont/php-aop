@@ -14,8 +14,12 @@ $aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARA
 
 set_include_path( $aopPath . PATH_SEPARATOR . $includePath );
 
+UnitTest::$content = file_get_contents( dirname(__FILE__).'/Test.php' );
+
 class UnitTest extends PHPUnit_Framework_TestCase
 {
+
+	static $content = null;
 
 	public function setup() {
 	
@@ -104,7 +108,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testExtracter() {
     
-    	$content = file_get_contents( dirname(__FILE__).'/Test.php' );
+
     
     	$b = new aop_beautifier_extracter();
     	$e = new aop_filter_extracter( $b );
@@ -114,11 +118,22 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	
 		$b->addFilter( $e );		
 		
-		$b->setInputString( $content );
+		$b->setInputString( self::$content );
 		$b->process();
 		
     	$this->assertEquals( count( $b->getExtractedList()), 2 );
     }
+    
+    public function testPointcutProcessor() {
+    	
+    	$p = aop::factory( 'aop_pointcut_processor', self::$content );
+    	
+    	$r = $p->process();
+    	
+    	foreach( $r as $collector )
+    		$this->assertEquals( $collector instanceof aop_token_collector, true );
+    }
+    
     
 }
 

@@ -40,6 +40,7 @@ class aop_pointcut_processor
 	 * @param $source string class text file
 	 */
 	public function __construct( &$source ) {
+	
 	 	$this->source = $source;
 	}
 	
@@ -51,9 +52,11 @@ class aop_pointcut_processor
 		if ( !is_null( $this->collector ) )
 			return $this->collector;
 
-		$this->collector = aop::factory( 'aop_method_collector' );
-			
 		$this->bExtracter = aop::factory( 'aop_beautifier_extracter' );
+		
+		// extracts all methods
+		$this->bExtracter->setAll();
+		
 		$this->bFilterExtracter = aop::factory( 'aop_filter_extracter', $this->bExtracter );
 		
 		$this->bExtracter->addFilter( $this->bFilterExtracter );
@@ -62,6 +65,7 @@ class aop_pointcut_processor
 		$this->bExtracter->process();
 
 		// the extracted methods are stored in the Beautifier_Extracter instance
+		return $this->collector = $this->bExtracter->getExtractedList();
 	}
 	
 }//end class

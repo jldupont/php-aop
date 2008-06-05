@@ -26,6 +26,11 @@ class aop_beautifier_extracter
 	var $extractedList = array();
 	
 	/**
+	 * 'Extract all' flag
+	 */
+	var $all = false;
+	
+	/**
 	 * Adds an entry to the list of methods to extract
 	 * 
 	 * @param $classe
@@ -36,6 +41,16 @@ class aop_beautifier_extracter
 	
 		$entry = array( 'c' => $classe, 'm' => $method );
 		$this->extractList[] = $entry;
+		return $this;
+	}
+	/**
+	 * Sets the 'extract all' flag
+	 * 
+	 * @package boolean
+	 * @return $this
+	 */
+	public function setAll( $flag = true ) { 
+		$this->all = $flag;
 		return $this;
 	}
 	
@@ -68,15 +83,18 @@ class aop_beautifier_extracter
 	public function getMatching( &$classe, &$method ) {
 	
 		$found = null;
-		foreach( $this->extractList as $entry ) {
-			if ( $entry['c'] == $classe )
-				if ( $entry['m'] == $method ) {
-					$found = $entry;
-					break;
-				}
-		}
+
+		// only go through the lenghty process if we really need to
+		if ( !$this->all )
+			foreach( $this->extractList as $entry ) {
+				if ( $entry['c'] == $classe )
+					if ( $entry['m'] == $method ) {
+						$found = $entry;
+						break;
+					}
+			}
 		// we found a match, supply a collector
-		if ( !is_null( $found ) ) {
+		if ( !is_null( $found ) or $this->all ) {
 			#return new aop_token_collector( $classe, $method );
 			return aop::factory( 'aop_token_collector', $classe, $method );
 		}
