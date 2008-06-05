@@ -50,6 +50,43 @@ class UnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( $o1, $o2 );    
     }
     
+    public function testFactory() {
+    
+    	$o = aop::factory( 'Test' );
+    	
+    	$this->assertEquals( $o instanceof Test, true );
+    }
+
+    public function testFactoryWithParams() {
+    
+    	$o = aop::factory( 'Test2', 'param1', 'param2' );
+    	
+    	$this->assertEquals( $o instanceof Test, true );
+    	$this->assertEquals( $o instanceof Test2, true );    	
+    }
+
+    public function testFactoryWithTooFewParams() {
+
+    	$result = false;    
+    	try {
+    		$o = aop::factory( 'Test2', 'param1' );
+    	} catch( Exception $e ) {
+    		$result = true;
+    	}
+    	
+    	$this->assertEquals( $result, true );
+    }
+    
+    public function testFactoryWithTooManyParams() {
+    
+    	$o = aop::factory( 'Test2', 'param1', 'param2', 'param3' );
+    	
+    	$this->assertEquals( $o instanceof Test, true );
+    	$this->assertEquals( $o instanceof Test2, true );  
+
+    	#var_dump( $o );
+    }
+    
     public function testLoader1() {
     
     	$o = new aop_weaver();
@@ -80,7 +117,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
 		$b->setInputString( $content );
 		$b->process();
 		
-    	var_dump( $b->getExtractedList() );
+    	$this->assertEquals( count( $b->getExtractedList()), 2 );
     }
     
 }

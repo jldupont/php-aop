@@ -3,6 +3,8 @@
  * aop_beautifier_extracter
  * PHP-AOP framework
  * 
+ * This class is meant to be used with aop_filter_extracter.
+ * 
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
@@ -39,8 +41,11 @@ class aop_beautifier_extracter
 	
 	/**
 	 * Adds a token collector object
-	 * to the list of extracted things
+	 * to the list of extracted things.
+	 * Called by aop_filter_extracter.
 	 * 
+	 * @param $obj aop_token_collector
+	 * @return void
 	 */
 	public function commit( &$obj ) {
 	
@@ -49,7 +54,9 @@ class aop_beautifier_extracter
 			
 		$this->extractedList[] = $obj;
 	}
-	
+	/**
+	 * Returns the list of extracted tokens
+	 */
 	public function getExtractedList() {
 		return $this->extractedList;
 	}
@@ -70,7 +77,8 @@ class aop_beautifier_extracter
 		}
 		// we found a match, supply a collector
 		if ( !is_null( $found ) ) {
-			return new aop_token_collector( $classe, $method );
+			#return new aop_token_collector( $classe, $method );
+			return aop::factory( 'aop_token_collector', $classe, $method );
 		}
 		
 		return null;
