@@ -45,10 +45,9 @@ class aop_pointcut_processor
 	 * 
 	 * @param $source string class text file
 	 */
-	public function __construct( &$path, &$source = null ) {
+	public function __construct( &$path ) {
 	
 		$this->path   = $path;
-	 	$this->source = $source;
 	}
 	
 	/**
@@ -59,8 +58,7 @@ class aop_pointcut_processor
 		if ( !is_null( $this->collector ) )
 			return $this->collector;
 
-		if ( is_null( $this->source ))
-			$this->source = @file_get_contents( $this->path );
+		$this->source = @file_get_contents( $this->path );
 			
 		// collect the class methods
 		$this->collector = $this->extractClassMethods();
@@ -94,16 +92,22 @@ class aop_pointcut_processor
 	private function extractDefinitions() {
 	
 		// by 'including' this file ...
-		$classThatDefinesThePointcut = include_once $this->path;
+		$result = include_once $this->path;
+		
+		if ( !$result ) {
+			throw new aop_exception(": error whilst including path (".$this->path.")");
+		}
+		
+		$classThatDefinesThePointcut = $this->inferDefinitionClassName();
 		
 		// and processing this file, the definitions
 		// will get populated automatically.
 		if ( empty( $classThatDefinesThePointcut ) )
 			throw new aop_exception( ": pointcut definition file invalid: is there a 'return' statement indicating the classname?" );
 		
-		// Use 'duckTyping' as interface
-		if (!( $classThatDefinesThePointcut implements findMatch ))
-			throw new aop_exception( ": the pointcut definition file provided does not appear valid" );
+		// TODO Use 'duckTyping' as interface
+		//if (!( $classThatDefinesThePointcut implements findMatch ))
+		//	throw new aop_exception( ": the pointcut definition file provided does not appear valid" );
 		
 		// instantiate one of these
 		$def = new $classThatDefinesThePointcut;
@@ -132,6 +136,22 @@ class aop_pointcut_processor
 		// the extracted methods are stored in the Beautifier_Extracter instance
 		return $this->bExtracter->getExtractedList();
 	
+	}
+	/**
+	 * Infers the definition class name from the
+	 * $path provided.
+	 * 
+	 * @return string
+	 */
+	private function inferDefinitionClassName(){
+	
+		$path_parts = pathinfo( $this->path );
+		$filename = $path_parts['filename'];
+		
+		// really get just the first part of the filename
+		$bits = explode( '.', $filename );
+		
+		return $bits[0]; 
 	}
 	
 }//end class

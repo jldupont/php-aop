@@ -14,13 +14,19 @@ $aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARA
 
 set_include_path( $aopPath . PATH_SEPARATOR . $includePath );
 
-UnitTest::$content = file_get_contents( dirname(__FILE__).'/Test.php' );
+UnitTest::$pathToTestFile = dirname(__FILE__).'/TestPointcut.php';
+UnitTest::$content = file_get_contents( UnitTest::$pathToTestFile );
 
 class UnitTest extends PHPUnit_Framework_TestCase
 {
 
 	static $content = null;
+	static $pathToTestFile = null;
 
+	public function get_contents( $file ) {
+		return file_get_contents( dirname(__FILE__).'/'.$file );
+	}
+	
 	public function setup() {
 	
 		require_once "aop/aop.php";
@@ -56,24 +62,24 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testFactory() {
     
-    	$o = aop::factory( 'Test' );
+    	$o = aop::factory( 'TestClass' );
     	
-    	$this->assertEquals( $o instanceof Test, true );
+    	$this->assertEquals( $o instanceof TestClass, true );
     }
 
     public function testFactoryWithParams() {
     
-    	$o = aop::factory( 'Test2', 'param1', 'param2' );
+    	$o = aop::factory( 'TestClass2', 'param1', 'param2' );
     	
-    	$this->assertEquals( $o instanceof Test, true );
-    	$this->assertEquals( $o instanceof Test2, true );    	
+    	$this->assertEquals( $o instanceof TestClass, true );
+    	$this->assertEquals( $o instanceof TestClass2, true );    	
     }
 
     public function testFactoryWithTooFewParams() {
 
     	$result = false;    
     	try {
-    		$o = aop::factory( 'Test2', 'param1' );
+    		$o = aop::factory( 'TestClass2', 'param1' );
     	} catch( Exception $e ) {
     		$result = true;
     	}
@@ -83,10 +89,10 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testFactoryWithTooManyParams() {
     
-    	$o = aop::factory( 'Test2', 'param1', 'param2', 'param3' );
+    	$o = aop::factory( 'TestClass2', 'param1', 'param2', 'param3' );
     	
-    	$this->assertEquals( $o instanceof Test, true );
-    	$this->assertEquals( $o instanceof Test2, true );  
+    	$this->assertEquals( $o instanceof TestClass, true );
+    	$this->assertEquals( $o instanceof TestClass2, true );  
 
     	#var_dump( $o );
     }
@@ -108,15 +114,17 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testExtracter() {
     
+		$content = $this->get_contents( 'TestClass.php' );
+    
     	$b = new aop_beautifier_extracter();
     	$e = new aop_filter_extracter( $b );
     	
-    	$b->addExtractEntry( 'Test', 'before' );
-    	$b->addExtractEntry( 'Test', 'after' );    	
+    	$b->addExtractEntry( 'TestClass', 'before' );
+    	$b->addExtractEntry( 'TestClass', 'after' );    	
     	
 		$b->addFilter( $e );		
 		
-		$b->setInputString( self::$content );
+		$b->setInputString( $content );
 		$b->process();
 		
     	$this->assertEquals( count( $b->getExtractedList()), 2 );
@@ -124,9 +132,11 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testPointcutProcessor() {
     	
-    	$p = aop::factory( 'aop_pointcut_processor', '', self::$content );
+    	$p = aop::factory( 'aop_pointcut_processor', self::$pathToTestFile );
     	
     	$r = $p->process();
+    	
+    	var_dump( $r );
     	
     	foreach( $r as $collector )
     		$this->assertEquals( $collector instanceof aop_token_collector, true );
