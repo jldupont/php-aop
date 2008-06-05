@@ -41,6 +41,14 @@ class aop_list
 
 		return ( valid( $this->liste) );
 	}
+
+	/*********************************************************
+	 * 				Array Interface
+	 ********************************************************/
+	public function push( $element ) {
 	
+		$this->liste[] = $element;
+		return $this;
+	}
 
 }//end definition

@@ -99,6 +99,7 @@ class aop_filter_class
 		if (is_null( $this->nextOpenBrace ))
 			return PHP_Beautifier_Filter::BYPASS;
 
+		$classe= $this->currentClass;
 		$type = $this->nextOpenBrace[0];
 		$name = $this->nextOpenBrace[1];
 		
@@ -108,7 +109,7 @@ class aop_filter_class
 		case 'class':
 			return $this->i_start_class( &$sTag, $name );
 		case 'method':
-			return $this->i_start_method( &$sTag, $name );		
+			return $this->i_start_method( &$sTag, $classe, $name );		
 		default:
 			throw new Exception( __METHOD__.": invalid type ($type)" );
 		}//switch
@@ -177,10 +178,10 @@ class aop_filter_class
         $this->default_t_open_brace( $sTag );
 		return $this->t_start_class( $sTag, $className );    
     }
-    public function i_start_method( &$sTag, &$methodName ) {
+    public function i_start_method( &$sTag, &$className, &$methodName ) {
     
         $this->default_t_open_brace( $sTag );
-		return $this->t_start_method( $sTag, $methodName );    
+		return $this->t_start_method( $sTag, $className, $methodName );    
     }
 
     public function i_end_class( &$sTag, &$className ) {
@@ -217,7 +218,7 @@ class aop_filter_class
 	/**
 	 * Start-of-Method event 
 	 */
-    public function t_start_method( &$sTag, &$methodName ) {
+    public function t_start_method( &$sTag, &$className, &$methodName ) {
     
 		return false;
     }

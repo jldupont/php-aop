@@ -12,33 +12,63 @@
 class aop_filter_extracter 
 	extends aop_filter_class {
 
-    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
-    {
+	/**
+	 * Token Collector Object
+	 * @access private
+	 */
+	var $collector = null;
+	
+	/**
+	 * Constructor
+	 */
+    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) {
+    
         parent::__construct($oBeaut, $aSettings);
     }
-    
-	public function t_start_class( &$sTag, &$name ) {
+    /**
+     * Start of method
+     * 
+     * @param $sTag current filter tag - not used
+     * @param $classe class-name
+     * @param $name method-name
+     * @return void
+     */
+	public function t_start_method( &$sTag, &$classe, &$name ) {
+
+		$this->collector = $this->oBeaut->getMatching( $classe, $name );
+	}
+    /**
+     * End of method
+     * 
+     * @param $sTag current filter tag - not used
+     * @param $classe class-name
+     * @param $name method-name
+     * @return void
+     */
+	public function t_end_method( &$sTag, &$classe, &$name ) {
+
+		$this->commit( );
+	}
+
+	/**
+	 * @see PHP_Beautifier_Filter::handleToken
+	 */
+	public function handleToken( $token ) {
 	
-		$this->oBeaut->add('//INSERTED @ start_class');
-		$this->oBeaut->addNewLineIndent();
+		if ( !is_null( $this->collector ))
+			$this->collector->push( $token );
+			
+		return parent::handleToken( $token );
 	}
-
-	public function t_start_method( &$sTag, &$name ) {
-
-		$this->oBeaut->add('//INSERTED @ start_method');
-		$this->oBeaut->addNewLineIndent();
-	}
-
-	public function t_end_class( &$sTag, &$name ) {
 	
-		$this->oBeaut->add('//INSERTED @ end_class');
-		$this->oBeaut->addNewLineIndent();
+	/**
+	 * Commits an extraction
+	 */
+	private function commit() {
+	
+		$this->oBeaut->commit( $this->collector );
+		$this->collector = null;
+		
 	}
-
-	public function t_end_method( &$sTag, &$name ) {
-
-		$this->oBeaut->add('//INSERTED @ end_method');
-		$this->oBeaut->addNewLineIndent();
-	}
-        
+	
 }//end class
