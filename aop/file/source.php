@@ -75,7 +75,7 @@ class aop_file_source
 	 * Save - don't need to do anything special
 	 * but not let the base class save to filesystem  
 	 */
-	public function save( &$content ) {
+	public function write( &$content ) {
 
 		$this->beautified_content = $content;
 	

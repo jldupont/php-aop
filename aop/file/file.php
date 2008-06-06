@@ -110,12 +110,11 @@ abstract class aop_file
 		}
 
 		try {
-		
 			// can be handled in derived class		
-			$result = $this->save( $content );
+			$result = $this->write( $content );
 			
 		} catch( Exception $e ) {
-		
+
 			$this->raise( 'aop_file_exception', "can't save file. ".$e->getMessage() );
 		}
 		
@@ -159,7 +158,7 @@ abstract class aop_file
 	 * 
 	 * @return boolean result
 	 */
-	protected function save( &$content ) {
+	protected function write( &$content ) {
 	
 		$len = strlen( $content );
 		

@@ -65,7 +65,7 @@ class aop_file_definition
 	/**
 	 *  
 	 */
-	protected function save( &$content ) {
+	protected function write( &$content ) {
 		
 		$this->pointcuts = $content;
 	
