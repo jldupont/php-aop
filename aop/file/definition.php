@@ -66,11 +66,11 @@ class aop_file_definition
 	 *  
 	 */
 	public function save() {
-
+		
 		$pointcutsStore = aop::factory( 'aop_pointcut_list' );
 		
 		$pointcutsStore->push( $this->pointcuts );
-		
+
 		// this can only fail for reasons beyond
 		// our control here.
 		return true;

@@ -15,6 +15,10 @@ class aop_list_borg
 
 	static $liste = array();
 	
+	public function __construct() {
+		parent::__construct();
+	}
+	
 	/*********************************************************
 	 * 				Iterator Interface
 	 ********************************************************/
@@ -46,10 +50,13 @@ class aop_list_borg
 	/*********************************************************
 	 * 				Array Interface
 	 ********************************************************/
-	public function push( $element ) {
+	public function push( &$element ) {
 	
 		self::$liste[] = $element;
 		return $this;
 	}
 
+	public function getList() {
+		return self::$liste;
+	}
 }//end definition

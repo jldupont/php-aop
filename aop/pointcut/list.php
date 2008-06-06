@@ -14,6 +14,10 @@
 class aop_pointcut_list
 	extends aop_list_borg {
 
+	public function __construct() {
+		parent::__construct();
+	}
+	
 	/**
 	 * Finds a match for the given className/methodName.
 	 * Returns the first match.
@@ -33,6 +37,7 @@ class aop_pointcut_list
 					break;
 				}
 			} catch(Exception $e) {
+			
 				throw new aop_exception( __METHOD__.": expecting findMatch interface" );
 			}
 		}
