@@ -29,8 +29,8 @@ class aop_filter_inserter
 
 		$tokensToInsert = $this->oBeaut->findMatch( $classe, $name, 'before' );
 		if ( !empty( $tokensToInsert ) ) {
-
-			$this->oBeaut->add( $tokensToInsert );
+			$string = aop_token_tostring::process( $tokensToInsert );
+			$this->oBeaut->add( $string );
 			$this->oBeaut->addNewLineIndent();
 		}
 	}
@@ -39,8 +39,8 @@ class aop_filter_inserter
 
 		$tokensToInsert = $this->oBeaut->findMatch( $classe, $name, 'after' );
 		if ( !empty( $tokensToInsert ) ) {
-
-			$this->oBeaut->add( $tokensToInsert );
+			$string = aop_token_tostring::process( $tokensToInsert );
+			$this->oBeaut->add( $string );
 			$this->oBeaut->addNewLineIndent();
 		}
 	}
