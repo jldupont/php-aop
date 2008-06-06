@@ -276,23 +276,54 @@ class aop {
 		if ( is_null( $path ))
 			return false;
 
-		$result = include $path;
+		// is there a pointcut definition file associated with the
+		// target source file?
+		$def_file = aop::factory( 'aop_file_definition',  $path );
+		if ( $def_file->exists() ) {
+		
+			// absorb the pointcut definition
+			try {
+				$def_file->process();
+				
+			} catch( Exception $e ) {
+				throw new aop_exception( ": failed to process definition file ($path)" );
+			}
+		}
+		
+		// process the target file
+		$ifile = aop::factory( 'aop_file_source',  $path );
+		try {
+    		$result = $ifile->process();
+		} catch( Exception $e ) {
+			throw new aop_exception( ": failed to process the class file ($path)" );				
+		}
+		
+		
+		// prepare an aspect file...
+		$ofile = aop::factory( 'aop_file_aspect', $path );
+		
+		// get the weaver ready
+    	$weaver = aop::factory( 'aop_weaver' );
+    	$weaver->setPointcutList( self::$pointcut_list );
+    	$weaver->setInputFile( $ifile );
+    	$weaver->setOutputFile( $ofile );
+    	
+    	try {
+    		
+    		$weaver->weave();
+    		
+    	} catch( Exception $e ) {
+    		
+    		throw new aop_exception( ": failed to weave the class file ($path)" );
+    	}
+		
+    	$aspect_path = $ofile->getPath();
+		
+		$result = include $aspect_path;
 		if ( !$result )
 			return false;
 		
-		if ( !class_exists( $className ))
-			return false;
-
-		// get the class file ready
-		#$file = new aop_file( $path );
-		#$file->process();
-		
-		#var_dump( $file );
-		
-			
-		//process it
-		
-		return true;
+		return ( !class_exists( $className ));
 	}
 	/**
 	 * Processes a given file which, supposedly, contains
