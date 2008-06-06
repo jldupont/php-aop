@@ -30,6 +30,12 @@ class aop {
 	 * @access private
 	 */
 	private static $activated = false;
+	
+	/**
+	 * Initialization state
+	 * @access private
+	 */
+	private static $initialized = false;
 
 	/**
 	 * Reference list of allowed parameters
@@ -50,6 +56,11 @@ class aop {
 	 */
 	private static $classMap = array();
 	
+	/**
+	 * Pointcut list
+	 */
+	static $pointcut_list = null;
+	
 	/*================================================================
 	 					PUBLIC INTERFACE
 	 ================================================================*/
@@ -58,7 +69,7 @@ class aop {
 	 */
 	public function __construct() {
 	
-		self::activate();
+		$this->activate();
 	}
 	
 	/**
@@ -191,7 +202,7 @@ class aop {
 	 * 
 	 * @return void
 	 */
-	public static function activate() {
+	private function activate() {
 
 		// activate just once
 		if ( self::$activated )
@@ -211,11 +222,30 @@ class aop {
 		
 		$callback = array( __CLASS__, 'autoload' );
 		spl_autoload_register( $callback );
+		
+	}
+	/**
+	 * Should only be called privately by this script
+	 * The framework requires a two stage initialization process.
+	 * 
+	 * @access private
+	 */
+	public function init() {
+	
+		// activate just once
+		if ( self::$initialized )
+			return;
+			
+		self::$initialized = true;
+	
+		self::$pointcut_list = aop::factory( 'aop_pointcut_list' );
 	}
 	/**
 	 * Autoloads classes making this framework
 	 */
 	public static function our_autoload( $className ) {
+	
+		#echo __METHOD__." class= $className \n";
 	
 		if (substr( $className, 0, 4) != 'aop_' )
 			return false;
@@ -237,6 +267,8 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 
+		#echo __METHOD__." class= $className \n";	
+	
 		$finder = aop::factory( 'aop_finder' );
 	
 		//find the target class file
@@ -288,6 +320,7 @@ class aop {
 }//end definition
 
 //activate the framework
-aop::activate();
-aop::register_class_path( get_include_path() );
-aop::register_class_path( realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
+$aop = new aop;
+$aop->_register_class_path( get_include_path() );
+$aop->_register_class_path( realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
+$aop->init();

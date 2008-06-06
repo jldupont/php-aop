@@ -152,8 +152,29 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     	$def_file = aop::factory( 'aop_file_definition',  self::$pathToTestpointFile );
     	
-    	$def_file->process();
+    	try {
     	
+    		$result = $def_file->process();
+    		
+    	} catch( Exception $e ) {
+    	
+    		$result = false;
+    	}
+    	
+    	$this->assertEquals( $result, true );
+    	
+    	$pointcutsStore = aop::factory( 'aop_pointcut_list' );
+    	
+    	$liste = $pointcutsStore->getList();
+
+    	#var_dump( $liste );
+    	#var_dump( $def_file );
+    	    	
+    	$count = count( $liste );
+    	
+    	$check = $count >= 1;
+    	 
+    	$this->assertEquals( $check, true );
     }
     
 }

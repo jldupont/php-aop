@@ -5,7 +5,8 @@
  * @author Jean-Lou Dupont
  */
 
-class TestPointcut_pointcuts
+class TestPointcut_pointcuts #the suffix _pointcuts is mandatory
+
 	extends aop_pointcut_definition {
 	
 
