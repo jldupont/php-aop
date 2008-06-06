@@ -22,8 +22,8 @@ class TestPointcut
 	
 	public function cut_id2() {
 
-		return array(	'cp' 	=> 'classname-pattern1', 
-						'mp'	=> 'methodname-pattern1', 
+		return array(	'cp' 	=> 'classname-pattern2', 
+						'mp'	=> 'methodname-pattern2', 
 						'am'	=> array(	'before'=> 'before_method', 
 											'after'	=> 'after_method' ) );
 	}

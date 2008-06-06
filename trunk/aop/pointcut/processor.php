@@ -40,6 +40,8 @@ class aop_pointcut_processor
 	 */
 	var $definition = null;
 	
+	var $classDefinitionName = null;
+	
 	/**
 	 * Constructor
 	 * 
@@ -58,6 +60,10 @@ class aop_pointcut_processor
 		if ( !is_null( $this->collectorList ) )
 			return $this->collectorList;
 
+		$this->classDefinitionName = $this->inferDefinitionClassName();
+		if ( empty( $this->classDefinitionName ) )
+			throw new aop_exception( ": pointcut definition filename invalid" );
+			
 		$this->source = @file_get_contents( $this->path );
 			
 		// collect the class methods
@@ -87,13 +93,18 @@ class aop_pointcut_processor
 		
 			foreach( $iterator as $type => $methodName ) {
 			
-				echo "type ($type) methodname ($methodName)\n";
-			}
+				$finder = aop::factory( 'aop_token_finder', $this->collectorList );
+				$index = $finder->findMatch( $this->classDefinitionName, $methodName);
+				if ( is_null( $index ))
+					throw new aop_exception(": missing method definition for advice type($type)");
+
+				$collector = $this->collectorList[ $index ];
+				$cut->setAdviceCode( $type, $collector->getList() );
+				#echo "type ($type) methodname ($methodName)\n";
+				
+			}//foreach
 			
-		
-		}
-		var_dump( $this->collector );
-		die;
+		}//foreach
 		
 		return $cuts;
 	}
@@ -105,25 +116,21 @@ class aop_pointcut_processor
 	private function extractDefinitions() {
 	
 		// by 'including' this file ...
+		// and processing this file, the definitions
+		// will get populated automatically.
 		$result = include_once $this->path;
 		
 		if ( !$result ) {
 			throw new aop_exception(": error whilst including path (".$this->path.")");
 		}
 		
-		$classThatDefinesThePointcut = $this->inferDefinitionClassName();
-		
-		// and processing this file, the definitions
-		// will get populated automatically.
-		if ( empty( $classThatDefinesThePointcut ) )
-			throw new aop_exception( ": pointcut definition file invalid: is there a 'return' statement indicating the classname?" );
-		
 		// TODO Use 'duckTyping' as interface
 		//if (!( $classThatDefinesThePointcut implements findMatch ))
 		//	throw new aop_exception( ": the pointcut definition file provided does not appear valid" );
 		
 		// instantiate one of these
-		$def = new $classThatDefinesThePointcut;
+		$classe = $this->classDefinitionName;
+		$def = new $classe;
 		
 		return $def->process();
 	}

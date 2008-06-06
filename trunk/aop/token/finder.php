@@ -12,7 +12,7 @@
 
 class aop_token_finder {
 	
-	var $ref = array;
+	var $ref = array();
 
 	/**
 	 * Constructor
