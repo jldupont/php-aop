@@ -78,7 +78,7 @@ abstract class aop_file
 	 */
 	public function exists() {
 	
-		return $this->mtime !== false;
+		return ($this->mtime !== false) and ($this->mtime !== null);
 	}
 	/**
 	 * Process the file
@@ -128,6 +128,9 @@ abstract class aop_file
 	public function getPathParts() {
 	
 		return $this->path_parts;
+	}
+	public function getPath() {
+		return $this->path;
 	}
 	// =======================================================================
 	//							DEFAULT TEMPLATE METHODS
