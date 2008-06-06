@@ -267,14 +267,16 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 
-		#echo __METHOD__." class= $className \n";	
-	
 		$finder = aop::factory( 'aop_finder' );
 	
 		//find the target class file
 		$path = $finder->find( $className );
-		if ( is_null( $path ))
+		if ( is_null( $path )) {
+		
 			return false;
+			#throw new aop_exception( ": can't find class file ($className)" );
+		}
+		
 
 		// is there a pointcut definition file associated with the
 		// target source file?
@@ -321,31 +323,9 @@ class aop {
 		
 		$result = include $aspect_path;
 		if ( !$result )
-			return false;
+			throw new aop_exception( ": failed to include weaved the class file ($path)" );
 		
 		return ( !class_exists( $className ));
-	}
-	/**
-	 * Processes a given file which, supposedly, contains
-	 * the definition for class $className
-	 * 
-	 * @param $className string
-	 * @param $classPath string absolute filesystem path
-	 * @return void
-	 * @throws
-	 */
-	private static function process( &$className, &$classPath ) {
-	
-		// verifies if a companion pointcut definition file is present
-		
-		// load definition file
-		
-		// process it - this includes the pointcut list in the framework
-		
-		// from this point on, we have our pointcuts: let's process
-		// the target class file
-		
-	
 	}
 	
 }//end definition
