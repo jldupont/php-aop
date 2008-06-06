@@ -123,13 +123,13 @@ class aop_pointcut_processor
 		if ( !$result ) {
 			throw new aop_exception(": error whilst including path (".$this->path.")");
 		}
-		
-		// TODO Use 'duckTyping' as interface
-		//if (!( $classThatDefinesThePointcut implements findMatch ))
-		//	throw new aop_exception( ": the pointcut definition file provided does not appear valid" );
+
+		$classe = $this->classDefinitionName;
+				
+		if (! class_exists( $classe ) )
+			throw new aop_exception( ": the pointcut definition file provided does not appear valid" );
 		
 		// instantiate one of these
-		$classe = $this->classDefinitionName;
 		$def = new $classe;
 		
 		return $def->process();
@@ -172,7 +172,7 @@ class aop_pointcut_processor
 		// really get just the first part of the filename
 		$bits = explode( '.', $filename );
 		
-		return $bits[0]; 
+		return $bits[0] . '_pointcuts'; 
 	}
 	
 }//end class

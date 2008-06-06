@@ -11,10 +11,12 @@
  * @pattern TemplateMethod
  */
 
-abstract class aop_file_definition
+class aop_file_definition
 	extends aop_file {
 
-	static $suffix = 'pointcut.definition.php';
+	static $suffix = '.pointcut.definition.php';
+	
+	var $pointcuts = null;
 	
 	// =======================================================================
 	//							PUBLIC INTERFACE
@@ -25,20 +27,27 @@ abstract class aop_file_definition
 		parent::__construct( $path, $content );
 	}
 	
+	public static function getTransformationPathString() {
+	
+		return self::$suffix;
+	}
 	// =======================================================================
 	//							TEMPLATE METHODS
 	// =======================================================================
 	
 	/**
-	 * Process the file
+	 * Processes the file
+	 * The user of this class should call the 'exists()' method
+	 * before 'process()' the file.
 	 * 
 	 * @return boolean result
 	 * @throws aop_file_exception
 	 */
 	public function _process() {
 
-		
-		return $result;
+    	$proc = aop::factory( 'aop_pointcut_processor', $this->path );
+    	
+    	$this->pointcuts = $proc->process();
 	}
 
 	/**
@@ -57,64 +66,19 @@ abstract class aop_file_definition
 	 *  
 	 */
 	public function save() {
-	
+
+		$pointcutsStore = aop::factory( 'aop_pointcut_list' );
+		
+		$pointcutsStore->push( $this->pointcuts );
+		
+		// this can only fail for reasons beyond
+		// our control here.
+		return true;
 	}
 	
 	
 	// =======================================================================
 	//							PROTECTED METHODS
 	// =======================================================================	
-
-	/**
-	 * Reads the content of the base file and
-	 * determines where the __halt_compiler boundary lies
-	 * 
-	 * @return boolean
-	 */
-	protected function read() {
-		
-		$this->content = file_get_contents( $this->path );
-				
-		return ($this->content !== false);
-	}
-	/**
-	 * Saves the representation to a file
-	 * 
-	 * @return boolean result
-	 */
-	protected function save( ) {
-	
-		$len = strlen( $this->content );
-		
-		$bytes_written = file_put_contents( $this->path, $this->content );
-		
-		return ( $len === $bytes_written );
-	}
-
-	/**
-	 * Core method for the template method pattern
-	 */
-	private function init() {
-	
-		$this->transformPath();
-
-		$this->fetchPathInfo();
-		
-		$this->fetch_mtime();
-	}
-	/**
-	 * Pathinfo fetching
-	 */
-	protected function fetchPathInfo() {
-	
-		$this->path_parts = pathinfo( $this->path );
-	}
-	/**
-	 * mtime fetching
-	 */
-	protected function fetch_mtime() {
-	
-		$this->mtime = filemtime( $this->path );	
-	}
 	
 }//end definition

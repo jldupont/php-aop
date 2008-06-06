@@ -65,7 +65,7 @@ abstract class aop_file
 	
 		if ( empty( $this->content )) {
 	
-			// read content + aspect definition
+			// can be handled in derived class
 			if ( $this->read() === false )
 				$this->raise( 'aop_file_exception', "can't read file" );
 		}
@@ -76,6 +76,7 @@ abstract class aop_file
 
 		try {
 		
+			// handled in derived class
 			$content = $this->_process();
 			
 		} catch( Exception $e ) {
@@ -85,6 +86,7 @@ abstract class aop_file
 
 		try {
 		
+			// can be handled in derived class		
 			$result = $this->save( );
 			
 		} catch( Exception $e ) {

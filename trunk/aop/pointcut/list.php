@@ -1,6 +1,6 @@
 <?php
 /**
- * aop_pointcuts
+ * aop_pointcut_list
  * PHP-AOP framework
  *
  * List of all the pointcuts collected
@@ -11,8 +11,8 @@
  * @pattern borg
  */
 
-abstract class aop_pointcuts
-	extends aop_listborg {
+class aop_pointcut_list
+	extends aop_list_borg {
 
 	/**
 	 * Finds a match for the given className/methodName.
