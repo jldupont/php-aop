@@ -193,7 +193,7 @@ abstract class aop_file
 	 */
 	protected function fetch_mtime() {
 		try {
-			$this->mtime = filemtime( $this->path );
+			$this->mtime = @filemtime( $this->path );
 		} catch( Exception $e ) {
 			$this->mtime = null;	
 		}
