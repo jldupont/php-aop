@@ -46,6 +46,31 @@ abstract class aop_file
 		$this->init();
 	}
 	/**
+	 * Returns the content
+	 * 
+	 * @return string
+	 */
+	public function getContent() {
+	
+		return $this->content;
+	}
+	/**
+	 * Sets the content
+	 */
+	public function setContent( &$content = null ) {
+		$this->content = $content;
+		return $this;
+	}
+	/**
+	 * Returns the mtime field associated with the path file
+	 * 
+	 * @return integer mtime
+	 */
+	public function get_mtime() {
+	
+		return $this->mtime;
+	}
+	/**
 	 * Verifies if the given path exists
 	 * Records the 'modified timestamp' in the process
 	 * 
@@ -77,7 +102,7 @@ abstract class aop_file
 		try {
 		
 			// handled in derived class
-			$content = $this->_process();
+			$content = $this->_process( $this->content );
 			
 		} catch( Exception $e ) {
 		
@@ -87,7 +112,7 @@ abstract class aop_file
 		try {
 		
 			// can be handled in derived class		
-			$result = $this->save( );
+			$result = $this->save( $content );
 			
 		} catch( Exception $e ) {
 		
@@ -109,7 +134,7 @@ abstract class aop_file
 	//							DEFAULT TEMPLATE METHODS
 	// =======================================================================
 
-	abstract protected function _process();
+	abstract protected function _process( &$content = null );
 
 	abstract protected function transformPath();	
 	
@@ -134,11 +159,11 @@ abstract class aop_file
 	 * 
 	 * @return boolean result
 	 */
-	protected function save( ) {
+	protected function save( &$content ) {
 	
-		$len = strlen( $this->content );
+		$len = strlen( $content );
 		
-		$bytes_written = file_put_contents( $this->path, $this->content );
+		$bytes_written = file_put_contents( $this->path, $content );
 		
 		return ( $len === $bytes_written );
 	}
