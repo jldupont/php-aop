@@ -50,5 +50,10 @@ class aop_list
 		$this->liste[] = $element;
 		return $this;
 	}
-
+	/**
+	 * Pops the element at the end of the list
+	 */
+	public function pop() {
+		return array_pop( $this->liste );
+	}
 }//end definition

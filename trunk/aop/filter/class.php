@@ -124,31 +124,23 @@ class aop_filter_class
 
 		$this->currentDepth--;	
 	
-		$leavingMethod = false;
-		
 		// make sure to update currentMethod state upon leaving
 		// the method's definition scope
 		if ( $this->currentDepth === $this->depthLevelForMethod ) {
 			
+			$method = $this->currentMethod;
 			$this->currentMethod = null;
-			$leavingMethod = true;
+			return $this->i_end_method( $sTag, $this->currentClass, $method );
 		}
 
-		$leavingClass  = false;
-		
 		// make sure to update currentMethod state upon leaving
 		// the class's definition scope
 		if ( $this->currentDepth === $this->depthLevelForClass ) {
 			
+			$classe = $this->currentClass;
 			$this->currentClass = null;
-			$leavingClass = true;
+			return $this->i_end_class( $sTag, $classe );
 		}
-		
-		if ( $leavingMethod )
-			return $this->i_end_method( $sTag, $this->currentClass, $this->currentMethod );
-
-		if ( $leavingClass )
-			return $this->i_end_class( $sTag, $this->currentClass );
 
 		return $this->default_t_close_brace( $sTag );				    
 	}
