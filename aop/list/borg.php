@@ -9,7 +9,7 @@
  * @pattern borg
  */
 
-class aop_listborg
+class aop_list_borg
 	extends aop_object
 	implements Iterator {
 

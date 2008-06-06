@@ -14,14 +14,14 @@ $aopPath = realpath( dirname(__FILE__).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARA
 
 set_include_path( $aopPath . PATH_SEPARATOR . $includePath );
 
-UnitTest::$pathToTestFile = dirname(__FILE__).'/TestPointcut.php';
-UnitTest::$content = file_get_contents( UnitTest::$pathToTestFile );
+UnitTest::$pathToTestpointFile = dirname(__FILE__).'/TestPointcut.php';
+UnitTest::$content = file_get_contents( UnitTest::$pathToTestpointFile );
 
 class UnitTest extends PHPUnit_Framework_TestCase
 {
 
 	static $content = null;
-	static $pathToTestFile = null;
+	static $pathToTestpointFile = null;
 
 	public function get_contents( $file ) {
 		return file_get_contents( dirname(__FILE__).'/'.$file );
@@ -132,7 +132,11 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testPointcutProcessor() {
     	
-    	$p = aop::factory( 'aop_pointcut_processor', self::$pathToTestFile );
+    	$replacement = aop_file_definition::getTransformationPathString();
+    	
+    	$file = str_replace('.php', $replacement, self::$pathToTestpointFile );
+    
+    	$p = aop::factory( 'aop_pointcut_processor', $file );
     	
     	$r = $p->process();
     	
@@ -140,10 +144,17 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	
     	foreach( $r as $pointcut ) {
     		$this->assertEquals( $pointcut instanceof aop_pointcut, true );
-    		var_dump( $pointcut );
+    		#var_dump( $pointcut );
     	}
     }
     
+    public function testPointcutDefinitionFile() {
+    
+    	$def_file = aop::factory( 'aop_file_definition',  self::$pathToTestpointFile );
+    	
+    	$def_file->process();
+    	
+    }
     
 }
 
