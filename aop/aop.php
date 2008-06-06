@@ -290,5 +290,4 @@ class aop {
 //activate the framework
 aop::activate();
 aop::register_class_path( get_include_path() );
-aop::register_class_path( 
-	realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
+aop::register_class_path( realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
