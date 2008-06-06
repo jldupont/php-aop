@@ -179,6 +179,28 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	foreach( $liste as $index => &$element ) 
     		$this->assertEquals( $element instanceof aop_pointcut, true );
     }
+
+    public function testSourceFile() {
+    
+    	$src_file = aop::factory( 'aop_file_source',  self::$pathToTestpointFile );
+    	
+    	try {
+    	
+    		$result = $src_file->process();
+    		
+    	} catch( Exception $e ) {
+    	
+    		$result = false;
+    	}
+    	
+    	$this->assertEquals( $result, true );
+
+    	$content = $src_file->getContent();
+    	
+    	var_dump( $content );
+    	#var_dump( $def_file );
+    	    	
+    }
     
 }
 

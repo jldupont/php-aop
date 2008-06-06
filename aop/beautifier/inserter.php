@@ -14,15 +14,16 @@ class aop_beautifier_inserter
 	/**
 	 * List of class/method to insert
 	 */
-	var $insertListObj = null;	
+	var $pointcuts = null;	
 	
 	/**
-	 * Sets the insertion list object
-	 * @param $liste 
+	 * Sets the pointcut list
+	 * 
+	 * @param $liste aop_pointcut_list
 	 */
-	public function setList( &$listeObj ) {
+	public function setPointcutList( aop_pointcut_list &$liste ) {
 	
-		$this->insertListObj = $listeObj;
+		$this->pointcuts = $liste;
 		return $this;
 	}
 	/**
@@ -32,8 +33,16 @@ class aop_beautifier_inserter
 	 * @param $methodName
 	 * @param $type
 	 */
-	public function getMatching( &$className, &$methodName, $type ) {
+	public function findMatch( &$className, &$methodName, $type ) {
 	
+		$cut = $this->pointcuts->findMatch( $className, $methodName );
+		if ( is_null( $cut ))
+			return null;
+	
+		// we have a cut... we need the advice code (token list)
+		$code = $cut->getAdviceCode( $type );
+		
+		return $code;
 	}
 	
 }//end class

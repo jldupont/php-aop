@@ -1,9 +1,9 @@
 <?php
 /**
- * aop_file_definition
+ * aop_file_source
  * PHP-AOP framework
  * 
- * Pointcut definition file
+ * source file
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -11,12 +11,14 @@
  * @pattern TemplateMethod
  */
 
-class aop_file_definition
+class aop_file_source
 	extends aop_file {
 
-	static $suffix = '.pointcut.definition.php';
-	
-	var $pointcuts = null;
+	/**
+	 * Beautified content
+	 * @access public
+	 */
+	var $beautified_content = null;
 	
 	// =======================================================================
 	//							PUBLIC INTERFACE
@@ -27,10 +29,6 @@ class aop_file_definition
 		parent::__construct( $path, $content );
 	}
 	
-	public static function getTransformationPathString() {
-	
-		return self::$suffix;
-	}
 	// =======================================================================
 	//							TEMPLATE METHODS
 	// =======================================================================
@@ -45,9 +43,20 @@ class aop_file_definition
 	 */
 	public function _process( &$content = null ) {
 
-    	$proc = aop::factory( 'aop_pointcut_processor', $this->path );
-    	
-    	return $proc->process();
+		if ( empty( $content ))
+			return null;
+	
+		$oBeaut = new PHP_Beautifier();
+		
+		$oBeaut->addFilter('NewLines');			
+		$oBeaut->addFilter('IndentStyles');			
+		$oBeaut->addFilter('ArrayNested');
+	
+		$oBeaut->setInputString( $content );
+		$oBeaut->process();
+		
+		return $oBeaut->get();
+	
 	}
 
 	/**
@@ -56,28 +65,32 @@ class aop_file_definition
 	 */
 	protected function transformPath() {
 		
-		$this->path = str_replace( '.php', self::$suffix, $this->path );
+		// do nothing
 	}
 	// =======================================================================
 	//							SUB-CLASSED METHODS
 	// =======================================================================
 		
 	/**
-	 *  
+	 * Save - don't need to do anything special
+	 * but not let the base class save to filesystem  
 	 */
-	protected function save( &$content ) {
-		
-		$this->pointcuts = $content;
-	
-		$pointcutsStore = aop::factory( 'aop_pointcut_list' );
-		
-		$pointcutsStore->merge( $this->pointcuts );
+	public function save( &$content ) {
 
+		$this->beautified_content = $content;
+	
 		// this can only fail for reasons beyond
 		// our control here.
 		return true;
 	}
+	/**
+	 * Returns the beautified content
+	 * i.e. not the original
+	 */
+	public function getContent() {
 	
+		return $this->beautified_content;
+	}
 	
 	// =======================================================================
 	//							PROTECTED METHODS

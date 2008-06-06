@@ -7,6 +7,14 @@
 
 class TestPointcut {
 
+	/**
+	 * Show method
+	 */
+	public function show() {
+	
+		echo __METHOD__."\n";
+	
+	}
 
 
 }//endclass
