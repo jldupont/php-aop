@@ -1,6 +1,6 @@
 <?php
 /**
- * finder class
+ * aop_finder
  *  This class is used to 'find' class implementations through
  *  the registered class paths.
  * 
@@ -55,6 +55,7 @@ class aop_finder {
 	 * 
 	 * @param $className string class name
 	 * @return $path string
+	 * @throws
 	 */
 	public function find( &$className ) {
 	

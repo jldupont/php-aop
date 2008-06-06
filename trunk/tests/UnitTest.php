@@ -138,8 +138,10 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	
     	#var_dump( $r );
     	
-    	foreach( $r as $collector )
-    		$this->assertEquals( $collector instanceof aop_pointcut, true );
+    	foreach( $r as $pointcut ) {
+    		$this->assertEquals( $pointcut instanceof aop_pointcut, true );
+    		var_dump( $pointcut );
+    	}
     }
     
     
