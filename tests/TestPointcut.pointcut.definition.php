@@ -28,6 +28,16 @@ class TestPointcut_pointcuts #the suffix _pointcuts is mandatory
 						'am'	=> array(	'before'=> 'before_method', 
 											'after'	=> 'after_method' ) );
 	}
+	
+	public function cut_show() {
+
+		return array(	'cp' 	=> '~',	#all classes 
+						'mp'	=> 'show', 
+						'am'	=> array(	'before'=> 'before_show', 
+											'after'	=> 'after_show' ) );
+	
+	}
+	
 	/**
 	 * Advice definition 'before'
 	 */
@@ -41,5 +51,17 @@ class TestPointcut_pointcuts #the suffix _pointcuts is mandatory
 		
 	}
 	
+	/**
+	 * Advice definition 'before'
+	 */
+	public function before_show() {
+		echo "#BEFORE\n";
+	}
+	/**
+	 * Advice definition 'after'
+	 */
+	public function after_show() {
+		echo "#AFTER\n";		
+	}
 	
 }

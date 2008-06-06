@@ -32,13 +32,13 @@ class aop_pointcut_list
 		
 		foreach( self::$liste as $pointcut ) {
 			try {
-				if ( $pointcut->findMatch( $className, $methodName ) ) {
+				if ( $pointcut->isMatch( $className, $methodName ) ) {
 					$found = $pointcut;
 					break;
 				}
 			} catch(Exception $e) {
-			
-				throw new aop_exception( __METHOD__.": expecting findMatch interface" );
+
+				throw new aop_exception( __METHOD__.": expecting isMatch interface. Error: ".$e->getMessage() );
 			}
 		}
 		
