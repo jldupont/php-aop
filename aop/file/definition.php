@@ -1,8 +1,9 @@
 <?php
 /**
- * aop_file
+ * aop_file_definition
  * PHP-AOP framework
  * 
+ * Pointcut definition file
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -10,28 +11,10 @@
  * @pattern TemplateMethod
  */
 
-abstract class aop_file
-	extends aop_object {
+abstract class aop_file_definition
+	extends aop_file {
 
-	/**
-	 * 
-	 */
-	var $path = null;
-	
-	/**
-	 * 
-	 */
-	var $path_parts = null;
-	
-	/**
-	 * 
-	 */	
-	var $mtime = null;	
-
-	/**
-	 * 
-	 */
-	var $content = null;
+	static $suffix = 'pointcut.definition.php';
 	
 	// =======================================================================
 	//							PUBLIC INTERFACE
@@ -39,77 +22,44 @@ abstract class aop_file
 	
 	public function __construct( &$path, &$content = null ) {
 	
-		$this->path = $path;
-		$this->content = $content;
-		parent::__construct();
-		
-		$this->init();
+		parent::__construct( $path, $content );
 	}
-	/**
-	 * Verifies if the given path exists
-	 * Records the 'modified timestamp' in the process
-	 * 
-	 * @return boolean
-	 */
-	public function exists() {
 	
-		return $this->mtime !== false;
-	}
+	// =======================================================================
+	//							TEMPLATE METHODS
+	// =======================================================================
+	
 	/**
 	 * Process the file
 	 * 
 	 * @return boolean result
 	 * @throws aop_file_exception
 	 */
-	public function process() {
-	
-		if ( empty( $this->content )) {
-	
-			// read content + aspect definition
-			if ( $this->read() === false )
-				$this->raise( 'aop_file_exception', "can't read file" );
-		}
-		
-		// make sure we have content to work on
-		if (is_null( $this->content ) || ($this->content === false))
-			$this->raise( 'aop_file_exception', "no content found" );
+	public function _process() {
 
-		try {
-		
-			$content = $this->_process();
-			
-		} catch( Exception $e ) {
-		
-			$this->raise( 'aop_file_exception', "can't process file. ".$e->getMessage() );
-		}
-
-		try {
-		
-			$result = $this->save( );
-			
-		} catch( Exception $e ) {
-		
-			$this->raise( 'aop_file_exception', "can't save file. ".$e->getMessage() );
-		}
 		
 		return $result;
 	}
+
 	/**
-	 * Returns pathinfo parts
-	 * 
-	 * @return mixed array
+	 * Transform the source path to the desired path for the pointcut
+	 * definition file
 	 */
-	public function getPathParts() {
-	
-		return $this->path_parts;
+	protected function transformPath() {
+		
+		$this->path = str_replace( '.php', self::$suffix, $this->path );
 	}
 	// =======================================================================
-	//							DEFAULT TEMPLATE METHODS
+	//							SUB-CLASSED METHODS
 	// =======================================================================
-
-	abstract protected function _process();
-
-	abstract protected function transformPath();	
+		
+	/**
+	 *  
+	 */
+	public function save() {
+	
+	}
+	
 	
 	// =======================================================================
 	//							PROTECTED METHODS
