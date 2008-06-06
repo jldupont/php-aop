@@ -53,8 +53,11 @@ abstract class aop_pointcut_definition
 	
 		$this->process();
 		
+		if ( empty( $this->cuts ))
+			return null;
+		
 		$found = null;
-		foreach( $cuts as $cut ) {
+		foreach( $this->cuts as $cut ) {
 			if ($cut->isMatch( $className, $classMethodName )) {
 				$found = $cut;
 				break;
@@ -191,7 +194,7 @@ class TestPointcut
 	
 		return array(	'cp'	=> 'classname-pattern1', 
 						'mp'	=> 'methodname-pattern1', 
-						'am'	=> array(	'before'	=> 'before_method', 
+						'am'	=> array(	'before'=> 'before_method', 
 											'after'	=> 'after_method' ) );
 		
 		
@@ -200,9 +203,9 @@ class TestPointcut
 	
 	public function cut_id2() {
 
-		return array(	'cp' 	=> 'classname-pattern1', 
-						'mp'	=> 'methodname-pattern1', 
-						'am'	=> array(	'before'	=> 'before_method', 
+		return array(	'cp' 	=> 'classname-pattern2', 
+						'mp'	=> 'methodname-pattern2', 
+						'am'	=> array(	'before'=> 'before_method', 
 											'after'	=> 'after_method' ) );
 	}
 	/**
@@ -220,6 +223,3 @@ class TestPointcut
 	
 	
 }
-// instructs the pointcut_processor of which
-// class defines the pointcuts in this file
-return 'TestPointcut';
