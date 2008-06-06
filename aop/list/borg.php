@@ -55,8 +55,32 @@ class aop_list_borg
 		self::$liste[] = $element;
 		return $this;
 	}
-
+	/**
+	 * Returns the list
+	 * @return array
+	 */
 	public function getList() {
 		return self::$liste;
 	}
+	/**
+	 * Merges object elements on the list.
+	 * If an array of array(s) is presented, it is
+	 * decomposed and merged.
+	 * 
+	 * @param mixed array of objects
+	 * @return $this
+	 */
+	public function merge( &$elements ) {
+	
+		foreach( $elements as $index => &$element ) {
+		
+			if ( is_array( $element ))
+				$this->merge( $element );
+			else
+				$this->push( $element );
+		}
+	
+		return $this;
+	}
+	
 }//end definition

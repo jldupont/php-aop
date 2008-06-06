@@ -69,7 +69,7 @@ class aop_file_definition
 		
 		$pointcutsStore = aop::factory( 'aop_pointcut_list' );
 		
-		$pointcutsStore->push( $this->pointcuts );
+		$pointcutsStore->merge( $this->pointcuts );
 
 		// this can only fail for reasons beyond
 		// our control here.

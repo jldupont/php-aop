@@ -175,6 +175,9 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	$check = $count >= 1;
     	 
     	$this->assertEquals( $check, true );
+    	
+    	foreach( $liste as $index => &$element ) 
+    		$this->assertEquals( $element instanceof aop_pointcut, true );
     }
     
 }
