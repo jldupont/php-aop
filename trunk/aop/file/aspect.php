@@ -12,7 +12,7 @@
  */
 
 class aop_file_aspect
-	extends aop_file_source {
+	extends aop_file {
 
 	static $suffixAspect = '.aspect.php';
 	
@@ -47,7 +47,6 @@ class aop_file_aspect
 	 * @throws aop_file_exception
 	 */
 	public function _process( &$content = null ) {
-
 		return $content;
 	}
 
@@ -62,6 +61,8 @@ class aop_file_aspect
 	// =======================================================================
 	//							SUB-CLASSED METHODS
 	// =======================================================================
-		
+	public function write( &$content = null ) {
+		return parent::write( $content );
+	}
 
 }//end definition
