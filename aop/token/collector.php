@@ -39,4 +39,11 @@ class aop_token_collector
 	
 		return ( ($className == $this->classe) and ($methodName == $this->method) );
 	}
+	/**
+	 * Returns the array of tokens
+	 * @return array
+	 */
+	public function getList() {
+		return $this->liste;
+	}
 }//end class
