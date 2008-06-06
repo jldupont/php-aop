@@ -29,21 +29,15 @@ class Test {
 class UnitTest 
 	extends PHPUnit_Framework_TestCase {
 
-	public function setup() {
-    }
-
     public function test1() {
     
     	$o = new Test;
     	$i = new aop_iterator( $o, 'liste' );
     
     	foreach( $i as $index => $item ) {
-    		echo "index($index) item($item)\n";
-    		$this->assertEquals( true, is_string( $item ) );
+    		#echo "index($index) item($item)\n";
+    		$this->assertEquals( $item, $o->liste[$index] );
     	}
     }
     
 }
-
-__halt_compiler();
-

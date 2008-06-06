@@ -16,6 +16,10 @@ class aop_iterator
 	 */
 	var $index = null;
 	/**
+	 * Count of source array 
+	 */
+	var $count = 0;
+	/**
 	 * Reference to source array
 	 */
 	var $ref = null;
@@ -35,13 +39,14 @@ class aop_iterator
 		$this->index = 0;
 		$this->ref = $objectContainer->$arrayContainer;
 		$this->keys = array_keys( $this->ref );
+		$this->count = count( $this->ref );
 	}
 	
 	/*********************************************************
 	 * 				Iterator Interface
 	 ********************************************************/
 	public function count() {
-		return count( $this->ref );
+		return $this->count;
 	}
 	public function current() {
 		$a = $this->ref;		
@@ -58,9 +63,7 @@ class aop_iterator
 		return $this->index =0 ;	
 	}
 	public function valid() {
-		$a = $this->ref;
-		$k = $this->keys[ $this->index ];
-		return isset( $a[ $k ] );
+		return ( $this->index < $this->count );
 	}
 
 }//end definition

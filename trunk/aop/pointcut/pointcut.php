@@ -57,10 +57,22 @@ class aop_pointcut
 		$this->methodNamePattern = $definition['mp'];
 		$this->adviceMethods = $definition['am'];
 		
+		// pre-compute the match patterns
 		$this->classPattern = $this->computePattern( $this->classNamePattern );
 		$this->methodPattern = $this->computePattern( $this->methodNamePattern );		
 	}
+	/**
+	 * Returns the method name associated with an advice type
+	 * 
+	 * @param $type string advice type
+	 */
+	public function getMethodNameForAdviceType( $type ) {
 	
+		if (!isset( $this->adviceMethods[ $type ] ))
+			throw new aop_exception( ": advice type ($type) not set " );
+			
+		return $this->adviceMethods[ $type ];
+	}
 	/**
 	 * Sets the advice code related to an advice type
 	 * 
