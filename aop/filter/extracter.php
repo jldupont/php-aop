@@ -46,7 +46,10 @@ class aop_filter_extracter
      * @return void
      */
 	public function t_end_method( &$sTag, &$classe, &$name ) {
-
+		
+		// pops-off the closing brace
+		if ( !is_null( $this->collector ) )
+			$this->collector->pop();
 		$this->commit( );
 	}
 

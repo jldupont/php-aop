@@ -73,6 +73,8 @@ class aop_weaver
 		
 		$result = $bweaver->get();
 		
+		var_dump( $result );
+		
 		$this->oFileObj->setContent( $result );
 		
 		// effectively just saves the result in the file
