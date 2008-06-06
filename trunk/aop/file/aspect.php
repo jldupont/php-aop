@@ -46,7 +46,7 @@ class aop_file_aspect
 	 * @return boolean result
 	 * @throws aop_file_exception
 	 */
-	public function _process( &$content ) {
+	public function _process( &$content = null ) {
 
 		return $content;
 	}

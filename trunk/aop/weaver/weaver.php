@@ -35,7 +35,7 @@ class aop_weaver
 	/**
 	 * Sets the list of pointcuts 
 	 */
-	public function setPointcuts( &$pointcuts ) {
+	public function setPointcutList( &$pointcuts ) {
 	
 		$this->pointcuts = $pointcuts;
 		return $this;
@@ -67,7 +67,7 @@ class aop_weaver
 		$bweaver->setPointcutList( $this->pointcuts );
 		
 		$bweaver->addFilter( $ifilter );
-		$bwearver->setInputString( $this->iFileObj->getContent() );
+		$bweaver->setInputString( $this->iFileObj->getContent() );
 		
 		$bweaver->process();
 		

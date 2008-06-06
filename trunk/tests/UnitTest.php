@@ -197,11 +197,30 @@ class UnitTest extends PHPUnit_Framework_TestCase
 
     	$content = $src_file->getContent();
     	
-    	var_dump( $content );
+    	#var_dump( $content );
     	#var_dump( $def_file );
     	    	
     }
+    /**
+     * Pointcuts will already be in the system at this point...
+     */
+    public function testWeaver() {
     
+    	$list = aop::factory( 'aop_pointcut_list' );
+    
+    	$ifile = aop::factory( 'aop_file_source',  self::$pathToTestpointFile );
+    	$result = $ifile->process();
+    
+    	$ofile = aop::factory( 'aop_file_aspect', self::$pathToTestpointFile );
+    	
+    	$weaver = aop::factory( 'aop_weaver' );
+    	$weaver->setPointcutList( $list );
+    	$weaver->setInputFile( $ifile );
+    	$weaver->setOutputFile( $ofile );
+    	
+    	$weaver->weave();
+    	
+    }
 }
 
 __halt_compiler();

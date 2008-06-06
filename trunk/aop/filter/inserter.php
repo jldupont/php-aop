@@ -27,7 +27,7 @@ class aop_filter_inserter
     
 	public function t_start_method( &$sTag, &$classe, &$name ) {
 
-		$tokensToInsert = $this->oBeaut->getMatching( $classe, $name, 'before' );
+		$tokensToInsert = $this->oBeaut->findMatch( $classe, $name, 'before' );
 		if ( !empty( $tokensToInsert ) ) {
 
 			$this->oBeaut->add( $tokensToInsert );
@@ -37,7 +37,7 @@ class aop_filter_inserter
 
 	public function t_end_method( &$sTag, &$classe, &$name ) {
 
-		$tokensToInsert = $this->oBeaut->getMatching( $classe, $name, 'after' );
+		$tokensToInsert = $this->oBeaut->findMatch( $classe, $name, 'after' );
 		if ( !empty( $tokensToInsert ) ) {
 
 			$this->oBeaut->add( $tokensToInsert );
