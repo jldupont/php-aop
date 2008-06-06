@@ -29,5 +29,14 @@ class aop_token_collector
 		$this->classe = $classe;
 		$this->method = $method;
 	}
+	/**
+	 * Match interface
+	 * 
+	 * @param $className string
+	 * @param $methodName string
+	 */
+	public function isMatch( &$className, &$methodName ) {
 	
+		return ( ($className == $this->classe) and ($methodName == $this->method) );
+	}
 }//end class

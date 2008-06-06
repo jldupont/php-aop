@@ -32,7 +32,7 @@ class aop_pointcut_processor
 	/**
 	 * Method collector object instance
 	 */
-	var $collector = null;
+	var $collectorList = null;
 	
 	/**
 	 * Pointcut definitions 
@@ -55,13 +55,13 @@ class aop_pointcut_processor
 	 */
 	public function process() {
 	
-		if ( !is_null( $this->collector ) )
-			return $this->collector;
+		if ( !is_null( $this->collectorList ) )
+			return $this->collectorList;
 
 		$this->source = @file_get_contents( $this->path );
 			
 		// collect the class methods
-		$this->collector = $this->extractClassMethods();
+		$this->collectorList = $this->extractClassMethods();
 		
 		// collect the pointcut definitions
 		$this->definition = $this->extractDefinitions();
@@ -81,10 +81,19 @@ class aop_pointcut_processor
 		$cuts = $this->definition->getCuts();
 		
 		foreach( $cuts as $index => &$cut ) {
+
+			// let's grab a universal iterator to track the advice types
+			$iterator = aop::factory( 'aop_iterator', $cut, 'adviceMethods' );	
 		
-			//collector
+			foreach( $iterator as $type => $methodName ) {
+			
+				echo "type ($type) methodname ($methodName)\n";
+			}
+			
 		
 		}
+		var_dump( $this->collector );
+		die;
 		
 		return $cuts;
 	}
