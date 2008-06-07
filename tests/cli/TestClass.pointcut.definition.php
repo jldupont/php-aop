@@ -8,6 +8,15 @@
 class TestClass_pointcuts #the suffix _pointcuts is mandatory
 
 	extends aop_pointcut_definition {
+
+	public function cut_constructor() {
+
+		return array(	'cp' 	=> 'TestClass', 
+						'mp'	=> '__construct', 
+						'am'	=> array(	'before'=> 'before_show', 
+											'after'	=> 'after_show' ) );
+	
+	}
 	
 
 	public function cut_show() {

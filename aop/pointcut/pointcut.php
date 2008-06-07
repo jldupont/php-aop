@@ -101,13 +101,20 @@ class aop_pointcut
 	 */
 	public function isMatch( &$className, &$classMethodName ) {
 		
-		#echo __METHOD__." classpattern: " . $this->classPattern . "\n";
-		#echo __METHOD__." methodpattern: " . $this->methodPattern . "\n";		
-	
+		#echo __METHOD__." class: " . $className. "\n";
+		#echo __METHOD__." method: " . $classMethodName. "\n";		
+		#echo __METHOD__." classpattern: " . $this->classPattern. "\n";
+		#echo __METHOD__." methodpattern: " . $this->methodPattern. "\n";		
+		
 		$result_class  = preg_match( $this->classPattern, $className ) === 1;
 		$result_method = preg_match( $this->methodPattern, $classMethodName ) === 1;
 
-		return ( $result_class and $result_method );
+
+		$result = ( $result_class and $result_method );
+
+		#echo __METHOD__." result: ".$result." -- result_class: ".$result_class." -- result_method: ".$result_method."\n";
+				
+		return $result; 
 	}
 	
 	/*************************************************************************
@@ -123,7 +130,7 @@ class aop_pointcut
 	protected function computePattern( &$pattern ) {
 	
 		$p = preg_quote( $pattern );
-		return '/' . str_replace( '~', '(.*)', $p ) . '/siU';
+		return '/^' . str_replace( '~', '(.*)', $p ) . '$/siU';
 	}
 	
 }//end definition
