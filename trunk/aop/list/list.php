@@ -45,6 +45,10 @@ class aop_list
 	/*********************************************************
 	 * 				Array Interface
 	 ********************************************************/
+	/**
+	 * Pushes an element at the end of the list
+	 * @param $element mixed
+	 */
 	public function push( $element ) {
 	
 		$this->liste[] = $element;
@@ -52,6 +56,7 @@ class aop_list
 	}
 	/**
 	 * Pops the element at the end of the list
+	 * @return $element mixed
 	 */
 	public function pop() {
 		return array_pop( $this->liste );

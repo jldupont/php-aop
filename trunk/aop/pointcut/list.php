@@ -3,7 +3,8 @@
  * aop_pointcut_list
  * PHP-AOP framework
  *
- * List of all the pointcuts collected
+ * List of all the pointcuts collected.
+ * Uses a ''borg'' pattern to effectively have 1 list.
  *  
  * @author Jean-Lou Dupont
  * @package AOP

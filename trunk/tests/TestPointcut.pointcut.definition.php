@@ -3,6 +3,7 @@
  * TestPointcut test class
  * 
  * @author Jean-Lou Dupont
+ * http://php-aop.googlecode.com/
  */
 
 class TestPointcut_pointcuts #the suffix _pointcuts is mandatory

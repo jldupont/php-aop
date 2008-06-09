@@ -4,6 +4,9 @@
  * PHP-AOP framework
  * 
  * This class is meant to be used with aop_filter_extracter.
+ * It extends the functionality of PHP_Beautifier with the
+ * capability to ''extract'' the code of all or 
+ * specific methods of a class/classes.
  * 
  * @author Jean-Lou Dupont
  * @package AOP

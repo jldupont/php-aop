@@ -3,7 +3,7 @@
  * aop_file_comparator
  * PHP-AOP framework
  * 
- * Utility class to compare files
+ * Utility class to compare aop_file objec instances.
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -30,6 +30,7 @@ class aop_file_comparator
 			$t2 = $f2->get_mtime();
 			
 		} catch( Exception $e ) {
+		
 			throw new aop_exception( __METHOD__.": aop_file object expected" );	
 		}
 	

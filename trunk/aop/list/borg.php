@@ -74,10 +74,15 @@ class aop_list_borg
 	
 		foreach( $elements as $index => &$element ) {
 		
-			if ( is_array( $element ))
+			if ( is_array( $element )) {
+			
 				$this->merge( $element );
-			else
+				
+			} else {
+			
 				$this->push( $element );
+			}
+			
 		}
 	
 		return $this;

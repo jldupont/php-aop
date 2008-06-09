@@ -101,20 +101,10 @@ class aop_pointcut
 	 */
 	public function isMatch( &$className, &$classMethodName ) {
 		
-		#echo __METHOD__." class: " . $className. "\n";
-		#echo __METHOD__." method: " . $classMethodName. "\n";		
-		#echo __METHOD__." classpattern: " . $this->classPattern. "\n";
-		#echo __METHOD__." methodpattern: " . $this->methodPattern. "\n";		
-		
 		$result_class  = preg_match( $this->classPattern, $className ) === 1;
 		$result_method = preg_match( $this->methodPattern, $classMethodName ) === 1;
 
-
-		$result = ( $result_class and $result_method );
-
-		#echo __METHOD__." result: ".$result." -- result_class: ".$result_class." -- result_method: ".$result_method."\n";
-				
-		return $result; 
+		return ( $result_class and $result_method );
 	}
 	
 	/*************************************************************************

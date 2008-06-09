@@ -3,6 +3,11 @@
  * aop_beautifier_inserter
  * PHP-AOP framework
  * 
+ * This class is meant to be used in conjunction with ''aop_filter_inserter''.
+ * This class extends the capabilities of PHP_Beautifier
+ * with the functionality to ''insert'' PHP code at specific
+ * join-points.
+ * 
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP

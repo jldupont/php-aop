@@ -25,17 +25,10 @@ class aop_token_tostring {
 	
 		foreach( $tokens as $index => &$token ) {
 
-			$symbol = null;
-		
-			if ( is_string( $token[0] ) )
+			if ( is_string( $token[0] ) || is_integer( $token[0] ) )
 				$symbol = $token[1];
-			
-			if ( is_integer( $token[0] ))
-				$symbol = $token[1];
-		
-			if ( is_null( $symbol ) ) {
+			else
 				throw new aop_exception( __METHOD__.": invalid symbol found" );
-			}
 				
 			$string .= $symbol;
 		}

@@ -3,6 +3,11 @@
  * bweaver class
  * PHP-AOP framework
  * 
+ * This class adds a wrapper to PHP_Beautifier in
+ * order to pass a 'pointcut list' to the 'insertion filter'.
+ * This list is then used by the aop_filter_inserter to
+ * ''weaver'' the advice code in the target class/method.
+ * 
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP

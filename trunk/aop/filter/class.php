@@ -164,7 +164,9 @@ class aop_filter_class
     }
 	// ======================================================================
 	// INTERNALS
+	//   Calls the derived class through the ''t_xyz'' methods
 	// ======================================================================
+	
     public function i_start_class( &$sTag, &$className ) {
     
         $this->default_t_open_brace( $sTag );
@@ -222,6 +224,9 @@ class aop_filter_class
 		return false;
     }
     
+	// ======================================================================
+	// PHP_Beautifier DEFAULTS 
+	// ======================================================================
     
 	/**
 	 * DEFAULTS from PHP_Beautifier
@@ -250,7 +255,10 @@ class aop_filter_class
         }
     
     }
-
+   	/** 
+   	 * Default 'cloase_brace' filter method
+   	 * @see PHP_Beautifier/Filter/Default.filter.php
+   	 */ 
     function default_t_close_brace($sTag) 
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
