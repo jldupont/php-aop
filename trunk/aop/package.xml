@@ -8,7 +8,7 @@
 		http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
 
  <name>aop</name>
- <channel>php-aop.googlecode.com/svn/</channel>
+ <channel>php-aop.googlecode.com/svn</channel>
  <summary>PHP-AOP framework</summary>
  <description>PHP-AOP framework</description>
 
@@ -20,7 +20,7 @@
  </lead>
 
  <date>2008-06-09</date>
- <time>11:13:08</time>
+ <time>11:15:39</time>
 
  <version>
   <release>1.0.0RC1</release>
