@@ -1,0 +1,14 @@
+<FeedFlareUnit>
+	<Catalog>
+	    <Title>PHP-AOP: Feature Request/Issue Tracking</Title>
+	
+	    <Description>To request/track features and issues for PHP-AOP
+		</Description>
+
+	</Catalog>
+	<FeedFlare>
+	    <Text>Feature Request - Issue Report</Text>
+		<Link href="http://php-aop.googlecode.com/issues/"/>
+	</FeedFlare>
+
+</FeedFlareUnit>
