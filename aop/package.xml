@@ -20,7 +20,7 @@
  </lead>
 
  <date>2008-06-09</date>
- <time>12:38:24</time>
+ <time>12:42:02</time>
 
  <version>
   <release>1.0.0RC1</release>
@@ -42,8 +42,8 @@
 	<!-- file list begin {{ -->
 	<!-- baseinstalldir: the target directory on the target machine -->
 	
-	<file baseinstalldir="beautifier" name="extracter.php" role="php" />
-	<file baseinstalldir="beautifier" name="inserter.php" role="php" />
+	<file baseinstalldir="." name="beautifier/extracter.php" role="php" />
+	<file baseinstalldir="." name="beautifier/inserter.php" role="php" />
 	
 	<file baseinstalldir="file" name="aspect.php" role="php" />
 	<file baseinstalldir="file" name="comparator.php" role="php" />
