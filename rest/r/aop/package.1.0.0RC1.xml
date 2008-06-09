@@ -20,7 +20,7 @@
  </lead>
 
  <date>2008-06-09</date>
- <time>12:42:02</time>
+ <time>12:45:16</time>
 
  <version>
   <release>1.0.0RC1</release>
@@ -37,47 +37,47 @@
  <notes>aop</notes>
 
  <contents>
-  <dir name="/aop/">
+  <dir name="/">
 
 	<!-- file list begin {{ -->
 	<!-- baseinstalldir: the target directory on the target machine -->
 	
-	<file baseinstalldir="." name="beautifier/extracter.php" role="php" />
-	<file baseinstalldir="." name="beautifier/inserter.php" role="php" />
+	<file baseinstalldir="aop" name="beautifier/extracter.php" role="php" />
+	<file baseinstalldir="aop" name="beautifier/inserter.php" role="php" />
 	
-	<file baseinstalldir="file" name="aspect.php" role="php" />
-	<file baseinstalldir="file" name="comparator.php" role="php" />
-	<file baseinstalldir="file" name="definition.php" role="php" />
-	<file baseinstalldir="file" name="file.php" role="php" />		
-	<file baseinstalldir="file" name="source.php" role="php" />
+	<file baseinstalldir="aop" name="file/aspect.php" role="php" />
+	<file baseinstalldir="aop" name="file/comparator.php" role="php" />
+	<file baseinstalldir="aop" name="file/definition.php" role="php" />
+	<file baseinstalldir="aop" name="file/file.php" role="php" />		
+	<file baseinstalldir="aop" name="file/source.php" role="php" />
 		
-	<file baseinstalldir="filter" name="class.php" role="php" />
-	<file baseinstalldir="filter" name="extracter.php" role="php" />
-	<file baseinstalldir="filter" name="inserter.php" role="php" />
+	<file baseinstalldir="aop" name="filter/class.php" role="php" />
+	<file baseinstalldir="aop" name="filter/extracter.php" role="php" />
+	<file baseinstalldir="aop" name="filter/inserter.php" role="php" />
 			
-	<file baseinstalldir="finder" name="finder.php" role="php" />
+	<file baseinstalldir="aop" name="finder/finder.php" role="php" />
 	
-	<file baseinstalldir="iterator" name="iterator.php" role="php" />
+	<file baseinstalldir="aop" name="iterator/iterator.php" role="php" />
 	
-	<file baseinstalldir="list" name="list.php" role="php" />	
-	<file baseinstalldir="list" name="borg.php" role="php" />	
+	<file baseinstalldir="aop" name="list/list.php" role="php" />	
+	<file baseinstalldir="aop" name="list/borg.php" role="php" />	
 				
-	<file baseinstalldir="object" name="object.php" role="php" />
+	<file baseinstalldir="aop" name="object/object.php" role="php" />
 	
-	<file baseinstalldir="pointcut" name="definition.php" role="php" />	
-	<file baseinstalldir="pointcut" name="list.php" role="php" />
-	<file baseinstalldir="pointcut" name="pointcut.php" role="php" />
-	<file baseinstalldir="pointcut" name="processor.php" role="php" />			
+	<file baseinstalldir="aop" name="pointcut/definition.php" role="php" />	
+	<file baseinstalldir="aop" name="pointcut/list.php" role="php" />
+	<file baseinstalldir="aop" name="pointcut/pointcut.php" role="php" />
+	<file baseinstalldir="aop" name="pointcut/processor.php" role="php" />			
 					
-	<file baseinstalldir="token" name="collector.php" role="php" />					
-	<file baseinstalldir="token" name="finder.php" role="php" />
-	<file baseinstalldir="token" name="tostring.php" role="php" />
+	<file baseinstalldir="aop" name="token/collector.php" role="php" />					
+	<file baseinstalldir="aop" name="token/finder.php" role="php" />
+	<file baseinstalldir="aop" name="token/tostring.php" role="php" />
 			
-	<file baseinstalldir="weaver" name="bweaver.php" role="php" />
-	<file baseinstalldir="weaver" name="weaver.php" role="php" />
+	<file baseinstalldir="aop" name="weaver/bweaver.php" role="php" />
+	<file baseinstalldir="aop" name="weaver/weaver.php" role="php" />
 	
-	<file baseinstalldir="." name="aop_exception.php" role="php" />
-	<file baseinstalldir="." name="aop.php" role="php" />
+	<file baseinstalldir="aop" name="aop_exception.php" role="php" />
+	<file baseinstalldir="aop" name="aop.php" role="php" />
 					
     <!-- }} -->
 
