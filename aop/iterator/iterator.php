@@ -3,6 +3,21 @@
  * aop_iterator
  * PHP-AOP framework
  * 
+ * This class allows for iterating a specified array
+ * in a specified object instance through a ''foreach'' statement.
+ * 
+ * @example 
+ * 		class Container {
+ * 			
+ * 			var $interesting_array;
+ * 		}
+ * 
+ * 		$container = new Container;
+ * 		$iterator = new aop_iterator( $container, 'interesting_array' );
+ * 		foreach( $iterator as $key => $value )
+ * 			do_some_stuff( $key, $value );
+ * 
+ * 
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
@@ -14,7 +29,7 @@ class aop_iterator
 	/**
 	 * Index in source array
 	 */
-	var $index = null;
+	var $index = 0;
 	/**
 	 * Count of source array 
 	 */
@@ -35,11 +50,14 @@ class aop_iterator
 	 * @param $arrayContainer name of array in source object 
 	 */	
 	public function __construct( &$objectContainer, $arrayContainer ) {
-	
-		$this->index = 0;
-		$this->ref = $objectContainer->$arrayContainer;
-		$this->keys = array_keys( $this->ref );
+		
+		// pre-compute for speed
+		$this->ref = $objectContainer->$arrayContainer;		
 		$this->count = count( $this->ref );
+
+		// necessary overhead as PHP does not provide
+		// an easy way to extract 1key at the time
+		$this->keys = array_keys( $this->ref );
 	}
 	
 	/*********************************************************

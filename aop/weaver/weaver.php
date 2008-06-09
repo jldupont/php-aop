@@ -17,7 +17,14 @@ class aop_weaver
 	 */
 	var $pointcuts = null;
 	
+	/**
+	 * Input aop_file
+	 */
 	var $iFileObj = null;
+	
+	/**
+	 * Output aop_file 
+	 */
 	var $oFileObj = null;
 	
 	// =======================================================================
@@ -40,12 +47,17 @@ class aop_weaver
 		$this->pointcuts = $pointcuts;
 		return $this;
 	}
-
+	/**
+	 * Sets the input aop_file instance
+	 */
 	public function setInputFile( &$iFileObj ) {
 	
 		$this->iFileObj = $iFileObj;
 		return $this;
 	}
+	/**
+	 * Sets the output aop_file instance
+	 */
 	public function setOutputFile( &$oFileObj ) {
 	
 		$this->oFileObj = $oFileObj;
@@ -57,13 +69,14 @@ class aop_weaver
 	 * with pointcuts found in the specified list
 	 * 
 	 * @return $result boolean
-	 * @throws aop_weaver_exception
+	 * @throws 
 	 */
 	public function weave( ) {
 	
 		$bweaver = aop::factory( 'aop_beautifier_inserter' );
 		$ifilter = aop::factory( 'aop_filter_inserter', $bweaver );
 	
+		// for aop_filter_inserter
 		$bweaver->setPointcutList( $this->pointcuts );
 		
 		$bweaver->addFilter( $ifilter );
@@ -76,7 +89,7 @@ class aop_weaver
 		$this->oFileObj->setContent( $result );
 		
 		// effectively just saves the result in the file
-		$this->oFileObj->process();
+		return $this->oFileObj->process();
 	}
 
 }//end definition

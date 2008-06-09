@@ -3,7 +3,11 @@
  * aop_pointcut_processor
  * PHP-AOP framework
  *
- * Extracts advice methods from a pointcut definition class
+ * Extracts advice methods from a pointcut definition class.
+ * A pointcut definition class must end with '_pointcuts'.
+ * @example 
+ * 		class Whatever_pointcuts {
+ * 		}
  *  
  * @author Jean-Lou Dupont
  * @package AOP
@@ -100,7 +104,6 @@ class aop_pointcut_processor
 
 				$collector = $this->collectorList[ $index ];
 				$cut->setAdviceCode( $type, $collector->getList() );
-				#echo "type ($type) methodname ($methodName)\n";
 				
 			}//foreach
 			

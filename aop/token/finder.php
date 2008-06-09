@@ -31,10 +31,8 @@ class aop_token_finder {
 	 */
 	public function findMatch( &$className, &$methodName ) {
 
-		$iterator = aop::factory( 'aop_iterator', $this, 'ref' );
-		
 		$found = null;
-		foreach( $iterator as $index => $collector ) {
+		foreach( $this->ref as $index => &$collector ) {
 		
 			if ( $collector->isMatch( $className, $methodName ) ) {
 				$found = $index;

@@ -14,22 +14,22 @@ abstract class aop_file
 	extends aop_object {
 
 	/**
-	 * 
+	 * Path
 	 */
 	var $path = null;
 	
 	/**
-	 * 
+	 * Pathinfo array
 	 */
 	var $path_parts = null;
 	
 	/**
-	 * 
+	 * mtime (modification timestamp)
 	 */	
 	var $mtime = null;	
 
 	/**
-	 * 
+	 * File contents
 	 */
 	var $content = null;
 	

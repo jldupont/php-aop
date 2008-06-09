@@ -3,7 +3,7 @@
  * aop_file_source
  * PHP-AOP framework
  * 
- * source file
+ * Handles PHP source files.
  * 
  * @author Jean-Lou Dupont
  * @package AOP
@@ -92,8 +92,5 @@ class aop_file_source
 		return $this->beautified_content;
 	}
 	
-	// =======================================================================
-	//							PROTECTED METHODS
-	// =======================================================================	
-	
+
 }//end definition

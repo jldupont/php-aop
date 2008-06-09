@@ -63,7 +63,10 @@ class aop_file_definition
 	// =======================================================================
 		
 	/**
-	 *  
+	 *  write
+	 * 
+	 * @param $content string content
+	 * @see aop/file.php
 	 */
 	protected function write( &$content ) {
 		
@@ -77,10 +80,5 @@ class aop_file_definition
 		// our control here.
 		return true;
 	}
-	
-	
-	// =======================================================================
-	//							PROTECTED METHODS
-	// =======================================================================	
 	
 }//end definition
