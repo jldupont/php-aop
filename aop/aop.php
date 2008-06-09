@@ -210,7 +210,6 @@ class aop {
 			
 		self::$activated = true;
 		
-		require_once 'PHP/Parser.php';
 		require_once 'PHP/Beautifier.php';
 		require_once 'PHP/Beautifier/Batch.php';
 		
@@ -300,7 +299,6 @@ class aop {
 			throw new aop_exception( ": failed to process the class file ($path)" );				
 		}
 		
-		
 		// prepare an aspect file...
 		$ofile = aop::factory( 'aop_file_aspect', $path );
 		
@@ -319,13 +317,12 @@ class aop {
     		throw new aop_exception( ": failed to weave the class file ($path)" );
     	}
 		
-    	$aspect_path = $ofile->getPath();
-		
+    	$aspect_path = $ofile->getPath();	
 		$result = include $aspect_path;
 		if ( !$result )
 			throw new aop_exception( ": failed to include weaved the class file ($path)" );
 		
-		return ( !class_exists( $className ));
+		return ( class_exists( $className ) );
 	}
 	
 }//end definition
