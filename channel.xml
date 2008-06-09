@@ -9,8 +9,8 @@
  <servers>
   <primary>
    <rest>
-    <baseurl type="REST1.0">http://php-aop.googlecode.com/svn/pear/rest/</baseurl>
-    <baseurl type="REST1.1">http://php-aop.googlecode.com/svn/pear/rest/</baseurl>
+    <baseurl type="REST1.0">http://php-aop.googlecode.com/svn/rest/</baseurl>
+    <baseurl type="REST1.1">http://php-aop.googlecode.com/svn/rest/</baseurl>
    </rest>
   </primary>
  </servers>
