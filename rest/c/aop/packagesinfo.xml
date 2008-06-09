@@ -3,6 +3,24 @@
 <f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackageinfo     http://pear.php.net/dtd/rest.categorypackageinfo.xsd">
 		<pi>
 			<p>
+				<n>aop</n>
+				<c>php-aop.googlecode.com/svn</c>
+				<ca xlink:href="/rest/c/aop">aop</ca>
+				<l>$license$</l>
+				<s>PHP-AOP framework</s>
+				<d>PHP-AOP framework</d>
+				<r xlink:href="/rest/r/aop">
+				</r>
+			</p>
+			<a>
+				<r>
+					<v>1.0.0RC1</v>
+					<s>alpha</s>
+				</r>
+			</a>
+		</pi>
+		<pi>
+			<p>
 				<n>php-aop</n>
 				<c>php-aop.googlecode.com/svn</c>
 				<ca xlink:href="/rest/c/aop">aop</ca>
