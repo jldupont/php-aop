@@ -7,10 +7,10 @@
 		xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd 
 		http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
 
- <name>php-aop</name>
+ <name>aop</name>
  <channel>php-aop.googlecode.com/svn/</channel>
- <summary>PHP-AOP</summary>
- <description>PHP-AOP</description>
+ <summary>PHP-AOP framework</summary>
+ <description>PHP-AOP framework</description>
 
  <lead>
   <name>Jean-Lou Dupont</name>
@@ -20,7 +20,7 @@
  </lead>
 
  <date>2008-06-09</date>
- <time>10:35:37</time>
+ <time>11:11:37</time>
 
  <version>
   <release>1.0.0RC1</release>
@@ -34,7 +34,7 @@
 
  <license uri="http://www.php.net/license">PHP License</license>
 
- <notes>php-aop</notes>
+ <notes>aop</notes>
 
  <contents>
   <dir name="/">
@@ -116,7 +116,7 @@
 <changelog>
 	<release>
 		<license uri="http://www.php.net/license">PHP License</license>
-		<notes>Initial Release
+		<notes>Initial Release (alpha)
 		</notes>
 	</release>
 </changelog>
