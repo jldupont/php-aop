@@ -39,6 +39,24 @@
 		</pi>
 		<pi>
 			<p>
+				<n>aop</n>
+				<c>php-aop.googlecode.com/svn</c>
+				<ca xlink:href="/rest/c/aop">aop</ca>
+				<l>$license$</l>
+				<s>PHP-AOP framework</s>
+				<d>PHP-AOP framework</d>
+				<r xlink:href="/rest/r/aop">
+				</r>
+			</p>
+			<a>
+				<r>
+					<v>1.0.0RC1</v>
+					<s>alpha</s>
+				</r>
+			</a>
+		</pi>
+		<pi>
+			<p>
 				<n>php-aop</n>
 				<c>php-aop.googlecode.com/svn</c>
 				<ca xlink:href="/rest/c/aop">aop</ca>
