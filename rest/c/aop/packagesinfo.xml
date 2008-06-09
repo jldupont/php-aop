@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackageinfo     http://pear.php.net/dtd/rest.categorypackageinfo.xsd">
+		<pi>
+			<p>
+				<n>php-aop</n>
+				<c>php-aop.googlecode.com/svn</c>
+				<ca xlink:href="/rest/c/aop">aop</ca>
+				<l>$license$</l>
+				<s>PHP-AOP</s>
+				<d>PHP-AOP</d>
+				<r xlink:href="/rest/r/php-aop">
+				</r>
+			</p>
+			<a>
+				<r>
+					<v>1.0.0RC1</v>
+					<s>alpha</s>
+				</r>
+			</a>
+		</pi>
+</f>
