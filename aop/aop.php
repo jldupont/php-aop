@@ -15,7 +15,7 @@
  * class file following the instructions contained inside the original (i.e.
  * non-weaved) class file.
  * 
- * 
+ * http://php-aop.googlecode.com
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
@@ -241,6 +241,7 @@ class aop {
 	}
 	/**
 	 * Autoloads classes making this framework
+	 * @param $className string
 	 */
 	public static function our_autoload( $className ) {
 	
