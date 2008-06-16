@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.7.0" 
+		version="2.0" 
+		xmlns="http://pear.php.net/dtd/package-2.0" 
+		xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd 
+		http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+
+ <name>aop</name>
+ <channel>php-aop.googlecode.com/svn</channel>
+ <summary>PHP-AOP framework</summary>
+ <description>PHP-AOP framework</description>
+
+ <lead>
+  <name>Jean-Lou Dupont</name>
+  <user>jldupont</user>
+  <email>jldupont@jldupont.com</email>
+  <active>yes</active>
+ </lead>
+
+ <date>2008-06-16</date>
+ <time>15:02:43</time>
+
+ <version>
+  <release>1.0.0RC2</release>
+  <api>1.0.0</api>
+ </version>
+ 
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+
+ <license uri="http://www.php.net/license">PHP License</license>
+
+ <notes>aop</notes>
+
+ <contents>
+  <dir name="/">
+
+	<!-- file list begin {{ -->
+	<!-- baseinstalldir: the target directory on the target machine -->
+	
+	<file baseinstalldir="aop" name="beautifier/extracter.php" role="php" />
+	<file baseinstalldir="aop" name="beautifier/inserter.php" role="php" />
+	
+	<file baseinstalldir="aop" name="file/aspect.php" role="php" />
+	<file baseinstalldir="aop" name="file/comparator.php" role="php" />
+	<file baseinstalldir="aop" name="file/definition.php" role="php" />
+	<file baseinstalldir="aop" name="file/file.php" role="php" />		
+	<file baseinstalldir="aop" name="file/source.php" role="php" />
+		
+	<file baseinstalldir="aop" name="filter/class.php" role="php" />
+	<file baseinstalldir="aop" name="filter/extracter.php" role="php" />
+	<file baseinstalldir="aop" name="filter/inserter.php" role="php" />
+			
+	<file baseinstalldir="aop" name="finder/finder.php" role="php" />
+	
+	<file baseinstalldir="aop" name="iterator/iterator.php" role="php" />
+	
+	<file baseinstalldir="aop" name="list/list.php" role="php" />	
+	<file baseinstalldir="aop" name="list/borg.php" role="php" />	
+				
+	<file baseinstalldir="aop" name="object/object.php" role="php" />
+	
+	<file baseinstalldir="aop" name="pointcut/definition.php" role="php" />	
+	<file baseinstalldir="aop" name="pointcut/list.php" role="php" />
+	<file baseinstalldir="aop" name="pointcut/pointcut.php" role="php" />
+	<file baseinstalldir="aop" name="pointcut/processor.php" role="php" />			
+					
+	<file baseinstalldir="aop" name="token/collector.php" role="php" />					
+	<file baseinstalldir="aop" name="token/finder.php" role="php" />
+	<file baseinstalldir="aop" name="token/tostring.php" role="php" />
+			
+	<file baseinstalldir="aop" name="weaver/bweaver.php" role="php" />
+	<file baseinstalldir="aop" name="weaver/weaver.php" role="php" />
+	
+	<file baseinstalldir="aop" name="aop_exception.php" role="php" />
+	<file baseinstalldir="aop" name="aop.php" role="php" />
+					
+    <!-- }} -->
+
+  </dir>
+ </contents>
+ 
+ <dependencies>
+  <required>
+
+   <php>
+    <min>5.0.0</min>
+    <max>5.2.6</max>
+   </php>
+
+   <pearinstaller>
+    <min>1.6.2</min>
+   </pearinstaller>
+ 
+	<package>
+		<name>PHP_Beautifier</name>
+		<channel>pear.php.net</channel>
+		<min>0.1.13</min>
+	</package>
+
+  </required>
+ </dependencies>
+
+ <phprelease>
+  <installconditions>
+   <os>
+    <name>*</name>
+   </os>
+  </installconditions>
+ </phprelease>
+
+<changelog>
+	<release>
+		<license uri="http://www.php.net/license">PHP License</license>
+		<notes>
+		(1) Added more documentation  (2) Added 'register_class_pointcut_definition' public interface
+		</notes>
+	</release>
+</changelog>
+
+</package>
