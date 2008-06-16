@@ -61,6 +61,13 @@ class aop {
 	 */
 	static $pointcut_list = null;
 	
+	/**
+	 * Holds a list of association 
+	 * of [className:pointcut definition]
+	 * @access private
+	 */
+	static $pointcut_definition_list = array();
+	
 	/*================================================================
 	 					PUBLIC INTERFACE
 	 ================================================================*/
@@ -70,6 +77,23 @@ class aop {
 	public function __construct() {
 	
 		$this->activate();
+	}
+	/**
+	 * @see aop::register_class_pointcut_definition
+	 */
+	public static function _register_class_pointcut_definition( $className, $filePath ) {
+	
+		return self::register_class_pointcut_definition( $className, $filePath );
+	}
+	/**
+	 * Registers and associates a pointcut definition file with a specific class
+	 * 
+	 * @param $className string class name
+	 * @param $fielPath  string absolute filesystem path to the pointcut definition file
+	 */
+	public static function register_class_pointcut_definition( $className, $filePath ) {
+	
+		self::$pointcut_definition_list[$className][] = $filePath ;
 	}
 	
 	/**
@@ -214,7 +238,7 @@ class aop {
 		require_once 'PHP/Beautifier/Batch.php';
 		
 		require_once "aop_exception.php";
-		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."finder".DIRECTORY_SEPARATOR."finder.php";
+		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."finder". DIRECTORY_SEPARATOR. "finder.php";
 
 		$callback = array( __CLASS__, 'our_autoload' );
 		spl_autoload_register( $callback );
@@ -245,8 +269,6 @@ class aop {
 	 */
 	public static function our_autoload( $className ) {
 	
-		#echo __METHOD__." class= $className \n";
-	
 		if (substr( $className, 0, 4) != 'aop_' )
 			return false;
 			
@@ -255,7 +277,7 @@ class aop {
 		if ( is_null( $path ))
 			return false;
 			
-		include $path;
+		require $path;
 
 		return ( class_exists( $className ));
 	}
@@ -272,25 +294,17 @@ class aop {
 		//find the target class file
 		$path = $finder->find( $className );
 		if ( is_null( $path )) {
-		
 			return false;
 			#throw new aop_exception( ": can't find class file ($className)" );
 		}
 		
+		// ingest any pointcut definition directly associated
+		// with the required class
+		self::processPointcutDefinitionList( $className );
 
 		// is there a pointcut definition file associated with the
 		// target source file?
-		$def_file = aop::factory( 'aop_file_definition',  $path );
-		if ( $def_file->exists() ) {
-		
-			// absorb the pointcut definition
-			try {
-				$def_file->process();
-				
-			} catch( Exception $e ) {
-				throw new aop_exception( ": failed to process definition file ($path)" );
-			}
-		}
+		self::processPointcutDefinition( $path );
 		
 		// process the target file
 		$ifile = aop::factory( 'aop_file_source',  $path );
@@ -324,6 +338,40 @@ class aop {
 			throw new aop_exception( ": failed to include weaved the class file ($path)" );
 		
 		return ( class_exists( $className ) );
+	}
+	/**
+	 * Processes the pointcut definition list as registered
+	 * @param $className string
+	 */
+	private static function processPointcutDefinitionList( &$className ) {
+	
+		if ( !isset( self::$pointcut_definition_list[$className ] ))
+			return;
+			
+		$liste = self::$pointcut_definition_list[$className ];
+			
+		foreach( $liste as $path ) {
+			self::processPointcutDefinition( $path );
+		}
+	}
+	/**
+	 * Processes a pointcut definition contained in $path
+	 * @param $path filesystem path
+	 * @throws aop_exception
+	 */
+	private static function processPointcutDefinition( &$path ) {
+
+		$def_file = aop::factory( 'aop_file_definition',  $path );
+		if ( $def_file->exists() ) {
+		
+			// absorb the pointcut definition
+			try {
+				$def_file->process();
+				
+			} catch( Exception $e ) {
+				throw new aop_exception( ": failed to process definition file ($path)" );
+			}
+		}
 	}
 	
 }//end definition
