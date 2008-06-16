@@ -5,13 +5,22 @@
  */
 
 class A {
+	public function testAnnoyingString2( $class ) {
+		
+		$r = ($class != '') ? " class=\"$class\"" : " class=\"external\"";
 
+		$r .= " title=\"{$link}\"";		
+		
+		return $r;
+	}
+	
 	static $testString = "Hello";
 	
 	public function testAnnoyingString() {
 		return self::$testString{ 0 } == "H";
 	}
 
+	
 }
 
 

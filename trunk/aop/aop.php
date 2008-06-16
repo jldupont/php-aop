@@ -289,6 +289,8 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 
+		#echo __METHOD__." class: $className \n";
+		
 		$finder = aop::factory( 'aop_finder' );
 	
 		//find the target class file
@@ -297,25 +299,41 @@ class aop {
 			return false;
 			#throw new aop_exception( ": can't find class file ($className)" );
 		}
-		
+
 		// ingest any pointcut definition directly associated
 		// with the required class
 		self::processPointcutDefinitionList( $className );
 
+		//does an aspect file already exist?
+		// prepare an aspect file...
+		$ifile = aop::factory( 'aop_file_source',  $path );		
+		$ofile = aop::factory( 'aop_file_aspect', $path );
+		
+		// is the aspect file up-to-date?
+		if ( $ofile->exists() ) {
+			$result = aop_file_comparator::compare_mtime( $ifile, $ofile );
+			if ( $result == aop_file_comparator::TIMESTAMP_OLDER ) {
+		    	$aspect_path = $ofile->getPath();	
+				$result = include $aspect_path;
+				if ( !$result )
+					throw new aop_exception( ": failed to include weaved the class file ($path)" );
+				
+				return ( class_exists( $className ) );
+			}
+		}		
+		
 		// is there a pointcut definition file associated with the
 		// target source file?
 		self::processPointcutDefinition( $path );
 		
 		// process the target file
-		$ifile = aop::factory( 'aop_file_source',  $path );
+
 		try {
     		$result = $ifile->process();
 		} catch( Exception $e ) {
 			throw new aop_exception( ": failed to process the class file ($path)" );				
 		}
 		
-		// prepare an aspect file...
-		$ofile = aop::factory( 'aop_file_aspect', $path );
 		
 		// get the weaver ready
     	$weaver = aop::factory( 'aop_weaver' );
@@ -332,7 +350,13 @@ class aop {
     		throw new aop_exception( ": failed to weave the class file ($path)" );
     	}
 		
-    	$aspect_path = $ofile->getPath();	
+    	$weaver = null;
+    	
+    	$aspect_path = $ofile->getPath();
+    	
+		$ofile = null;
+		$ifile = null;
+    	
 		$result = include $aspect_path;
 		if ( !$result )
 			throw new aop_exception( ": failed to include weaved the class file ($path)" );
@@ -345,6 +369,8 @@ class aop {
 	 */
 	private static function processPointcutDefinitionList( &$className ) {
 	
+		#echo __METHOD__." classname: $className \n";
+		
 		if ( !isset( self::$pointcut_definition_list[$className ] ))
 			return;
 			
@@ -353,6 +379,7 @@ class aop {
 		foreach( $liste as $path ) {
 			self::processPointcutDefinition( $path );
 		}
+		
 	}
 	/**
 	 * Processes a pointcut definition contained in $path
@@ -372,6 +399,8 @@ class aop {
 				throw new aop_exception( ": failed to process definition file ($path)" );
 			}
 		}
+		
+		unset( $def_file );
 	}
 	
 }//end definition

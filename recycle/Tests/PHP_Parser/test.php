@@ -15,6 +15,15 @@ class A {
 		return self::$testString{ 0 } == "H";
 	}
 
+	public function testAnnoyingString2( $class ) {
+		
+		$r = ($class != '') ? " class=\"$class\"" : " class=\"external\"";
+		
+		$r .= " title=\"{$link}\"";
+		
+		return $r;
+	}
+	
 }
 
 
