@@ -56,7 +56,9 @@ class aop_file_definition
 	 */
 	protected function transformPath() {
 		
-		$this->path = str_replace( '.php', self::$suffix, $this->path );
+		// check if the suffix is already present
+		if ( strpos( $this->path, self::$suffix ) === false )
+			$this->path = str_replace( '.php', self::$suffix, $this->path );
 	}
 	// =======================================================================
 	//							SUB-CLASSED METHODS

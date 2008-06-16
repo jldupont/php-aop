@@ -81,15 +81,15 @@ class aop_finder {
 					
 				// case 3
 				$bits = explode( "_", $className );
-				$fragment = implode( DIRECTORY_SEPARATOR, $bits );
+				$fragment_list = implode( DIRECTORY_SEPARATOR, $bits );
 				$last_fragment = $bits[ count( $bits ) - 1 ];
-				$p = $path . DIRECTORY_SEPARATOR . $fragment . '.php';
+				$p = $path . DIRECTORY_SEPARATOR . $fragment_list . '.php';
 				#echo "3- Trying path: $p \n";			
 				if ( file_exists( $p ) )
 					return $p;
 				
 				// case 4
-				$p = $path . DIRECTORY_SEPARATOR . $fragment . DIRECTORY_SEPARATOR.$last_fragment.'.php';
+				$p = $path . DIRECTORY_SEPARATOR . $fragment_list . DIRECTORY_SEPARATOR.$last_fragment.'.php';
 				#echo "4- Trying path: $p \n";			
 				if ( file_exists( $p ) )
 					return $p;
