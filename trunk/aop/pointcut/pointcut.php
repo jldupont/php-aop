@@ -69,7 +69,8 @@ class aop_pointcut
 	public function getMethodNameForAdviceType( $type ) {
 	
 		if (!isset( $this->adviceMethods[ $type ] ))
-			throw new aop_exception( ": advice type ($type) not set " );
+			return null;
+			#throw new aop_exception( ": advice type ($type) not set " );
 			
 		return $this->adviceMethods[ $type ];
 	}
@@ -92,7 +93,8 @@ class aop_pointcut
 	public function getAdviceCode( $type ) {
 		
 		if ( !isset( $this->advicesCode[ $type ] ) )
-			throw new aop_exception( __METHOD__.": advice code not set for type ($type)" );
+			return null;
+			#throw new aop_exception( __METHOD__.": advice code not set for type ($type)" );
 			
 		return $this->advicesCode[ $type ];
 	}
