@@ -82,13 +82,13 @@ class aop_weaver
 		$bweaver->addFilter( $ifilter );
 		$bweaver->setInputString( $this->iFileObj->getContent() );
 		
-		echo __METHOD__." before weaving...\n";
+		#echo __METHOD__." before weaving...\n";
 		try {
 			$bweaver->process();
 		} catch(Exception $e) {
 			throw new aop_exception( $e->getMessage() );
 		}
-		echo __METHOD__." after weaving...\n";		
+		#echo __METHOD__." after weaving...\n";		
 		
 		$result = $bweaver->get();
 		

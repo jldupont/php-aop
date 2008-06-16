@@ -31,7 +31,7 @@ abstract class aop_pointcut_definition
 	 * @access private
 	 */
 	static $requiredFields = array(
-		'cp' , 'mp', 'am' 
+		'cp' , 'mp', 'am'
 	);
 	/**
 	 * List of optional fields which can be

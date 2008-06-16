@@ -163,8 +163,6 @@ abstract class aop_file
 	 */
 	protected function write( &$content ) {
 	
-		echo __METHOD__." path: ".$this->path."\n";
-		
 		$len = strlen( $content );
 		
 		$bytes_written = file_put_contents( $this->path, $content );
