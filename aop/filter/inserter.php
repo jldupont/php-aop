@@ -27,6 +27,8 @@ class aop_filter_inserter
     
 	public function t_start_method( &$sTag, &$classe, &$name ) {
 
+		#echo __METHOD__." class: $classe, method: $name \n";
+		
 		$tokensToInsert = $this->oBeaut->findMatch( $classe, $name, 'before' );
 		if ( !empty( $tokensToInsert ) ) {
 			$string = aop_token_tostring::process( $tokensToInsert );

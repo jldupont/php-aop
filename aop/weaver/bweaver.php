@@ -40,12 +40,15 @@ class bweaver
 	 */
 	public function findMatch( &$className, &$methodName ) {
 	
+		echo __METHOD__.": class: $className, method: $methodName \n";
+				
 		$match = null;
 	
 		foreach( $this->pointcuts as $pointcut ) {
 			
 			if ( $pointcut->isMatch( $className, $methodName ) ) {
 				$match = $pointcut;
+				echo "MATCH! ".__METHOD__.": class: $className, method: $methodName \n";
 				break;
 			}
 		}

@@ -80,7 +80,7 @@ class aop_pointcut
 	 * @param $codeTokenList array of tokens
 	 * @return void
 	 */
-	public function setAdviceCode( $type, &$codeTokenList ) {
+	public function setAdviceCode( $type, $codeTokenList ) {
 	
 		$this->advicesCode[ $type ] = $codeTokenList;		
 	}
@@ -99,7 +99,7 @@ class aop_pointcut
 	/**
 	 * Looks up the derived class to find a matching pointcut definition
 	 */
-	public function isMatch( &$className, &$classMethodName ) {
+	public function isMatch( &$className, $classMethodName ) {
 		
 		$result_class  = preg_match( $this->classPattern, $className ) === 1;
 		$result_method = preg_match( $this->methodPattern, $classMethodName ) === 1;
@@ -117,7 +117,7 @@ class aop_pointcut
 	 * @param $pattern string simple pattern
 	 * @return $regex_pattern string 
 	 */
-	protected function computePattern( &$pattern ) {
+	protected function computePattern( $pattern ) {
 	
 		$p = preg_quote( $pattern );
 		return '/^' . str_replace( '~', '(.*)', $p ) . '$/siU';

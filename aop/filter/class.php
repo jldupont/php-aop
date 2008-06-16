@@ -56,10 +56,14 @@ class aop_filter_class
 	 */
     protected $aFilterTokenFunctions = array(
     
-        T_CLASS 			=> 't_class',
-        T_FUNCTION 			=> 't_function',
-        'T_OPEN_BRACE' 		=> 't_open_brace',
-        'T_CLOSE_BRACE'		=> 't_close_brace',
+        T_CLASS 					=> 't_class',
+        T_FUNCTION 					=> 't_function',
+        'T_OPEN_BRACE' 				=> 't_open_brace',
+        'T_CLOSE_BRACE'				=> 't_close_brace',
+        '{'							=> 't_open_brace',
+        '}'							=> 't_close_brace',
+        T_DOLLAR_OPEN_CURLY_BRACES	=> 't_open_brace',
+        T_CURLY_OPEN				=> 't_open_brace',
         
     );
     
@@ -83,7 +87,9 @@ class aop_filter_class
 	function t_class($sTag) {
 
 		$this->depthLevelForClass = $this->currentDepth;	
-		$this->currentClass = $this->oBeaut->getNextTokenContent();
+		$classe = $this->currentClass = $this->oBeaut->getNextTokenContent(1);
+		
+		#echo __METHOD__." stag: $sTag classe: $classe \n";
 		
 		$this->nextOpenBrace = array( 'class', $this->currentClass );
 		return PHP_Beautifier_Filter::BYPASS;
@@ -103,13 +109,13 @@ class aop_filter_class
 		$type = $this->nextOpenBrace[0];
 		$name = $this->nextOpenBrace[1];
 		
-		$this->nextOpenBrace == null;
+		$this->nextOpenBrace = null;
 		
 		switch( $type ) {
 		case 'class':
-			return $this->i_start_class( &$sTag, $name );
+			return $this->i_start_class( $sTag, $name );
 		case 'method':
-			return $this->i_start_method( &$sTag, $classe, $name );		
+			return $this->i_start_method( $sTag, $classe, $name );		
 		default:
 			throw new Exception( __METHOD__.": invalid type ($type)" );
 		}//switch
@@ -154,7 +160,7 @@ class aop_filter_class
 		// then we are really dealing with a method
 		if ( !is_null( $this->currentClass )) {
 		
-			$this->currentMethod = $this->oBeaut->getNextTokenContent();
+			$this->currentMethod = $this->oBeaut->getNextTokenContent(1);
 			$this->depthLevelForMethod = $this->currentDepth;
 			$this->nextOpenBrace = array( 'method', $this->currentMethod );
 		}

@@ -163,6 +163,8 @@ abstract class aop_file
 	 */
 	protected function write( &$content ) {
 	
+		echo __METHOD__." path: ".$this->path."\n";
+		
 		$len = strlen( $content );
 		
 		$bytes_written = file_put_contents( $this->path, $content );
@@ -192,6 +194,11 @@ abstract class aop_file
 	 * mtime fetching
 	 */
 	protected function fetch_mtime() {
+		if ( !file_exists( $this->path )) {
+			$this->mtime = null;
+			return;
+		}
+			
 		try {
 			$this->mtime = @filemtime( $this->path );
 		} catch( Exception $e ) {
