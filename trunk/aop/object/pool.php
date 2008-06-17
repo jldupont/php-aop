@@ -30,11 +30,11 @@ class aop_object_pool {
 	 */
 	public static function get( $class ) {
 
-		aop_logger::log( __METHOD__." retrieving an object from class: $class" );
-		
 		if (!isset( self::$objList[ $class ] ))
 			return null;
-			
+
+		aop_logger::log( __METHOD__." RETRIEVING an object from class($class) from the recycle bin" );
+		
 		$obj = array_shift( self::$objList[$class] );
 		
 		return $obj;
@@ -48,8 +48,20 @@ class aop_object_pool {
 	public static function recycle( &$obj ) {
 		
 		$class = get_class( $obj );
-
-		aop_logger::log( __METHOD__." recycling an object from class: $class" );		
+				
+		// is this recyclable at all?
+		$recyclable = false;
+		$callback = array( $obj, 'isRecyclable' );
+		if ( is_callable( $callback ) ) {
+			$recyclable = $obj->isRecyclable();
+		}
+		if ( !$recyclable ) {
+			aop_logger::log( __METHOD__." CAN'T recycle object of class($class)" );
+			unset( $obj );
+			return; 
+		}
+		
+		aop_logger::log( __METHOD__." ADDING an object from class($class) to the recycle bin" );		
 		
 		self::$objList[$class][] = $obj;
 	}
