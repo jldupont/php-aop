@@ -29,7 +29,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     }
     public function testPointcutDefinitionFile() {
     
-    	$def_file = aop::factory( 'aop_file_definition',  self::$pathToTestpointFile );
+    	$def_file = aop_factory::get( 'aop_file_definition',  self::$pathToTestpointFile );
     	
     	#var_dump( $def_file );
     	
@@ -48,7 +48,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	
     	var_dump( $def_file );
     	
-    	#$pointcutsStore = aop::factory( 'aop_pointcut_list' );
+    	#$pointcutsStore = aop_factory::get( 'aop_pointcut_list' );
     	
     	#$liste = $pointcutsStore->getList();
 
@@ -64,14 +64,14 @@ class UnitTest extends PHPUnit_Framework_TestCase
      */
     public function testWeaver() {
     
-    	$list = aop::factory( 'aop_pointcut_list' );
+    	$list = aop_factory::get( 'aop_pointcut_list' );
     
-    	$ifile = aop::factory( 'aop_file_source',  self::$pathToTestpointFile );
+    	$ifile = aop_factory::get( 'aop_file_source',  self::$pathToTestpointFile );
     	$result = $ifile->process();
     
-    	$ofile = aop::factory( 'aop_file_aspect', self::$pathToTestpointFile );
+    	$ofile = aop_factory::get( 'aop_file_aspect', self::$pathToTestpointFile );
     	
-    	$weaver = aop::factory( 'aop_weaver' );
+    	$weaver = aop_factory::get( 'aop_weaver' );
     	$weaver->setPointcutList( $list );
     	$weaver->setInputFile( $ifile );
     	$weaver->setOutputFile( $ofile );

@@ -93,11 +93,11 @@ class aop_pointcut_processor
 		foreach( $cuts as $index => &$cut ) {
 
 			// let's grab a universal iterator to track the advice types
-			$iterator = aop::factory( 'aop_iterator', $cut, 'adviceMethods' );	
+			$iterator = aop_factory::get( 'aop_iterator', $cut, 'adviceMethods' );	
 		
 			foreach( $iterator as $type => $methodName ) {
 			
-				$finder = aop::factory( 'aop_token_finder', $this->collectorList );
+				$finder = aop_factory::get( 'aop_token_finder', $this->collectorList );
 				$index = $finder->findMatch( $this->classDefinitionName, $methodName);
 				if ( is_null( $index ))
 					throw new aop_exception(": missing method definition for advice type($type)");
@@ -145,12 +145,12 @@ class aop_pointcut_processor
 	 */
 	private function extractClassMethods( ){
 	
-		$this->bExtracter = aop::factory( 'aop_beautifier_extracter' );
+		$this->bExtracter = aop_factory::get( 'aop_beautifier_extracter' );
 		
 		// extracts all methods
 		$this->bExtracter->setAll();
 		
-		$this->bFilterExtracter = aop::factory( 'aop_filter_extracter', $this->bExtracter );
+		$this->bFilterExtracter = aop_factory::get( 'aop_filter_extracter', $this->bExtracter );
 		
 		$this->bExtracter->addFilter( $this->bFilterExtracter );
 

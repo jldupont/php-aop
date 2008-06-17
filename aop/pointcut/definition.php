@@ -115,7 +115,7 @@ abstract class aop_pointcut_definition
 			
 			$this->validateCutDefinition( $def, $method /*exception*/ );
 			
-			$cut = aop::factory( 'aop_pointcut', $def );
+			$cut = aop_factory::get( 'aop_pointcut', $def );
 			
 			$cuts[] = $cut;
 		}

@@ -45,7 +45,7 @@ class aop_file_definition
 	 */
 	public function _process( &$content = null ) {
 
-    	$proc = aop::factory( 'aop_pointcut_processor', $this->path );
+    	$proc = aop_factory::get( 'aop_pointcut_processor', $this->path );
     	
     	return $proc->process();
 	}
@@ -74,7 +74,7 @@ class aop_file_definition
 		
 		$this->pointcuts = $content;
 	
-		$pointcutsStore = aop::factory( 'aop_pointcut_list' );
+		$pointcutsStore = aop_factory::get( 'aop_pointcut_list' );
 		
 		$pointcutsStore->merge( $this->pointcuts );
 

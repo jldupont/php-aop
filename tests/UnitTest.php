@@ -62,14 +62,14 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testFactory() {
     
-    	$o = aop::factory( 'TestClass' );
+    	$o = aop_factory::get( 'TestClass' );
     	
     	$this->assertEquals( $o instanceof TestClass, true );
     }
 
     public function testFactoryWithParams() {
     
-    	$o = aop::factory( 'TestClass2', 'param1', 'param2' );
+    	$o = aop_factory::get( 'TestClass2', 'param1', 'param2' );
     	
     	$this->assertEquals( $o instanceof TestClass, true );
     	$this->assertEquals( $o instanceof TestClass2, true );    	
@@ -79,7 +79,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
 
     	$result = false;    
     	try {
-    		$o = aop::factory( 'TestClass2', 'param1' );
+    		$o = aop_factory::get( 'TestClass2', 'param1' );
     	} catch( Exception $e ) {
     		$result = true;
     	}
@@ -89,7 +89,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testFactoryWithTooManyParams() {
     
-    	$o = aop::factory( 'TestClass2', 'param1', 'param2', 'param3' );
+    	$o = aop_factory::get( 'TestClass2', 'param1', 'param2', 'param3' );
     	
     	$this->assertEquals( $o instanceof TestClass, true );
     	$this->assertEquals( $o instanceof TestClass2, true );  
@@ -136,7 +136,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	
     	$file = str_replace('.php', $replacement, self::$pathToTestpointFile );
     
-    	$p = aop::factory( 'aop_pointcut_processor', $file );
+    	$p = aop_factory::get( 'aop_pointcut_processor', $file );
     	
     	$r = $p->process();
     	
@@ -150,7 +150,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     
     public function testPointcutDefinitionFile() {
     
-    	$def_file = aop::factory( 'aop_file_definition',  self::$pathToTestpointFile );
+    	$def_file = aop_factory::get( 'aop_file_definition',  self::$pathToTestpointFile );
     	
     	try {
     	
@@ -163,7 +163,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
     	
     	$this->assertEquals( $result, true );
     	
-    	$pointcutsStore = aop::factory( 'aop_pointcut_list' );
+    	$pointcutsStore = aop_factory::get( 'aop_pointcut_list' );
     	
     	$liste = $pointcutsStore->getList();
 
@@ -182,7 +182,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
 
     public function testSourceFile() {
     
-    	$src_file = aop::factory( 'aop_file_source',  self::$pathToTestpointFile );
+    	$src_file = aop_factory::get( 'aop_file_source',  self::$pathToTestpointFile );
     	
     	try {
     	
@@ -206,14 +206,14 @@ class UnitTest extends PHPUnit_Framework_TestCase
      */
     public function testWeaver() {
     
-    	$list = aop::factory( 'aop_pointcut_list' );
+    	$list = aop_factory::get( 'aop_pointcut_list' );
     
-    	$ifile = aop::factory( 'aop_file_source',  self::$pathToTestpointFile );
+    	$ifile = aop_factory::get( 'aop_file_source',  self::$pathToTestpointFile );
     	$result = $ifile->process();
     
-    	$ofile = aop::factory( 'aop_file_aspect', self::$pathToTestpointFile );
+    	$ofile = aop_factory::get( 'aop_file_aspect', self::$pathToTestpointFile );
     	
-    	$weaver = aop::factory( 'aop_weaver' );
+    	$weaver = aop_factory::get( 'aop_weaver' );
     	$weaver->setPointcutList( $list );
     	$weaver->setInputFile( $ifile );
     	$weaver->setOutputFile( $ofile );

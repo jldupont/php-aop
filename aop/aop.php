@@ -49,13 +49,7 @@ class aop {
 	 * @access private
 	 */
 	private static $params = array();
-	
-	/**
-	 * Class map for the factory
-	 * @access private
-	 */
-	private static $classMap = array();
-	
+		
 	/**
 	 * Pointcut list
 	 */
@@ -68,6 +62,12 @@ class aop {
 	 */
 	static $pointcut_definition_list = array();
 	
+	/**
+	 * List of classes that will
+	 * bypass the 'weaving' process
+	 */
+	static $bypass_list = array();
+	
 	/*================================================================
 	 					PUBLIC INTERFACE
 	 ================================================================*/
@@ -78,6 +78,12 @@ class aop {
 	
 		$this->activate();
 	}
+	
+	public function setLogger( &$logger ) {
+		
+		aop_factory::get( 'aop_logger' )->set( $logger );
+	}
+	
 	/**
 	 * @see aop::register_class_pointcut_definition
 	 */
@@ -119,6 +125,16 @@ class aop {
 		return true;
 	}
 	/**
+	 * Registers a class that will be 
+	 * ignored by the weaver
+	 * 
+	 * @param $class string
+	 */
+	public function register_class_bypass( $class ) {
+		self::$bypass_list[ $class ] = true;
+	}
+	
+	/**
 	 * Maps a class to another one
 	 * Used along with the factory interface.
 	 * 
@@ -128,35 +144,7 @@ class aop {
 	 */
 	public static function mapClass( $oClasse, $rClasse ) {
 	
-		self::$classMap[ $oClasse ] = $rClasse;
-	}
-	/**
-	 * factory
-	 * 
-	 * @param $className name of class to instantiate/get (singleton)
-	 * @param mixed optional parameters
-	 * @return $object
-	 */
-	public static function factory( $className /*optional params*/ ) {
-	
-		$args = func_get_args();
-		array_shift( $args );	#$classname
-	
-		// check our replacement map
-		if ( isset( self::$classMap[$className] )) {
-		
-			$classe = self::$classMap[$className];
-			if ( !class_exists( $classe, true ))
-				throw new aop_exception( "unable to load class ($className) remapped to ($classe)" );
-			
-			return self::buildObject( $classe, $args );
-		}
-	
-		// default i.e. no remapping
-		if ( !class_exists( $className, true ))
-			throw new aop_exception( "unable to load class $className" );
-			
-		return self::buildObject( $className, $args );
+		aop_factory::mapClass( $oClasse, $rClasse );
 	}
 	
 	/**
@@ -193,35 +181,6 @@ class aop {
 	 					PRIVATE INTERFACE
 	 ================================================================*/
 	/**
-	 * Builds an object instance of the specified class
-	 * and passes properly a variable argument list
-	 * 
-	 * @param $classe
-	 * @param $args mixed
-	 * @return $object
-	 * @throws aop_exception when too many arguments are passed in array $args
-	 */
-	private static function buildObject( &$classe, Array &$args ) {
-	
-		$count = count( $args );
-		
-		switch( $count ) {
-		case 0:
-			return new $classe;
-		case 1:
-			return new $classe( $args[0] );
-		case 2:
-			return new $classe( $args[0], $args[1] );
-		case 3:
-			return new $classe( $args[0], $args[1], $args[2] );
-		case 4:
-			return new $classe( $args[0], $args[1], $args[2], $args[3] );
-		default:
-			throw new aop_exception( "unsupported number of arguments whilst creating object in factory" );
-		}
-	}
-	
-	/**
 	 * Framework activation function
 	 * 
 	 * @return void
@@ -238,7 +197,11 @@ class aop {
 		require_once 'PHP/Beautifier/Batch.php';
 		
 		require_once "aop_exception.php";
+		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."logger". DIRECTORY_SEPARATOR. "logger.php";		
 		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."finder". DIRECTORY_SEPARATOR. "finder.php";
+		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."object". DIRECTORY_SEPARATOR. "object.php";		
+		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."object". DIRECTORY_SEPARATOR. "pool.php";		
+		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR ."factory". DIRECTORY_SEPARATOR. "factory.php";
 
 		$callback = array( __CLASS__, 'our_autoload' );
 		spl_autoload_register( $callback );
@@ -261,7 +224,7 @@ class aop {
 			
 		self::$initialized = true;
 	
-		self::$pointcut_list = aop::factory( 'aop_pointcut_list' );
+		self::$pointcut_list = aop_factory::get( 'aop_pointcut_list' );
 	}
 	/**
 	 * Autoloads classes making this framework
@@ -272,7 +235,7 @@ class aop {
 		if (substr( $className, 0, 4) != 'aop_' )
 			return false;
 			
-		$finder = aop::factory( 'aop_finder' );
+		$finder = aop_factory::get( 'aop_finder' );
 		$path = $finder->find( $className );
 		if ( is_null( $path ))
 			return false;
@@ -289,34 +252,48 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 
-		#echo __METHOD__." class: $className \n";
+		aop_logger::log( __METHOD__." request for class: $className" );
 		
-		$finder = aop::factory( 'aop_finder' );
+		$finder = aop_factory::get( 'aop_finder' );
 	
 		//find the target class file
 		$path = $finder->find( $className );
 		if ( is_null( $path )) {
+			aop_logger::log( __METHOD__." can't find source file for class $className" );
 			return false;
-			#throw new aop_exception( ": can't find class file ($className)" );
 		}
 
+		// bypass?
+		if ( isset( self::$bypass_list[ $className ])) {
+			$result = include $path;
+			return class_exists( $className );
+		}
+		
 		// ingest any pointcut definition directly associated
 		// with the required class
 		self::processPointcutDefinitionList( $className );
 
 		//does an aspect file already exist?
 		// prepare an aspect file...
-		$ifile = aop::factory( 'aop_file_source',  $path );		
-		$ofile = aop::factory( 'aop_file_aspect', $path );
+		$ifile = aop_factory::get( 'aop_file_source',  $path );		
+		$ofile = aop_factory::get( 'aop_file_aspect', $path );
 		
 		// is the aspect file up-to-date?
 		if ( $ofile->exists() ) {
+			
+			aop_logger::log( __METHOD__." aspect file exist: $path" );
+			
 			$result = aop_file_comparator::compare_mtime( $ifile, $ofile );
 			if ( $result == aop_file_comparator::TIMESTAMP_OLDER ) {
+				
+				aop_logger::log( __METHOD__." aspect file up-to-date" );				
+				
 		    	$aspect_path = $ofile->getPath();	
 				$result = include $aspect_path;
-				if ( !$result )
+				if ( !$result ) {
+					aop_logger::log( "failed to include weaved file ($path)" );
 					throw new aop_exception( ": failed to include weaved the class file ($path)" );
+				}
 				
 				return ( class_exists( $className ) );
 			}
@@ -329,14 +306,16 @@ class aop {
 		// process the target file
 
 		try {
+			
     		$result = $ifile->process();
+    		
 		} catch( Exception $e ) {
+			aop_logger::log( "failed to process the class file ($path). Exception message: ".$e->getMessage() );
 			throw new aop_exception( ": failed to process the class file ($path)" );				
 		}
 		
-		
 		// get the weaver ready
-    	$weaver = aop::factory( 'aop_weaver' );
+    	$weaver = aop_factory::get( 'aop_weaver' );
     	$weaver->setPointcutList( self::$pointcut_list );
     	$weaver->setInputFile( $ifile );
     	$weaver->setOutputFile( $ofile );
@@ -347,19 +326,22 @@ class aop {
     		
     	} catch( Exception $e ) {
     		
+    		aop_logger::log( "weaving process failed. Exception message: ".$e->getMessage() );
     		throw new aop_exception( ": failed to weave the class file ($path)" );
     	}
 		
-    	$weaver = null;
+    	$weaver->recycle();
     	
     	$aspect_path = $ofile->getPath();
     	
-		$ofile = null;
-		$ifile = null;
+		$ofile->recycle();
+		$ifile->recycle();
     	
 		$result = include $aspect_path;
-		if ( !$result )
+		if ( !$result ) {
+			aop_logger::log( "failed to include weaved file ($path)" );
 			throw new aop_exception( ": failed to include weaved the class file ($path)" );
+		}
 		
 		return ( class_exists( $className ) );
 	}
@@ -388,7 +370,7 @@ class aop {
 	 */
 	private static function processPointcutDefinition( &$path ) {
 
-		$def_file = aop::factory( 'aop_file_definition',  $path );
+		$def_file = aop_factory::get( 'aop_file_definition',  $path );
 		if ( $def_file->exists() ) {
 		
 			// absorb the pointcut definition
