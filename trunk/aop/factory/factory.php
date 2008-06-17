@@ -53,7 +53,7 @@ class aop_factory {
 			if ( !class_exists( $classe, true ))
 				throw new aop_exception( "unable to load class ($className) remapped to ($classe)" );
 			
-			aop_logger::log( __METHOD__." remapping: $className to $classe \n" );				
+			aop_logger::log( __METHOD__." REMAPPING: $className to $classe \n" );				
 				
 			return self::buildObject( $classe, $args );
 		}
@@ -65,7 +65,7 @@ class aop_factory {
 			if ( is_callable( array( $obj, 'init' ) ))
 				self::initObject( $obj, $args );
 				
-			aop_logger::log( __METHOD__." recycled class: $className \n" );
+			aop_logger::log( __METHOD__." PROVIDING recycled class($className)" );
 				
 			return $obj;
 		}
@@ -88,7 +88,7 @@ class aop_factory {
 	 */
 	private static function buildObject( &$classe, Array &$args ) {
 	
-		aop_logger::log( __METHOD__." building an object of class: $classe \n" );
+		aop_logger::log( __METHOD__." BUILDING an object of class($classe)" );
 		
 		$count = count( $args );
 		
@@ -111,7 +111,7 @@ class aop_factory {
 	private function initObject( &$obj, &$args ) {
 
 		$classe = get_class( $obj );
-		aop_logger::log( __METHOD__." initializing an object of class: $classe \n" );
+		aop_logger::log( __METHOD__." INITIALIZING an object of class($classe)" );
 				
 		$count = count( $args );
 		

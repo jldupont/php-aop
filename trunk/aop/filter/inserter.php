@@ -20,6 +20,20 @@
 class aop_filter_inserter 
 	extends aop_filter_class {
 	
+	/**
+	 * @see aop_factory
+	 */
+    public function isRecyclable() {
+    	return true;
+    }
+  
+	/**
+	 * @see aop_factory
+	 */
+    public function init( $oBeaut, $aSettings = array() ) {
+    	return parent::init( $oBeaut, $aSettings );
+    }
+		
     public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
     {
         parent::__construct($oBeaut, $aSettings);
@@ -27,10 +41,9 @@ class aop_filter_inserter
     
 	public function t_start_method( &$sTag, &$classe, &$name ) {
 
-		#echo __METHOD__." class: $classe, method: $name \n";
-		
 		$tokensToInsert = $this->oBeaut->findMatch( $classe, $name, 'before' );
 		if ( !empty( $tokensToInsert ) ) {
+			aop_logger::log( "WEAVING 'BEFORE' advice code in class($classe) method($name)" );			
 			$string = aop_token_tostring::process( $tokensToInsert );
 			$this->oBeaut->add( $string );
 			$this->oBeaut->addNewLineIndent();
@@ -41,6 +54,7 @@ class aop_filter_inserter
 
 		$tokensToInsert = $this->oBeaut->findMatch( $classe, $name, 'after' );
 		if ( !empty( $tokensToInsert ) ) {
+			aop_logger::log( "WEAVING 'AFTER' advice code in class($classe) method($name)" );			
 			$string = aop_token_tostring::process( $tokensToInsert );
 			$this->oBeaut->add( $string );
 			$this->oBeaut->addNewLineIndent();

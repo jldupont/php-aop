@@ -20,7 +20,25 @@ class aop_beautifier_inserter
 	 * List of class/method to insert
 	 */
 	var $pointcuts = null;	
+
+	public function __construct() {
+		$this->init();
+		
+		parent::__construct();
+	}
 	
+	/**
+	 * @see aop_factory
+	 */
+	public function isRecyclable() {
+		return true;
+	}
+	/**
+	 * @see aop_factory
+	 */
+	public function init() {
+		$this->pointcuts = null;
+	}
 	/**
 	 * Sets the pointcut list
 	 * 
