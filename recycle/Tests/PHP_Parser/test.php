@@ -4,9 +4,20 @@
  * 
  */
 
-class A {
+function_call( <<<END
+whatever-here
+END
+);
 
-	static $testString = "Hello";
+
+class A {
+	function testWithHereDoc() {
+		
+		return $this->func( <<<END
+whatever-here
+END
+);
+	}
 	
 	/**
 	 * testAnnoyingString
@@ -30,6 +41,10 @@ class A {
 class B 
 	extends A {
 
+
+	static $testString = "Hello";
+	
+		
 	var $v1 = null;
 	var $v2 = 
 			null;

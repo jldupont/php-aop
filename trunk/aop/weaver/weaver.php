@@ -103,10 +103,8 @@ class aop_weaver
 		}
 		$result = $bweaver->get();
 		
-		//TODO fixme
+		// recycle!
 		aop_object_pool::recycle( $bweaver );
-		#unset( $ifilter );
-		#aop_logger::log( __METHOD__." UNSETTING object of class aop_filter_inserter", PEAR_LOG_NOTICE );
 		aop_object_pool::recycle( $ifilter );
 		
 		$this->oFileObj->setContent( $result );

@@ -23,7 +23,7 @@
  <time>03:15:11</time>
 
  <version>
-  <release>1.0.0RC3</release>
+  <release>1.0.0RC4</release>
   <api>1.0.0</api>
  </version>
  
@@ -122,7 +122,7 @@
 	<release>
 		<license uri="http://www.php.net/license">PHP License</license>
 		<notes>
-		(1) added logging (2) added object recycling (3) added class bypass
+		(1) added more recycling (2) added 'strict' mode
 		</notes>
 	</release>
 </changelog>

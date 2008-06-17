@@ -27,7 +27,7 @@ class aop_pointcut_list
 	 * @param $methodName string
 	 * @return $found aop_pointcut
 	 */
-	public function findMatch( &$className, &$methodName ) {
+	public function findMatch( &$className, $methodName ) {
 	
 		$found = null;
 		

@@ -100,11 +100,19 @@ class aop_pointcut
 	}
 	/**
 	 * Looks up the derived class to find a matching pointcut definition
+	 * @param string $className
+	 * @param string $classMethodName OR ~
+	 * @return boolean
 	 */
 	public function isMatch( &$className, $classMethodName ) {
 		
 		$result_class  = preg_match( $this->classPattern, $className ) === 1;
-		$result_method = preg_match( $this->methodPattern, $classMethodName ) === 1;
+		
+		// handle 'wildcard'
+		if ( $classMethodName == '~' )
+			$result_method = true;
+		else
+			$result_method = preg_match( $this->methodPattern, $classMethodName ) === 1;
 
 		return ( $result_class and $result_method );
 	}

@@ -46,6 +46,12 @@ abstract class aop_pointcut_definition
 	 *  PUBLIC INTERFACE
 	 *************************************************************************/
 	
+	public function isRecyclable() {
+		return true;
+	}
+	public function init() {
+		$this->cuts = null;
+	}
 	/**
 	 * Looks up the derived class to find a matching pointcut definition
 	 */
@@ -111,6 +117,8 @@ abstract class aop_pointcut_definition
 			if ( !is_callable( $callback ) )
 				throw new Exception( __METHOD__.": can't access cut definition method ($method)" );
 				
+			aop_logger::log( __METHOD__." found pointcut definition method($method)" );
+			
 			$def = $this->$method();
 			
 			$this->validateCutDefinition( $def, $method /*exception*/ );
