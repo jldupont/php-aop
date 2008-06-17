@@ -26,7 +26,19 @@ class aop_file_definition
 	
 		parent::__construct( $path, $content );
 	}
-	
+	/**
+	 * @see aop_object_pool
+	 */
+	public function isRecyclable() {
+		return true;
+	}
+	/**
+	 * @see aop_object_pool
+	 */
+	public function init( &$path, &$content = null ) {
+		$this->pointcuts = null;
+		return parent::init( $path, $content );
+	}
 	public static function getTransformationPathString() {
 	
 		return self::$suffix;

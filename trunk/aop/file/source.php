@@ -17,7 +17,7 @@ class aop_file_source
 	/**
 	 * Performs beautification on process()
 	 */
-	var $performBeautification = true;
+	var $performBeautification = false;
 		
 	/**
 	 * Beautified content
