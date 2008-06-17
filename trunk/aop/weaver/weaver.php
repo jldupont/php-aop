@@ -38,6 +38,20 @@ class aop_weaver
 	
 		parent::__construct();
 	}
+	/**
+	 * @see aop_factory
+	 */
+	public function init() {
+		$this->pointcuts = null;
+		$this->iFileObj  = null;
+		$this->oFileObj  = null;		
+	}
+	/**
+	 * @see aop_factory
+	 */
+	public function isRecyclable() {
+		return true;
+	}
 	
 	/**
 	 * Sets the list of pointcuts 
@@ -73,8 +87,8 @@ class aop_weaver
 	 */
 	public function weave( ) {
 	
-		$bweaver = aop::factory( 'aop_beautifier_inserter' );
-		$ifilter = aop::factory( 'aop_filter_inserter', $bweaver );
+		$bweaver = aop_factory::get( 'aop_beautifier_inserter' );
+		$ifilter = aop_factory::get( 'aop_filter_inserter', $bweaver );
 	
 		// for aop_filter_inserter
 		$bweaver->setPointcutList( $this->pointcuts );
@@ -82,15 +96,15 @@ class aop_weaver
 		$bweaver->addFilter( $ifilter );
 		$bweaver->setInputString( $this->iFileObj->getContent() );
 		
-		#echo __METHOD__." before weaving...\n";
 		try {
 			$bweaver->process();
 		} catch(Exception $e) {
 			throw new aop_exception( $e->getMessage() );
 		}
-		#echo __METHOD__." after weaving...\n";		
-		
 		$result = $bweaver->get();
+		
+		//TODO fixme
+		#aop_object_pool::recycle( $bweaver );
 		
 		$this->oFileObj->setContent( $result );
 		

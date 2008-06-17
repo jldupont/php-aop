@@ -99,7 +99,7 @@ class aop_beautifier_extracter
 		// we found a match, supply a collector
 		if ( !is_null( $found ) or $this->all ) {
 			#return new aop_token_collector( $classe, $method );
-			return aop::factory( 'aop_token_collector', $classe, $method );
+			return aop_factory::get( 'aop_token_collector', $classe, $method );
 		}
 		
 		return null;

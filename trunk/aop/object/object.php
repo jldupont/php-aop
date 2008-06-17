@@ -6,6 +6,7 @@
  * @author Jean-Lou Dupont
  * @package AOP
  * @category AOP
+ * @pattern ObjectPool
  */
 
 class aop_object {
@@ -15,6 +16,15 @@ class aop_object {
 	 */
 	public function __construct() {
 	}
+	
+	public function recycle() {
+		
+		// Recyclable?
+		if ( is_callable( array( $this, 'isRecyclable') ) )
+			if ( $this->isRecyclable() )
+				aop_object_pool::recycle( $this );
+	}
+	
 	/**
 	 * Raise a custom exception built "on-the-fly".
 	 * Since 'exception' are rare events, we can afford to

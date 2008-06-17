@@ -15,6 +15,11 @@ class aop_file_source
 	extends aop_file {
 
 	/**
+	 * Performs beautification on process()
+	 */
+	var $performBeautification = true;
+		
+	/**
 	 * Beautified content
 	 * @access public
 	 */
@@ -27,6 +32,11 @@ class aop_file_source
 	public function __construct( &$path, &$content = null ) {
 	
 		parent::__construct( $path, $content );
+	}
+	
+	public function setBeautificationState( $state ) {
+		assert( is_boolean( $state ) );
+		$this->performBeautification = $state;
 	}
 	
 	// =======================================================================
@@ -43,8 +53,8 @@ class aop_file_source
 	 */
 	public function _process( &$content = null ) {
 
-		if ( empty( $content ))
-			return null;
+		if ( !$this->performBeautification || empty( $content ) )
+			return $content;
 	
 		$oBeaut = new PHP_Beautifier();
 		
@@ -70,7 +80,21 @@ class aop_file_source
 	// =======================================================================
 	//							SUB-CLASSED METHODS
 	// =======================================================================
+
+	/**
+	 * isRecyclable
+	 *  Related to object pool functionality
+	 */
+	public function isRecyclable() {
+		return true;
+	}
+	
+	public function init( &$path, &$content = null ) {
 		
+		$this->beautified_content = null;
+		return parent::init( $path, $content );
+	}
+	
 	/**
 	 * Save - don't need to do anything special
 	 * but not let the base class save to filesystem  

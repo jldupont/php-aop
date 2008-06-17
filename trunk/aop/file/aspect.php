@@ -65,4 +65,21 @@ class aop_file_aspect
 		return parent::write( $content );
 	}
 
+	/**
+	 * @see aop_factory
+	 */
+	public function init( &$path, &$content = null ) {
+		return parent::init( $path, $content );
+	}
+	
+	/**
+	 * isRecyclable
+	 *  Should be redefine in derived classes.
+	 * 
+	 * @see aop_object
+	 */
+	public function isRecyclable() {
+		return true;
+	}
+	
 }//end definition

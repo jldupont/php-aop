@@ -39,11 +39,10 @@ abstract class aop_file
 	
 	public function __construct( &$path, &$content = null ) {
 	
-		$this->path = $path;
-		$this->content = $content;
+		$this->init( $path, $content );
+		
 		parent::__construct();
 		
-		$this->init();
 	}
 	/**
 	 * Returns the content
@@ -143,7 +142,7 @@ abstract class aop_file
 	// =======================================================================
 	//							PROTECTED METHODS
 	// =======================================================================	
-
+	
 	/**
 	 * Reads the content of the base file and
 	 * determines where the __halt_compiler boundary lies
@@ -172,9 +171,15 @@ abstract class aop_file
 
 	/**
 	 * Core method for the template method pattern
+	 * 
+	 * @see aop_factory
 	 */
-	private function init() {
+	protected function init( &$path, &$content = null ) {
 	
+		$this->path = $path;
+		$this->content = $content;
+		$this->path_parts = null;
+		
 		$this->transformPath();
 
 		$this->fetchPathInfo();
