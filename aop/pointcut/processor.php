@@ -105,6 +105,8 @@ class aop_pointcut_processor
 				$collector = $this->collectorList[ $index ];
 				$cut->setAdviceCode( $type, $collector->getList() );
 				
+				aop_logger::log( __METHOD__." found advice code for method($methodName)" );
+				
 			}//foreach
 			
 		}//foreach

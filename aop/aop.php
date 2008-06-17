@@ -68,6 +68,20 @@ class aop {
 	 */
 	static $bypass_list = array();
 	
+	/**
+	 * DEBUG ONLY
+	 */
+	static $debug = false;
+	
+	/**
+	 * Optimization when the condition
+	 * ' 1 class == 1 file ' is met.
+	 * i.e. multiple class definition per file
+	 * can not be reliably handled if this is 
+	 * setting is set to 'true'
+	 */
+	static $strict = true;
+	
 	/*================================================================
 	 					PUBLIC INTERFACE
 	 ================================================================*/
@@ -79,9 +93,19 @@ class aop {
 		$this->activate();
 	}
 	
+	public function setStrict( $state = true ) {
+		assert( is_bool( $state ) );
+		self::$strict = $state;
+	}
+	
+	public function setDebug( $state = true ) {
+		assert( is_bool( $state ) );		
+		self::$debug = $state;
+	}
+	
 	public function setLogger( &$logger ) {
 		
-		aop_factory::get( 'aop_logger' )->set( $logger );
+		aop_factory::get( 'aop_logger' )->set( $logger, self::$debug );
 	}
 	
 	/**
@@ -252,7 +276,7 @@ class aop {
 	 */
 	public static function autoload( $className ) {
 
-		aop_logger::log( __METHOD__." request for class: $className" );
+		aop_logger::log( __METHOD__." request for class: $className", PEAR_LOG_NOTICE );
 		
 		$finder = aop_factory::get( 'aop_finder' );
 	
@@ -269,17 +293,27 @@ class aop {
 			return class_exists( $className );
 		}
 		
-		// ingest any pointcut definition directly associated
-		// with the required class
-		self::processPointcutDefinitionList( $className );
-
-		//does an aspect file already exist?
-		// prepare an aspect file...
-		$ifile = aop_factory::get( 'aop_file_source',  $path );		
+		// is the pointcut definition newer than the aspect file?
+		//  don't bother if it does not exist
+		$reprocess_aspect_file = false;
+		$ifile = aop_factory::get( 'aop_file_source',  $path );
 		$ofile = aop_factory::get( 'aop_file_aspect', $path );
 		
+		$def_file = aop_factory::get( 'aop_file_definition',  $path );
+		if ( $def_file->exists() ) {
+
+			$result = aop_file_comparator::compare_mtime( $def_file, $ofile );
+			if ( $result == aop_file_comparator::TIMESTAMP_NEWER ) {
+				// must re-process the aspect file
+				$reprocess_aspect_file = true;
+				aop_logger::log( __METHOD__." NEWER POINTCUT DEFINITION file found class($className)" );
+			}
+			
+		}
+		aop_object_pool::recycle( $def_file );
+		
 		// is the aspect file up-to-date?
-		if ( $ofile->exists() ) {
+		if ( $ofile->exists() && !$reprocess_aspect_file ) {
 			
 			aop_logger::log( __METHOD__." aspect file exist: $path" );
 			
@@ -291,26 +325,44 @@ class aop {
 		    	$aspect_path = $ofile->getPath();	
 				$result = include $aspect_path;
 				if ( !$result ) {
-					aop_logger::log( "failed to include weaved file ($path)" );
 					throw new aop_exception( ": failed to include weaved the class file ($path)" );
 				}
 				
 				return ( class_exists( $className ) );
 			}
 		}		
-		
+
+		// ingest any pointcut definition directly associated
+		// with the required class
+		self::processPointcutDefinitionList( $className );
+
 		// is there a pointcut definition file associated with the
 		// target source file?
 		self::processPointcutDefinition( $path );
+
+		// is there any point in generating an aspect representation?
+		//  Use optimization if allowed to
+		if ( self::$strict ) {
+			// if no match is found for the required class, 
+			// don't go through the lengthy weaving process
+			if ( !self::$pointcut_list->findMatch( $className, '~' ) ) {
+				aop_logger::log( "SKIPPING WEAVING for class($className)" );
+
+				$result = include $path;
+				if ( !$result ) {
+					throw new aop_exception( ": failed to include source class file ($path)" );
+				}
+				
+				return ( class_exists( $className ) );
+			}
+		}
+		
 		
 		// process the target file
-
 		try {
-			
     		$result = $ifile->process();
     		
 		} catch( Exception $e ) {
-			aop_logger::log( "failed to process the class file ($path). Exception message: ".$e->getMessage() );
 			throw new aop_exception( ": failed to process the class file ($path)" );				
 		}
 		
@@ -325,21 +377,18 @@ class aop {
     		$weaver->weave();
     		
     	} catch( Exception $e ) {
-    		
-    		aop_logger::log( "weaving process failed. Exception message: ".$e->getMessage() );
     		throw new aop_exception( ": failed to weave the class file ($path)" );
     	}
-		
-    	$weaver->recycle();
-    	
+
     	$aspect_path = $ofile->getPath();
-    	
+
+    	// be nice... recycle!    	
+		$weaver->recycle();    	
 		$ofile->recycle();
 		$ifile->recycle();
     	
 		$result = include $aspect_path;
 		if ( !$result ) {
-			aop_logger::log( "failed to include weaved file ($path)" );
 			throw new aop_exception( ": failed to include weaved the class file ($path)" );
 		}
 		
@@ -351,8 +400,6 @@ class aop {
 	 */
 	private static function processPointcutDefinitionList( &$className ) {
 	
-		#echo __METHOD__." classname: $className \n";
-		
 		if ( !isset( self::$pointcut_definition_list[$className ] ))
 			return;
 			
@@ -380,9 +427,11 @@ class aop {
 			} catch( Exception $e ) {
 				throw new aop_exception( ": failed to process definition file ($path)" );
 			}
+		} else {
+			aop_logger::log( __METHOD__." NO pointcut definition associated with path($path)" );
 		}
 		
-		unset( $def_file );
+		$def_file->recycle();
 	}
 	
 }//end definition
