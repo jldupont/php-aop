@@ -13,14 +13,23 @@ class aop_logger {
 	
 	static $logger = null;
 	
-	public static function set( &$logger ) {
+	static $debug = false;
+	
+	public static function set( &$logger, $debug = false ) {
 		self::$logger = $logger;
+		self::$debug  = $debug;
 	}
 	
 	public static function log( $message, $priority = null ) {
 		
 		if ( is_null( self::$logger ))
 			return;
+			
+		if ( self::$debug ) {
+			$peak = memory_get_peak_usage();
+			$message = "PEAK[$peak] ".$message;
+		}
+			
 		self::$logger->log( $message, $priority );
 	}
 	

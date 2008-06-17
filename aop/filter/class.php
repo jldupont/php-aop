@@ -72,11 +72,24 @@ class aop_filter_class
      */
     public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
     {
-    	$this->oBeaut = $oBeaut;
+    	$this->init( $oBeaut, $aSettings );
     	
         parent::__construct($oBeaut, $aSettings);
     }
-
+    
+    /**
+     * @see aop_factory
+     */
+	public function init( $oBeaut, $aSettings /*nothing todo*/ ) {
+		$this->oBeaut = $oBeaut;
+		$this->machine = null;
+		$this->currentClass = null;
+		$this->depthLevelForClass = 0;
+		$this->currentMethod = null;
+		$this->depthLevelForMethod = null;
+		$this->currentDepth = 0;
+		$this->nextOpenBrace = null;
+	}
 	// ======================================================================
 	// EVENTS
 	// ======================================================================
