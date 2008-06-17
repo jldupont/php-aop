@@ -19,10 +19,7 @@ class aop_object {
 	
 	public function recycle() {
 		
-		// Recyclable?
-		if ( is_callable( array( $this, 'isRecyclable') ) )
-			if ( $this->isRecyclable() )
-				aop_object_pool::recycle( $this );
+		aop_object_pool::recycle( $this );
 	}
 	
 	/**
