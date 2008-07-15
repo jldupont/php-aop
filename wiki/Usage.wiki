@@ -37,12 +37,12 @@ For *php-aop* to work, all classes must be loaded through the *php-aop* framewor
 
 ==File Layout==
 The framework searches for classes in the following order:
-# $path / $className .php
-# $p = $path / $className / $className .php
-# $p = $path / $fragment-list .php
-# $p = $path / $fragment-list / $last_fragment .php
+  # $path / $className .php
+  # $p = $path / $className / $className .php
+  # $p = $path / $fragment-list .php
+  # $p = $path / $fragment-list / $last_fragment .php
 Where:
-* $path is the absolute path registered through ''aop::register_class_path''
-* $fragment-list is the path constructed by replacing the ''_'' underscores in the $className with DIRECTORY_SEPARATOR (i.e. ''/'')
-* $last_fragment corresponds to the part of the $className following the last ''_'' (e.g. this_long_class_name  => $last_fragment == ''name'')
+  * $path is the absolute path registered through ''aop::register_class_path''
+  * $fragment-list is the path constructed by replacing the ''_'' underscores in the $className with DIRECTORY_SEPARATOR (i.e. ''/'')
+  * $last_fragment corresponds to the part of the $className following the last ''_'' (e.g. this_long_class_name  => $last_fragment == ''name'')
 For more information, please consult the code of the class located in ''/finder/finder.php''.
