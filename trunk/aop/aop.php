@@ -92,22 +92,29 @@ class aop {
 	
 		$this->activate();
 	}
-	
+	/**
+	 * Strict Mode setting
+	 * @param boolean
+	 */
 	public function setStrict( $state = true ) {
 		assert( is_bool( $state ) );
 		self::$strict = $state;
 	}
-	
+	/**
+	 * Debug Mode setting
+	 * @param boolean
+	 */
 	public function setDebug( $state = true ) {
 		assert( is_bool( $state ) );		
 		self::$debug = $state;
 	}
-	
+	/**
+	 * PEAR::Log setting
+	 * @param PEAR::Log object OR any other object that implements a ''log'' method
+	 */
 	public function setLogger( &$logger ) {
-		
 		aop_factory::get( 'aop_logger' )->set( $logger, self::$debug );
 	}
-	
 	/**
 	 * @see aop::register_class_pointcut_definition
 	 */
@@ -372,6 +379,7 @@ class aop {
     	$weaver->setInputFile( $ifile );
     	$weaver->setOutputFile( $ofile );
     	
+    	// try weaving to an aspect file
     	try {
     		
     		$weaver->weave();
@@ -437,7 +445,8 @@ class aop {
 }//end definition
 
 //activate the framework
+// =====================
 $aop = new aop;
 $aop->_register_class_path( get_include_path() );
 $aop->_register_class_path( realpath( dirname( __FILE__ ).DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ) );
-$aop->init();
+$aop->init(); #DON'T USE THIS METHOD ANY OTHER PLACE

@@ -7,6 +7,8 @@
  * @package AOP
  * @category AOP
  * @pattern borg
+ * @pattern ObjectPool
+ *
  */
 
 class aop_object_pool {
@@ -30,11 +32,13 @@ class aop_object_pool {
 	 */
 	public static function get( $class ) {
 
+		// is there one?
 		if (!isset( self::$objList[ $class ] ))
 			return null;
 
 		aop_logger::log( __METHOD__." RETRIEVING an object from class($class) from the recycle bin" );
 		
+		// retrieve from list
 		$obj = array_shift( self::$objList[$class] );
 		
 		return $obj;
@@ -50,11 +54,14 @@ class aop_object_pool {
 		$class = get_class( $obj );
 				
 		// is this recyclable at all?
+		// Use 'duck typing' to inquire about the object's recycling attribute:
+		// this additional check makes it more user friendly i.e. any object
+		// can be sent to the recycle bin without causing problems. 
 		$recyclable = false;
 		$callback = array( $obj, 'isRecyclable' );
-		if ( is_callable( $callback ) ) {
+		if ( is_callable( $callback ) )
 			$recyclable = $obj->isRecyclable();
-		}
+
 		if ( !$recyclable ) {
 			aop_logger::log( __METHOD__." CAN'T recycle object of class($class)" );
 			unset( $obj );
